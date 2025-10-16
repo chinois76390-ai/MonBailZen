@@ -1,161 +1,149 @@
-index.html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MonBailZen v6.1 — Démo riche</title>
-<style>
-:root{--bg:#0e1014;--panel:#151822;--soft:#10121a;--text:#eef0f6;--muted:#b8bbca;--gold:#c9a23f;--gold2:#f2cf7c;--b:#2a2f3a}
-*{box-sizing:border-box} body{margin:0;background:linear-gradient(180deg,#0e1014,#0b0d11);color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Arial}
-.wrap{max-width:1200px;margin:0 auto;padding:16px}
-.top{position:sticky;top:0;background:#0e1014f0;backdrop-filter:blur(8px);border-bottom:1px solid var(--b);z-index:10;transition:transform .25s ease}
-.brand{display:flex;gap:10px;align-items:center}.logo{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--gold),var(--gold2));display:grid;place-items:center;color:#111;font-weight:900}
-nav{display:flex;gap:8px;flex-wrap:wrap}
-.btn{padding:10px 14px;border-radius:14px;border:1px solid var(--b);background:#0b0d11;color:#eef0f6;cursor:pointer}
-.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#111;border:0;font-weight:800}
-.badge{display:inline-block;padding:4px 10px;border-radius:999px;border:1px solid var(--b);color:var(--muted);font-size:12px}
-.panel{background:var(--panel);border:1px solid var(--b);border-radius:18px;padding:14px;margin-top:14px}
-.card{background:var(--soft);border:1px solid var(--b);border-radius:16px;padding:12px}
-.grid{display:grid;gap:12px}.g2{grid-template-columns:1fr}.g3{grid-template-columns:1fr}.g4{grid-template-columns:1fr}
-@media(min-width:960px){.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}}
-input,select,textarea{width:100%;padding:10px;border-radius:12px;border:1px solid var(--b);background:#0b0d11;color:#eef0f6}
-label{display:block;font-size:12px;color:var(--muted);margin:6px 0}
-h1,h2,h3{color:#f5f6fb} .small{font-size:12px;color:#c8cadd}
-.hidden{display:none}
-.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
-.tab{padding:10px 14px;border-radius:999px;background:#0b0d11;border:1px solid #3a3d46;color:#eef0f6;font-weight:600;cursor:pointer}
-.tab:hover{border-color:#c9a23f;box-shadow:0 0 0 2px rgba(201,162,63,.15) inset}
-.tab.active{background:linear-gradient(135deg,#c9a23f,#f2cf7c);color:#111;border-color:transparent}
-.kpi{padding:10px;border:1px solid var(--b);border-radius:12px;background:#121521}
-.preview{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
-.preview img{width:110px;height:110px;object-fit:cover;border-radius:10px;border:1px solid var(--b)}
-table{width:100%;border-collapse:collapse}th,td{border:1px solid var(--b);padding:8px;text-align:left}th{background:#0f121a}
-footer{border-top:1px solid var(--b);margin-top:20px}
-.top.hide{transform:translateY(-100%)} .top.compact .tabs{display:none}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MonBailZen — v7</title>
+  <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-<div class="top">
-  <div class="wrap" style="display:flex;justify-content:space-between;align-items:center;gap:10px">
-    <div class="brand"><div class="logo">MBZ</div><strong>MonBailZen</strong><span class="badge">v6.1 — Démo riche</span></div>
-    <nav>
-      <button class="btn" data-view="site">Site</button>
-      <button class="btn" data-view="app">SaaS</button>
-      <button class="btn-gold" onclick="switchView('app')">Essayer la démo</button>
+<header class="top">
+  <div class="wrap nav">
+    <div class="brand">
+      <div class="logo">MBZ</div>
+      <div class="title">MonBailZen <span class="chip">v7</span></div>
+    </div>
+    <nav class="tabs" id="site-tabs">
+      <button class="tab active" data-tab="home">Accueil</button>
+      <button class="tab" data-tab="features">Fonctionnalités</button>
+      <button class="tab" data-tab="pricing">Tarifs</button>
+      <button class="tab" data-tab="faq">FAQ</button>
+      <button class="tab" data-tab="contact">Contact</button>
+      <button class="btn gold" id="open-app">Essayer la démo</button>
     </nav>
   </div>
-  <div class="wrap tabs" id="site-tabs">
-    <button class="tab active" data-tab="home">Accueil</button>
-    <button class="tab" data-tab="why">Pourquoi</button>
-    <button class="tab" data-tab="features">Fonctionnalités</button>
-    <button class="tab" data-tab="pricing">Tarifs</button>
-    <button class="tab" data-tab="faq">FAQ</button>
-    <button class="tab" data-tab="contact">Contact</button>
-  </div>
-  <div class="wrap tabs hidden" id="app-tabs">
+</header>
+
+<main class="wrap" id="site">
+  <section id="home" class="panel">
+    <div class="grid g2">
+      <div>
+        <span class="chip">Premium modernisé</span>
+        <h1>Créez des baux légaux & des états des lieux complets — en quelques minutes.</h1>
+        <p class="muted">IRL automatique, signatures eIDAS (démo), photos par pièce, comptabilité mensuelle & annuelle.</p>
+        <div class="row">
+          <button class="btn gold" id="start-demo">Démarrer la démo</button>
+          <button class="btn outline" data-tab-jump="features">Voir les fonctionnalités</button>
+        </div>
+        <div class="kpis">
+          <div class="kpi"><div>Temps gagné</div><b>−70%</b></div>
+          <div class="kpi"><div>Conformité</div><b>ALUR • ELAN • eIDAS</b></div>
+          <div class="kpi"><div>Export</div><b>PDF • CSV</b></div>
+          <div class="kpi"><div>Satisfaction</div><b>4,8/5</b></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Pourquoi MonBailZen ?</h3>
+        <ul class="muted">
+          <li>Formulaires guidés bailleur / locataire / garant</li>
+          <li>EDL multi‑pièces (murs, sols, plafonds, menuiseries, radiateurs, appareils)</li>
+          <li>Photos & anomalies par pièce</li>
+          <li>IRL, quittances & rappels automatiques (démo)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" class="panel hidden">
+    <h2>Fonctionnalités</h2>
+    <div class="grid g3">
+      <div class="card"><h3>Baux</h3><p>Vide, meublé, colocation, mobilité. Clauses particulières & annexes.</p></div>
+      <div class="card"><h3>État des lieux</h3><p>Pièces illimitées, menus détaillés, photos & PDF.</p></div>
+      <div class="card"><h3>Comptabilité</h3><p>Mensuel + annuel, export CSV pour le comptable.</p></div>
+    </div>
+  </section>
+
+  <section id="pricing" class="panel hidden">
+    <h2>Tarifs</h2>
+    <div class="grid g3">
+      <div class="card"><h3>À la carte</h3><p>1 bail = 9,90 € (EDL entrée inclus)</p></div>
+      <div class="card"><h3>Pro illimité</h3><p>49,90 €/mois</p></div>
+      <div class="card"><h3>Mode veille</h3><p>0,99 €/mois — données conservées</p></div>
+    </div>
+  </section>
+
+  <section id="faq" class="panel hidden">
+    <h2>FAQ</h2>
+    <ul class="muted">
+      <li>Signature légale ? eIDAS (démo) intégrée en simulation.</li>
+      <li>Conformité ? Modèles alignés ALUR & ELAN (démo).</li>
+      <li>Export ? PDF/CSV en un clic.</li>
+    </ul>
+  </section>
+
+  <section id="contact" class="panel hidden">
+    <h2>Contact & Mentions</h2>
+    <p class="muted">Mentions légales / RGPD / CGV — à compléter.</p>
+  </section>
+</main>
+
+<!-- APP -->
+<main class="wrap hidden" id="app">
+  <div class="subtabs">
     <button class="tab active" data-app="dashboard">Tableau de bord</button>
     <button class="tab" data-app="leases">Baux & EDL</button>
     <button class="tab" data-app="accounting">Comptabilité</button>
     <button class="tab" data-app="docs">Documents</button>
     <button class="tab" data-app="settings">Paramètres</button>
   </div>
-</div>
 
-<main id="site" class="wrap">
-  <section id="home" class="panel">
-    <div class="grid g2">
-      <div>
-        <span class="badge">Premium modernisé</span>
-        <h1>Gérez vos locations en toute sérénité</h1>
-        <p class="small">Baux conformes, EDL multi-pièces, signature eIDAS, IRL auto, relances, compta mensuelle & annuelle.</p>
-        <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <button class="btn-gold" onclick="switchView('app')">Démarrer la démo</button>
-          <button class="btn" onclick="document.querySelector('[data-tab=features]').click()">Voir les fonctionnalités</button>
-        </div>
-        <div class="grid g4" style="margin-top:12px">
-          <div class="kpi"><div class="small">Temps gagné</div><b>–70%</b></div>
-          <div class="kpi"><div class="small">Conformité</div><b>ALUR • ELAN • eIDAS</b></div>
-          <div class="kpi"><div class="small">Satisfaction</div><b>4,8/5</b></div>
-          <div class="kpi"><div class="small">Export</div><b>PDF • CSV</b></div>
-        </div>
-      </div>
-      <div class="card">
-        <h3>Pourquoi MBZ ?</h3>
-        <ul class="small">
-          <li>Interface claire, design premium</li>
-          <li>Automatisations (IRL, quittances, relances)</li>
-          <li>Personnalisation pro (logo, clauses)</li>
-          <li>Signature eIDAS avec preuve</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-  <section id="why" class="panel hidden"><h2>Pourquoi choisir MonBailZen ?</h2><div class="grid g3"><div class="card"><h3>Simple</h3><p class="small">Parcours guidés & modèles à jour.</p></div><div class="card"><h3>Légal</h3><p class="small">Conforme ALUR/ELAN, eIDAS (UE 910/2014).</p></div><div class="card"><h3>Automatique</h3><p class="small">IRL, quittances, relances, compta.</p></div></div></section>
-  <section id="features" class="panel hidden"><h2>Fonctionnalités</h2><div class="grid g3">
-    <div class="card"><h3>Baux complets</h3><p class="small">Vide, meublé, colocation, mobilité, pro, saisonnier.</p></div>
-    <div class="card"><h3>EDL multi-pièces</h3><p class="small">Pièces illimitées, murs/sols/plafonds/menuiseries, photos & anomalies.</p></div>
-    <div class="card"><h3>Comptabilité</h3><p class="small">Mensuel & annuel, imports/exports CSV, synthèse pour comptable.</p></div>
-  </div></section>
-  <section id="pricing" class="panel hidden"><h2>Tarifs</h2><div class="grid g3">
-    <div class="card"><h3>À la carte</h3><p class="small">1 bail = 9,90 € (EDL entrée inclus)</p><button class="btn-gold" onclick="switchView('app')">Essayer</button></div>
-    <div class="card"><h3>Pro illimité</h3><p class="small">49,90 €/mois</p><button class="btn-gold" onclick="switchView('app')">Activer</button></div>
-    <div class="card"><h3>Mode veille</h3><p class="small">0,99 €/mois • données conservées</p><button class="btn">En savoir plus</button></div>
-  </div></section>
-  <section id="faq" class="panel hidden"><h2>FAQ</h2><ul class="small"><li>Signature légale ? Oui, eIDAS (démo).</li><li>Logo pro ? Oui (offre Pro).</li><li>Données conservées ? Oui, mode veille 0,99 €/mois.</li></ul></section>
-  <section id="contact" class="panel hidden"><h2>Contact & Mentions</h2><p class="small">Mentions légales / CGV / RGPD — à compléter.</p></section>
-</main>
-
-<main id="app" class="wrap hidden">
   <section id="dashboard" class="panel">
     <h2>Tableau de bord</h2>
     <div class="grid g3">
-      <div class="card"><div class="small">Loyers du mois</div><h3 id="k-loyers">0 €</h3></div>
-      <div class="card"><div class="small">IRL à venir</div><h3 id="k-irl">—</h3></div>
-      <div class="card"><div class="small">Docs à signer</div><h3 id="k-signs">0</h3></div>
+      <div class="card"><div class="muted">Loyers du mois</div><h3 id="k-loyers">0 €</h3></div>
+      <div class="card"><div class="muted">IRL à venir</div><h3 id="k-irl">—</h3></div>
+      <div class="card"><div class="muted">Docs à signer</div><h3 id="k-signs">0</h3></div>
     </div>
   </section>
 
   <section id="leases" class="panel hidden">
-    <h2>Baux & États des lieux</h2>
+    <h2>Baux & états des lieux</h2>
     <div class="grid g2">
       <div class="card">
-        <h3>Créer un bail (démo riche)</h3>
+        <h3>Créer un bail</h3>
         <div class="grid g2">
           <div>
             <label>Type de bail</label>
             <select id="b-type"><option>Vide</option><option>Meublé</option><option>Colocation</option><option>Mobilité</option></select>
-            <label>Adresse du logement</label><input id="b-adr" placeholder="12 rue des Lilas, 75015 Paris">
+            <label>Adresse</label><input id="b-adr" placeholder="12 rue des Lilas, 75015 Paris">
             <label>Loyer HC (€)</label><input id="b-loyer" type="number" step="0.01">
             <label>Charges (€)</label><input id="b-charges" type="number" step="0.01">
             <label>Date d’effet</label><input id="b-date" type="date">
-            <label>Dépôt de garantie (€)</label><input id="b-depot" type="number" step="0.01" placeholder="Meublé : 2 mois max">
+            <label>Dépôt de garantie (€)</label><input id="b-depot" type="number" step="0.01">
           </div>
           <div>
             <label>Locataire — Nom complet</label><input id="t-name" placeholder="Ex. Dupont Alice">
             <label>Email</label><input id="t-mail" placeholder="alice@email.fr">
-            <label>Téléphone</label><input id="t-phone" placeholder="+33 ...">
+            <label>Téléphone</label><input id="t-phone" placeholder="+33 …">
             <label>Garant (optionnel)</label><input id="g-name" placeholder="Nom du garant">
             <label>Documents locataire</label><input type="file" id="t-docs" multiple>
           </div>
         </div>
-        <label>Clauses particulières</label>
-        <textarea id="b-clauses" rows="3" placeholder="Ex. Murs non percés ; filtre hotte 1×/an ; …"></textarea>
-        <label>Annexes</label>
-        <div class="small"><input type="checkbox" checked> DPE • <input type="checkbox" checked> Électricité • <input type="checkbox" checked> Gaz • <input type="checkbox" checked> Notice • <input type="checkbox"> Règlement copro • <input type="checkbox"> Etat des risques</div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
-          <button class="btn-gold" id="b-create">Générer le bail</button>
+        <label>Clauses particulières</label><textarea id="b-clauses" rows="3" placeholder="Ex. Murs non percés ; filtre hotte 1×/an ; …"></textarea>
+        <div class="row">
+          <button class="btn gold" id="b-create">Générer le bail</button>
           <button class="btn" id="b-sign">Signature eIDAS (démo)</button>
           <button class="btn" id="b-pdf">Aperçu PDF (démo)</button>
         </div>
       </div>
 
       <div class="card">
-        <h3>État des lieux (multi-pièces)</h3>
+        <h3>État des lieux (multi‑pièces)</h3>
         <div class="grid g2">
           <div>
             <label>Type</label><select id="e-type"><option>Entrée</option><option>Sortie</option></select>
             <label>Ajouter une pièce</label>
-            <div style="display:flex;gap:6px">
+            <div class="row">
               <select id="room-kind">
                 <option>Salon</option><option>Chambre</option><option>Cuisine</option>
                 <option>Salle de bain</option><option>WC</option><option>Couloir</option><option>Autre</option>
@@ -167,7 +155,7 @@ footer{border-top:1px solid var(--b);margin-top:20px}
           <div>
             <label>Photos état initial</label><input id="e-photos" type="file" accept="image/*" multiple><div id="e-prev" class="preview"></div>
             <label>Photos anomalies</label><input id="e-issues" type="file" accept="image/*" multiple><div id="e-prev-issues" class="preview"></div>
-            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+            <div class="row">
               <button class="btn" id="e-sign">Signature (démo)</button>
               <button class="btn" id="e-pdf">PDF (démo)</button>
             </div>
@@ -191,11 +179,11 @@ footer{border-top:1px solid var(--b);margin-top:20px}
         <label>Bien / Locataire</label><input id="c-asset" placeholder="Ex. T2 Ault — Dupont">
         <label>Type</label><select id="c-type"><option>Loyers encaissés</option><option>Charges</option><option>Travaux</option><option>Assurance</option><option>Taxe foncière</option></select>
         <label>Montant (€)</label><input id="c-amount" type="number" step="0.01">
-        <div style="margin-top:8px"><button class="btn-gold" id="c-add">Ajouter</button></div>
+        <div class="row"><button class="btn gold" id="c-add">Ajouter</button></div>
       </div>
       <div class="card">
         <h3>Tableau</h3>
-        <div id="c-table" class="small">Aucune ligne.</div>
+        <div id="c-table" class="muted">Aucune ligne.</div>
       </div>
     </div>
   </section>
@@ -203,9 +191,9 @@ footer{border-top:1px solid var(--b);margin-top:20px}
   <section id="docs" class="panel hidden">
     <h2>Documents</h2>
     <div class="grid g3">
-      <div class="card"><h3>Modèles</h3><ul class="small"><li>Bail vide</li><li>Meublé</li><li>Avenant</li><li>Relance</li></ul><button class="btn">Ouvrir</button></div>
-      <div class="card"><h3>Dossier locataire</h3><ul class="small"><li>Carte ID</li><li>3 quittances</li><li>Contrat travail</li></ul><button class="btn">Ajouter</button></div>
-      <div class="card"><h3>Diagnostics</h3><ul class="small"><li>DPE</li><li>Électricité</li><li>Gaz</li></ul><button class="btn">Téléverser</button></div>
+      <div class="card"><h3>Modèles</h3><ul class="muted"><li>Bail vide</li><li>Meublé</li><li>Avenant</li><li>Relance</li></ul><button class="btn">Ouvrir</button></div>
+      <div class="card"><h3>Dossier locataire</h3><ul class="muted"><li>Carte ID</li><li>3 quittances</li><li>Contrat travail</li></ul><button class="btn">Ajouter</button></div>
+      <div class="card"><h3>Diagnostics</h3><ul class="muted"><li>DPE</li><li>Électricité</li><li>Gaz</li></ul><button class="btn">Téléverser</button></div>
     </div>
   </section>
 
@@ -213,82 +201,16 @@ footer{border-top:1px solid var(--b);margin-top:20px}
     <h2>Paramètres</h2>
     <div class="grid g3">
       <div class="card"><h3>Profil</h3><input placeholder="Nom / Entreprise"><input placeholder="Email"></div>
-      <div class="card"><h3>SCI / Multi-utilisateurs</h3><input placeholder="Nom SCI"><button class="btn">Inviter</button></div>
+      <div class="card"><h3>SCI / Multi‑utilisateurs</h3><input placeholder="Nom SCI"><button class="btn">Inviter</button></div>
       <div class="card"><h3>Langues</h3><select><option>Français</option><option>Anglais</option><option>Portugais</option></select></div>
     </div>
   </section>
 </main>
 
-<footer class="wrap small"><div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;color:#b8bbca">
-  <div>© 2025 MonBailZen — Démo riche</div><div>Design premium • eIDAS (démo) • IRL auto (démo)</div></div>
+<footer class="wrap muted">
+  © 2025 MonBailZen — v7 • eIDAS (démo) • IRL auto (démo)
 </footer>
 
-<script>
-const site=document.getElementById('site'), app=document.getElementById('app');
-const siteTabs=document.getElementById('site-tabs'), appTabs=document.getElementById('app-tabs');
-document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>switchView(b.dataset.view)));
-function switchView(v){const isSite=(v==='site');site.classList.toggle('hidden',!isSite);app.classList.toggle('hidden',isSite);siteTabs.classList.toggle('hidden',!isSite);appTabs.classList.toggle('hidden',isSite);window.scrollTo({top:0,behavior:'smooth'});}
-siteTabs.querySelectorAll('.tab').forEach(btn=>btn.addEventListener('click',()=>{siteTabs.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));btn.classList.add('active');['home','why','features','pricing','faq','contact'].forEach(id=>document.getElementById(id).classList.toggle('hidden',id!==btn.dataset.tab));}));
-appTabs.querySelectorAll('.tab').forEach(btn=>btn.addEventListener('click',()=>{appTabs.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));btn.classList.add('active');['dashboard','leases','accounting','docs','settings'].forEach(id=>document.getElementById(id).classList.toggle('hidden',id!==btn.dataset.app));}));
-
-let lastY=0; window.addEventListener('scroll',()=>{const t=document.querySelector('.top'), y=window.scrollY; if(!t) return; if(y>lastY && y>60) t.classList.add('hide'); else t.classList.remove('hide'); lastY=y;});
-document.querySelector('[data-app="leases"]').addEventListener('click',()=>document.querySelector('.top').classList.add('compact'));
-document.querySelector('[data-app="dashboard"]').addEventListener('click',()=>document.querySelector('.top').classList.remove('compact'));
-
-const S=JSON.parse(localStorage.getItem('mbz_demo')||'{"baux":[],"compta":{}}');
-function save(){localStorage.setItem('mbz_demo',JSON.stringify(S));render();}
-function euro(n){return new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR'}).format(n||0);}
-function yyyymm(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,'0');}
-
-document.getElementById('b-create').onclick=()=>{
-  const b={id:Math.random().toString(36).slice(2,7).toUpperCase(),
-    type:val('b-type'), adr:val('b-adr'), loyer:num('b-loyer'), charges:num('b-charges'),
-    date:val('b-date'), depot:num('b-depot'), locataire:val('t-name'), email:val('t-mail'),
-    phone:val('t-phone'), garant:val('g-name'), clauses:val('b-clauses'), createdAt:Date.now()};
-  if(!b.adr||!b.loyer||!b.locataire){alert("Adresse, loyer et nom du locataire sont requis.");return;}
-  S.baux.push(b);
-  const k=yyyymm(new Date()); if(!S.compta[k]) S.compta[k]=[]; S.compta[k].push({asset:b.adr+" — "+b.locataire,type:'Loyers encaissés',amount:b.loyer});
-  save(); alert("Bail créé (démo) + loyer ajouté au mois courant.");
-};
-function val(id){return document.getElementById(id).value||''}
-function num(id){return parseFloat(document.getElementById(id).value||0)}
-document.getElementById('b-sign').onclick=()=>{alert("Signature eIDAS simulée (démo) — un email serait envoyé à "+(val('t-mail')||'le locataire')+".");document.getElementById('k-signs').textContent=String((parseInt(document.getElementById('k-signs').textContent)||0)+1)};
-document.getElementById('b-pdf').onclick=()=>{const w=window.open('','_blank');w.document.write('<!doctype html><title>Bail (démo)</title><div style="font-family:Arial;padding:24px;line-height:1.5"><h2 style="margin:0 0 12px 0">Bail (aperçu démo)</h2><p>Ce rendu est un mock PDF. La version v7 générera le bail complet (clauses ALUR/ELAN) avec signature eIDAS intégrée.</p></div>');w.print();};
-
-const roomsBox=document.getElementById('rooms');
-document.getElementById('add-room').onclick=()=>{
-  const kind=document.getElementById('room-kind').value;
-  const el=document.createElement('div'); el.className='card'; el.innerHTML=`
-    <h4 style="margin:0 0 6px 0">${kind}</h4>
-    <div class="grid g3">
-      <div><label>Murs</label><select><option>Neuf</option><option>Bon état</option><option>Correct</option><option>À rafraîchir</option><option>Dégradé</option></select></div>
-      <div><label>Plafond</label><select><option>Neuf</option><option>Bon état</option><option>Correct</option><option>À rafraîchir</option><option>Dégradé</option></select></div>
-      <div><label>Sol</label><select><option>Neuf</option><option>Bon état</option><option>Correct</option><option>À rafraîchir</option><option>Dégradé</option></select></div>
-    </div>
-    <div class="grid g3" style="margin-top:6px">
-      <div><label>Menuiseries</label><select><option>OK</option><option>À régler</option><option>À réparer</option></select></div>
-      <div><label>Radiateurs</label><select><option>OK</option><option>À purger</option><option>À remplacer</option></select></div>
-      <div><label>Électroménager / Appareils</label><select><option>OK</option><option>Nettoyage filtre</option><option>En panne</option></select></div>
-    </div>
-    <label>Commentaire</label><textarea rows="2" placeholder="Observations…"></textarea>
-  `;
-  roomsBox.appendChild(el);
-};
-
-function previewFiles(input, boxId){const box=document.getElementById(boxId);box.innerHTML='';[...input.files].forEach(f=>{const img=document.createElement('img');img.src=URL.createObjectURL(f);box.appendChild(img);});}
-document.getElementById('e-photos').addEventListener('change',e=>previewFiles(e.target,'e-prev'));
-document.getElementById('e-issues').addEventListener('change',e=>previewFiles(e.target,'e-prev-issues'));
-document.getElementById('e-sign').onclick=()=>alert("Signature EDL simulée (démo).");
-document.getElementById('e-pdf').onclick=()=>{const w=window.open('','_blank');w.document.write('<!doctype html><title>EDL (démo)</title><div style="font-family:Arial;padding:24px">Aperçu PDF de l’état des lieux (démo).</div>');w.print();};
-
-function renderBaux(){const box=document.getElementById('b-list');box.innerHTML='';S.baux.slice().reverse().forEach(b=>{const d=document.createElement('div');d.className='card';d.innerHTML=`<div style="display:flex;justify-content:space-between;gap:10px;align-items:center"><div><b>${b.type}</b> — <span class="small">${b.adr}</span><div class="small">${b.locataire||'Locataire ?'} • Loyer HC: ${euro(b.loyer)} • Charges: ${euro(b.charges)} • Dépôt: ${euro(b.depot)} • Effet: ${b.date||'—'}</div></div><button class="btn" data-del="${b.id}">Supprimer</button></div>`;box.appendChild(d);});box.querySelectorAll('[data-del]').forEach(btn=>btn.addEventListener('click',()=>{S.baux=S.baux.filter(x=>x.id!==btn.dataset.del);save();}));}
-const monthSel=document.getElementById('c-month');(function fillMonths(){const y=new Date().getFullYear();for(let i=1;i<=12;i++){const k=`${y}-${String(i).padStart(2,'0')}`;const o=document.createElement('option');o.value=k;o.textContent=new Date(`${k}-01`).toLocaleString('fr-FR',{month:'long',year:'numeric'});monthSel.appendChild(o);}monthSel.value=yyyymm(new Date());})();
-document.getElementById('c-add').onclick=()=>{const k=monthSel.value, asset=document.getElementById('c-asset').value.trim(), type=document.getElementById('c-type').value, amount=parseFloat(document.getElementById('c-amount').value||0); if(!S.compta[k]) S.compta[k]=[]; S.compta[k].push({asset,type,amount}); save();};
-function renderCompta(){const k=monthSel.value, rows=S.compta[k]||[]; if(!rows.length){document.getElementById('c-table').innerHTML='<span class="small">Aucune ligne.</span>'; document.getElementById('k-loyers').textContent='0 €'; return;} let html='<table><thead><tr><th>Mois</th><th>Bien / Locataire</th><th>Type</th><th>Montant (€)</th></tr></thead><tbody>'; let loy=0, dep=0; rows.forEach(r=>{html+=`<tr><td>${k}</td><td>${r.asset||''}</td><td>${r.type}</td><td>${euro(r.amount)}</td></tr>`; if(r.type==='Loyers encaissés')loy+=r.amount; else dep+=r.amount;}); html+=`</tbody></table><div class="panel" style="margin-top:8px"><b>Total loyers:</b> ${euro(loy)} • <b>Dépenses:</b> ${euro(dep)} • <b>Résultat:</b> ${euro(loy-dep)}</div>`; document.getElementById('c-table').innerHTML=html; document.getElementById('k-loyers').textContent=euro(loy);} 
-monthSel.addEventListener('change',renderCompta);
-
-function render(){renderBaux();renderCompta();}
-render();
-</script>
+<script src="assets/js/app.js"></script>
 </body>
 </html>
