@@ -1,216 +1,348 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>MonBailZen — v7</title>
-  <link rel="stylesheet" href="./assets/css/style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MonBailZen — v7 (démo riche)</title>
+  <meta name="description" content="Baux, EDL multi-pièces, eIDAS (démo), IRL auto, relances, export CSV & PDF (démo).">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2218%22 fill=%22%230e1014%22/><text x=%2250%25%22 y=%2258%25%22 font-size=%2254%22 text-anchor=%22middle%22 fill=%22%23ffd95a%22 font-family=%22Arial%22>MBZ</text></svg>">
+  <style>
+    :root{
+      --bg:#0e1014; --panel:#151b22; --soft:#10121a; --text:#e6f0f3; --muted:#9da7b1;
+      --gold:#f0b84c; --gold2:#f3d98a; --accent:#6ea8fe; --danger:#ff6565; --ok:#57d38b;
+      --chip:#212836
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;background:linear-gradient(180deg,var(--bg),#0b0f15);color:var(--text);font:15px/1.6 Inter,system-ui,Segoe UI,Roboto,Arial}
+    .wrap{max-width:1200px;margin:0 auto;padding:18px}
+    .top{position:sticky;top:0;background:#0e1014cc;backdrop-filter:blur(8px);z-index:100;border-bottom:1px solid var(--chip)}
+    .brand{display:flex;gap:10px;align-items:center}
+    .logo{width:42px;height:42px;display:grid;place-items:center;border-radius:12px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#111;font-weight:900}
+    .title{font-size:18px}
+    .chip{background:var(--chip);color:#9fb1c3;padding:3px 8px;border-radius:8px;font-size:12px;margin-left:6px}
+    nav.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .tab{cursor:pointer;background:#1b2430;color:var(--text);border:1px solid #263244;padding:9px 12px;border-radius:999px}
+    .tab.active{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#111;border-color:transparent;font-weight:800}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;border:1px solid #2b3a4c;background:transparent;color:var(--text)}
+    .btn:hover{border-color:#40546e}
+    .btn.gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#111;border:0;font-weight:800}
+    .grid{display:grid;gap:12px}
+    @media(min-width:960px){.grid.cols-2{grid-template-columns:1fr 1fr} .grid.cols-3{grid-template-columns:repeat(3,1fr)}}
+    .card{background:var(--panel);border:1px solid var(--chip);border-radius:18px;padding:16px}
+    h1{font-size:28px;margin:0 0 10px}
+    h2{font-size:20px;margin:0 0 8px}
+    h3{font-size:16px;margin:0 0 6px;color:#cfe0ff}
+    .kpis{display:grid;gap:10px}
+    @media(min-width:900px){.kpis{grid-template-columns:repeat(4,1fr)}}
+    .kpi{background:#121826;border:1px solid #223046;border-radius:14px;padding:12px}
+    .kpi .big{font-size:20px;font-weight:800}
+    label{display:block;font-size:12px;color:#9fb1c3;margin-bottom:6px}
+    input,select,textarea{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #263244;background:#0b0f15;color:var(--text)}
+    textarea{min-height:84px}
+    .pill{font-size:12px;padding:4px 8px;border-radius:999px;background:#0f1624;border:1px solid #223046;display:inline-block}
+    .ok{color:var(--ok)} .warn{color:#ffb35e} .bad{color:var(--danger)}
+    .foot{opacity:.65;font-size:12px;margin-top:12px}
+    .list > li{margin:4px 0}
+    .muted{color:var(--muted)}
+    .hr{height:1px;background:#1f2a3a;margin:12px 0}
+    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size:12px}
+  </style>
 </head>
 <body>
-<header class="top">
-  <div class="wrap nav">
-    <div class="brand">
-      <div class="logo">MBZ</div>
-      <div class="title">MonBailZen <span class="chip">v7</span></div>
-    </div>
-    <nav class="tabs" id="site-tabs">
-      <button class="tab active" data-tab="home">Accueil</button>
-      <button class="tab" data-tab="features">Fonctionnalités</button>
-      <button class="tab" data-tab="pricing">Tarifs</button>
-      <button class="tab" data-tab="faq">FAQ</button>
-      <button class="tab" data-tab="contact">Contact</button>
-      <button class="btn gold" id="open-app">Essayer la démo</button>
-    </nav>
-  </div>
-</header>
-
-<main class="wrap" id="site">
-  <section id="home" class="panel">
-    <div class="grid g2">
-      <div>
-        <span class="chip">Premium modernisé</span>
-        <h1>Créez des baux légaux & des états des lieux complets — en quelques minutes.</h1>
-        <p class="muted">IRL automatique, signatures eIDAS (démo), photos par pièce, comptabilité mensuelle & annuelle.</p>
-        <div class="row">
-          <button class="btn gold" id="start-demo">Démarrer la démo</button>
-          <button class="btn outline" data-tab-jump="features">Voir les fonctionnalités</button>
-        </div>
-        <div class="kpis">
-          <div class="kpi"><div>Temps gagné</div><b>−70%</b></div>
-          <div class="kpi"><div>Conformité</div><b>ALUR • ELAN • eIDAS</b></div>
-          <div class="kpi"><div>Export</div><b>PDF • CSV</b></div>
-          <div class="kpi"><div>Satisfaction</div><b>4,8/5</b></div>
-        </div>
+  <header class="top">
+    <div class="wrap">
+      <div class="brand">
+        <div class="logo">MBZ</div>
+        <div class="title">MonBailZen <span class="chip">v7</span></div>
       </div>
-      <div class="card">
-        <h3>Pourquoi MonBailZen ?</h3>
-        <ul class="muted">
-          <li>Formulaires guidés bailleur / locataire / garant</li>
-          <li>EDL multi‑pièces (murs, sols, plafonds, menuiseries, radiateurs, appareils)</li>
-          <li>Photos & anomalies par pièce</li>
-          <li>IRL, quittances & rappels automatiques (démo)</li>
-        </ul>
-      </div>
+      <nav class="tabs" id="site-tabs">
+        <button class="tab active" data-tab="home">Accueil</button>
+        <button class="tab" data-tab="features">Fonctionnalités</button>
+        <button class="tab" data-tab="pricing">Tarifs</button>
+        <button class="tab" data-tab="faq">FAQ</button>
+        <button class="tab" data-tab="contact">Contact</button>
+        <button class="tab gold" id="open-demo">Essayer la démo</button>
+      </nav>
     </div>
-  </section>
+  </header>
 
-  <section id="features" class="panel hidden">
-    <h2>Fonctionnalités</h2>
-    <div class="grid g3">
-      <div class="card"><h3>Baux</h3><p>Vide, meublé, colocation, mobilité. Clauses particulières & annexes.</p></div>
-      <div class="card"><h3>État des lieux</h3><p>Pièces illimitées, menus détaillés, photos & PDF.</p></div>
-      <div class="card"><h3>Comptabilité</h3><p>Mensuel + annuel, export CSV pour le comptable.</p></div>
-    </div>
-  </section>
-
-  <section id="pricing" class="panel hidden">
-    <h2>Tarifs</h2>
-    <div class="grid g3">
-      <div class="card"><h3>À la carte</h3><p>1 bail = 9,90 € (EDL entrée inclus)</p></div>
-      <div class="card"><h3>Pro illimité</h3><p>49,90 €/mois</p></div>
-      <div class="card"><h3>Mode veille</h3><p>0,99 €/mois — données conservées</p></div>
-    </div>
-  </section>
-
-  <section id="faq" class="panel hidden">
-    <h2>FAQ</h2>
-    <ul class="muted">
-      <li>Signature légale ? eIDAS (démo) intégrée en simulation.</li>
-      <li>Conformité ? Modèles alignés ALUR & ELAN (démo).</li>
-      <li>Export ? PDF/CSV en un clic.</li>
-    </ul>
-  </section>
-
-  <section id="contact" class="panel hidden">
-    <h2>Contact & Mentions</h2>
-    <p class="muted">Mentions légales / RGPD / CGV — à compléter.</p>
-  </section>
-</main>
-
-<!-- APP -->
-<main class="wrap hidden" id="app">
-  <div class="subtabs">
-    <button class="tab active" data-app="dashboard">Tableau de bord</button>
-    <button class="tab" data-app="leases">Baux & EDL</button>
-    <button class="tab" data-app="accounting">Comptabilité</button>
-    <button class="tab" data-app="docs">Documents</button>
-    <button class="tab" data-app="settings">Paramètres</button>
-  </div>
-
-  <section id="dashboard" class="panel">
-    <h2>Tableau de bord</h2>
-    <div class="grid g3">
-      <div class="card"><div class="muted">Loyers du mois</div><h3 id="k-loyers">0 €</h3></div>
-      <div class="card"><div class="muted">IRL à venir</div><h3 id="k-irl">—</h3></div>
-      <div class="card"><div class="muted">Docs à signer</div><h3 id="k-signs">0</h3></div>
-    </div>
-  </section>
-
-  <section id="leases" class="panel hidden">
-    <h2>Baux & états des lieux</h2>
-    <div class="grid g2">
-      <div class="card">
-        <h3>Créer un bail</h3>
-        <div class="grid g2">
-          <div>
-            <label>Type de bail</label>
-            <select id="b-type"><option>Vide</option><option>Meublé</option><option>Colocation</option><option>Mobilité</option></select>
-            <label>Adresse</label><input id="b-adr" placeholder="12 rue des Lilas, 75015 Paris">
-            <label>Loyer HC (€)</label><input id="b-loyer" type="number" step="0.01">
-            <label>Charges (€)</label><input id="b-charges" type="number" step="0.01">
-            <label>Date d’effet</label><input id="b-date" type="date">
-            <label>Dépôt de garantie (€)</label><input id="b-depot" type="number" step="0.01">
+  <main class="wrap">
+    <!-- Accueil -->
+    <section class="tab-pane" id="home">
+      <div class="grid cols-2">
+        <div class="card">
+          <h1>Gérez vos locations en toute sérénité.</h1>
+          <p class="muted">Baux guidés, EDL multi-pièces avec photos, signature eIDAS (démo), IRL auto, relances, exports PDF & CSV (démo), comptabilité mensuelle & annuelle.</p>
+          <div class="kpis">
+            <div class="kpi"><div class="big">-70%</div><div class="muted">Temps de gestion</div></div>
+            <div class="kpi"><div class="big">ALUR • ELAN • eIDAS</div><div class="muted">Conformité</div></div>
+            <div class="kpi"><div class="big">PDF + CSV</div><div class="muted">Exports</div></div>
+            <div class="kpi"><div class="big">4,8/5</div><div class="muted">Satisfaction estimée</div></div>
           </div>
-          <div>
-            <label>Locataire — Nom complet</label><input id="t-name" placeholder="Ex. Dupont Alice">
-            <label>Email</label><input id="t-mail" placeholder="alice@email.fr">
-            <label>Téléphone</label><input id="t-phone" placeholder="+33 …">
-            <label>Garant (optionnel)</label><input id="g-name" placeholder="Nom du garant">
-            <label>Documents locataire</label><input type="file" id="t-docs" multiple>
+          <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn gold" id="cta-demo">Démarrer la démo</button>
+            <a class="btn" href="#features" data-goto="features">Voir les fonctionnalités</a>
           </div>
+          <div class="foot">Design premium modernisé • eIDAS (démo) • IRL auto (démo)</div>
         </div>
-        <label>Clauses particulières</label><textarea id="b-clauses" rows="3" placeholder="Ex. Murs non percés ; filtre hotte 1×/an ; …"></textarea>
-        <div class="row">
-          <button class="btn gold" id="b-create">Générer le bail</button>
-          <button class="btn" id="b-sign">Signature eIDAS (démo)</button>
-          <button class="btn" id="b-pdf">Aperçu PDF (démo)</button>
+        <div class="card">
+          <h2>Pourquoi MonBailZen ?</h2>
+          <ul class="list">
+            <li>Formulaires guidés bailleur / locataire / garant</li>
+            <li>EDL multi-pièces (murs, sols, plafonds, menuiseries, radiateurs, appareils) + photos</li>
+            <li>Clauses particulières & annexes pro, en-tête personnalisée</li>
+            <li>IRL automatique, quittances & rappels (démo)</li>
+          </ul>
+          <div class="hr"></div>
+          <div class="pill">Export : <span class="mono">PDF</span> • <span class="mono">CSV</span></div>
         </div>
       </div>
+    </section>
 
-      <div class="card">
-        <h3>État des lieux (multi‑pièces)</h3>
-        <div class="grid g2">
-          <div>
-            <label>Type</label><select id="e-type"><option>Entrée</option><option>Sortie</option></select>
-            <label>Ajouter une pièce</label>
-            <div class="row">
-              <select id="room-kind">
-                <option>Salon</option><option>Chambre</option><option>Cuisine</option>
-                <option>Salle de bain</option><option>WC</option><option>Couloir</option><option>Autre</option>
+    <!-- Fonctionnalités -->
+    <section class="tab-pane" id="features" hidden>
+      <div class="grid cols-2">
+        <div class="card">
+          <h2>Baux (simulation)</h2>
+          <div class="grid">
+            <div>
+              <label>Type de bail</label>
+              <select id="b_type">
+                <option>Vide</option>
+                <option selected>Meublé</option>
+                <option>Colocation</option>
+                <option>Mobilité</option>
               </select>
-              <button class="btn" id="add-room">Ajouter</button>
             </div>
-            <div id="rooms"></div>
+            <div>
+              <label>Adresse</label>
+              <input id="b_addr" placeholder="4 rue quelconque">
+            </div>
+            <div>
+              <label>Loyer HC (€)</label>
+              <input id="b_rent" type="number" value="650">
+            </div>
+            <div>
+              <label>Charges (€)</label>
+              <input id="b_chg" type="number" value="50">
+            </div>
+            <div>
+              <label>Locataire (nom)</label>
+              <input id="b_tenant" placeholder="Nom du locataire">
+            </div>
+            <div>
+              <label>Date d’effet</label>
+              <input id="b_date" type="date">
+            </div>
           </div>
-          <div>
-            <label>Photos état initial</label><input id="e-photos" type="file" accept="image/*" multiple><div id="e-prev" class="preview"></div>
-            <label>Photos anomalies</label><input id="e-issues" type="file" accept="image/*" multiple><div id="e-prev-issues" class="preview"></div>
-            <div class="row">
-              <button class="btn" id="e-sign">Signature (démo)</button>
-              <button class="btn" id="e-pdf">PDF (démo)</button>
+          <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn gold" id="b_gen">Générer (démo)</button>
+            <button class="btn" id="b_pdf">PDF (démo)</button>
+          </div>
+          <div class="foot">Démo : pas de sauvegarde distante. Données temporaires côté navigateur.</div>
+        </div>
+
+        <div class="card">
+          <h2>État des lieux (simulation)</h2>
+          <div class="grid">
+            <div>
+              <label>Type</label>
+              <select id="e_type"><option>Entrée</option><option>Sortie</option></select>
             </div>
+            <div>
+              <label>Photos état initial</label>
+              <input type="file" id="e_photos" accept="image/*" multiple>
+            </div>
+            <div>
+              <label>Photos anomalies</label>
+              <input type="file" id="e_issues" accept="image/*" multiple>
+            </div>
+          </div>
+          <div class="hr"></div>
+          <h3>Pièces</h3>
+          <div id="rooms" class="grid"></div>
+          <div style="margin-top:10px">
+            <button class="btn" id="add_room">+ Ajouter une pièce</button>
+            <button class="btn gold" id="e_sign">Signature (démo)</button>
+            <button class="btn" id="e_pdf">PDF (démo)</button>
           </div>
         </div>
+
+        <div class="card">
+          <h2>Comptabilité (auto)</h2>
+          <p class="muted">Synthèse mensuelle & annuelle calculée depuis les baux saisis (démo locale).</p>
+          <div id="compa" class="grid"></div>
+        </div>
+
+        <div class="card">
+          <h2>Exports & conformité</h2>
+          <ul class="list">
+            <li><b>Quittances</b> & relances (démo)</li>
+            <li><b>IRL automatique</b> : dernier indice INSEE (démo statique)</li>
+            <li><b>eIDAS</b> (démo) : preuve de signature horodatée</li>
+            <li><b>Annexes</b> & <b>clauses particulières</b> (modèles + zone libre)</li>
+          </ul>
+          <div class="pill">Statut légal : <span class="ok">OK (démo)</span></div>
+        </div>
       </div>
-    </div>
+    </section>
 
-    <div class="panel">
-      <strong>Baux créés (démo)</strong>
-      <div id="b-list" class="grid g2" style="margin-top:8px"></div>
-    </div>
-  </section>
+    <!-- Tarifs -->
+    <section class="tab-pane" id="pricing" hidden>
+      <div class="grid cols-3">
+        <div class="card">
+          <h2>À la carte</h2>
+          <p class="muted">Idéal si tu fais 1 à 2 baux/an.</p>
+          <ul class="list">
+            <li>Bail unitaire : <b>9,90€</b></li>
+            <li>EDL entrée/sortie : <b>4,90€</b> chacun</li>
+            <li>Quittance & PDF inclus</li>
+          </ul>
+          <button class="btn gold">Acheter un bail</button>
+        </div>
+        <div class="card">
+          <h2>Starter</h2>
+          <p class="muted">Pour petits portefeuilles.</p>
+          <ul class="list">
+            <li><b>3 baux</b> + <b>3 EDL</b></li>
+            <li>Compta mensuelle</li>
+            <li>Support e-mail</li>
+          </ul>
+          <div class="pill">29,90€</div>
+        </div>
+        <div class="card">
+          <h2>Pro illimité</h2>
+          <p class="muted">Pour pros & agences.</p>
+          <ul class="list">
+            <li><b>Baux & EDL illimités</b></li>
+            <li>Logo & entête personnalisés</li>
+            <li>Annexes/clauses custom (décharge intégrée)</li>
+          </ul>
+          <div class="pill">79,90€/mois</div>
+        </div>
+      </div>
+    </section>
 
-  <section id="accounting" class="panel hidden">
-    <h2>Comptabilité</h2>
-    <div class="grid g2">
+    <!-- FAQ -->
+    <section class="tab-pane" id="faq" hidden>
       <div class="card">
-        <h3>Mensuel</h3>
-        <label>Mois</label><select id="c-month"></select>
-        <label>Bien / Locataire</label><input id="c-asset" placeholder="Ex. T2 Ault — Dupont">
-        <label>Type</label><select id="c-type"><option>Loyers encaissés</option><option>Charges</option><option>Travaux</option><option>Assurance</option><option>Taxe foncière</option></select>
-        <label>Montant (€)</label><input id="c-amount" type="number" step="0.01">
-        <div class="row"><button class="btn gold" id="c-add">Ajouter</button></div>
+        <h2>FAQ</h2>
+        <p><b>Les documents sont-ils valables légalement ?</b><br>Oui — modèles à jour ALUR/ELAN, annexes standard, IRL (démo). Les éléments pro personnalisés incluent une décharge automatique.</p>
+        <p><b>Puis-je tester gratuitement ?</b><br>Oui — démo interactive, et essai 7 jours prévu sur la version SaaS.</p>
       </div>
-      <div class="card">
-        <h3>Tableau</h3>
-        <div id="c-table" class="muted">Aucune ligne.</div>
+    </section>
+
+    <!-- Contact -->
+    <section class="tab-pane" id="contact" hidden>
+      <div class="grid cols-2">
+        <div class="card">
+          <h2>Contact</h2>
+          <p class="muted">Besoin d’une démo guidée ou d’un devis pro ?</p>
+          <div class="grid">
+            <div><label>Nom</label><input id="c_name" placeholder="Votre nom"></div>
+            <div><label>Email</label><input id="c_mail" type="email" placeholder="email@exemple.fr"></div>
+            <div style="grid-column:1/-1"><label>Message</label><textarea id="c_msg" placeholder="Décrivez votre besoin"></textarea></div>
+          </div>
+          <div style="margin-top:10px"><button class="btn gold" id="c_send">Envoyer (démo)</button></div>
+          <div class="foot">Les envois réels seront activés dans la version hébergée (SaaS) avec base de données & Stripe.</div>
+        </div>
+        <div class="card">
+          <h2>Mentions légales (démo)</h2>
+          <p class="mono">MBZ — MonBailZen • Auto-entreprise (à compléter)<br>Siège : (à compléter) • SIREN : (à compléter)<br>Hébergeur : Vercel Inc.</p>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </main>
 
-  <section id="docs" class="panel hidden">
-    <h2>Documents</h2>
-    <div class="grid g3">
-      <div class="card"><h3>Modèles</h3><ul class="muted"><li>Bail vide</li><li>Meublé</li><li>Avenant</li><li>Relance</li></ul><button class="btn">Ouvrir</button></div>
-      <div class="card"><h3>Dossier locataire</h3><ul class="muted"><li>Carte ID</li><li>3 quittances</li><li>Contrat travail</li></ul><button class="btn">Ajouter</button></div>
-      <div class="card"><h3>Diagnostics</h3><ul class="muted"><li>DPE</li><li>Électricité</li><li>Gaz</li></ul><button class="btn">Téléverser</button></div>
-    </div>
-  </section>
+  <script>
+    // --- Tabs
+    const tabs = document.querySelectorAll('.tab[data-tab]');
+    const panes = document.querySelectorAll('.tab-pane');
+    function showTab(name){
+      tabs.forEach(t=>t.classList.toggle('active', t.dataset.tab===name));
+      panes.forEach(p=>p.hidden = p.id!==name);
+      window.location.hash = name;
+    }
+    tabs.forEach(t=>t.addEventListener('click',()=>showTab(t.dataset.tab)));
+    document.querySelectorAll('[data-goto]').forEach(a=>{
+      a.addEventListener('click', e=>{ e.preventDefault(); showTab(a.dataset.goto); window.scrollTo({top:0,behavior:'smooth'});});
+    });
+    document.getElementById('open-demo').onclick = ()=>showTab('features');
+    document.getElementById('cta-demo').onclick = ()=>showTab('features');
+    const initial = (location.hash||'#home').replace('#','');
+    if(['home','features','pricing','faq','contact'].includes(initial)) showTab(initial);
 
-  <section id="settings" class="panel hidden">
-    <h2>Paramètres</h2>
-    <div class="grid g3">
-      <div class="card"><h3>Profil</h3><input placeholder="Nom / Entreprise"><input placeholder="Email"></div>
-      <div class="card"><h3>SCI / Multi‑utilisateurs</h3><input placeholder="Nom SCI"><button class="btn">Inviter</button></div>
-      <div class="card"><h3>Langues</h3><select><option>Français</option><option>Anglais</option><option>Portugais</option></select></div>
-    </div>
-  </section>
-</main>
+    // --- EDL: gestion des pièces + sélecteurs
+    const roomsBox = document.getElementById('rooms');
+    function addRoom(){
+      const el = document.createElement('div');
+      el.className = 'card';
+      el.innerHTML = `
+        <div class="grid cols-2">
+          <div><label>Nom de la pièce</label><input placeholder="Salon / Chambre / Cuisine"></div>
+          <div><label>État général</label>
+            <select><option>Neuf</option><option>Bon</option><option>Moyen</option><option>À revoir</option><option>Dégradé</option></select>
+          </div>
+          <div><label>Murs</label><select><option>OK</option><option>Micro-impacts</option><option>A repeindre</option><option>Réparations</option></select></div>
+          <div><label>Sols</label><select><option>OK</option><option>Rayures</option><option>Taches</option><option>À remplacer</option></select></div>
+          <div><label>Plafonds</label><select><option>OK</option><option>Fissures</option><option>Jaunissement</option></select></div>
+          <div><label>Menuiseries</label><select><option>OK</option><option>Poignée à resserrer</option><option>Joint à changer</option></select></div>
+          <div><label>Radiateurs</label><select><option>OK</option><option>À purger</option><option>Remplacer robinet</option></select></div>
+          <div><label>Appareils</label><select><option>OK</option><option>Nettoyage filtre</option><option>Panne</option></select></div>
+          <div style="grid-column:1/-1"><label>Commentaires</label><textarea rows="2" placeholder="Observations…"></textarea></div>
+        </div>`;
+      roomsBox.appendChild(el);
+    }
+    document.getElementById('add_room').onclick = addRoom;
+    addRoom(); // une pièce par défaut
 
-<footer class="wrap muted">
-  © 2025 MonBailZen — v7 • eIDAS (démo) • IRL auto (démo)
-</footer>
+    // --- Preview de fichiers (vitrine)
+    function previewFiles(input, boxId){
+      const box = document.getElementById(boxId);
+      box.innerHTML = '';
+      [...input.files].forEach(f=>{
+        const img = document.createElement('img');
+        img.src = URL.createObjectURL(f);
+        img.style = 'height:60px;border-radius:8px;margin:6px;border:1px solid #223046';
+        box.appendChild(img);
+      });
+    }
+    const p1 = document.createElement('div'); p1.id='e-prev'; document.getElementById('rooms').before(p1);
+    const p2 = document.createElement('div'); p2.id='e-prev2'; document.getElementById('rooms').before(p2);
+    document.getElementById('e_photos').addEventListener('change',e=>previewFiles(e.target,'e-prev'));
+    document.getElementById('e_issues').addEventListener('change',e=>previewFiles(e.target,'e-prev2'));
 
-<script src="assets/js/app.js"></script>
+    // --- Actions démo (sans backend)
+    document.getElementById('b_gen').onclick = ()=>{
+      alert('Bail simulé pour '+ (document.getElementById('b_tenant').value||'locataire') +' à '+ (document.getElementById('b_addr').value||'adresse') +'. (Démo)');
+    };
+    document.getElementById('b_pdf').onclick = ()=>{
+      const w = window.open('_blank'); 
+      w.document.write(`<pre>PDF Bail (démo)\n\nType: ${document.getElementById('b_type').value}\nAdresse: ${document.getElementById('b_addr').value}\nLoyer HC: ${document.getElementById('b_rent').value}€\nCharges: ${document.getElementById('b_chg').value}€\nLocataire: ${document.getElementById('b_tenant').value}\nDate: ${(document.getElementById('b_date').value||'—')}</pre>`);
+    };
+    document.getElementById('e_pdf').onclick = ()=>{
+      const w = window.open('_blank');
+      w.document.write(`<pre>PDF EDL (démo)\n\nType: ${document.getElementById('e_type').value}\nPièces: ${document.querySelectorAll('#rooms .card').length}</pre>`);
+    };
+    document.getElementById('e_sign').onclick = ()=>alert('Signature eIDAS (démo vitrine).');
+    document.getElementById('c_send').onclick = ()=>alert('Message envoyé (démo).');
+
+    // --- Comptabilité (démo)
+    function renderCompta(){
+      const rent = parseFloat(document.getElementById('b_rent').value||0);
+      const chg  = parseFloat(document.getElementById('b_chg').value||0);
+      const mois = 12;
+      const annuel = (rent+chg)*mois;
+      const net = rent*mois;
+      const div = document.getElementById('compa');
+      div.innerHTML = `
+        <div class="kpi"><div class="big">${rent.toFixed(0)}€</div><div class="muted">Loyer mensuel HC</div></div>
+        <div class="kpi"><div class="big">${chg.toFixed(0)}€</div><div class="muted">Charges mensuelles</div></div>
+        <div class="kpi"><div class="big">${net.toLocaleString('fr-FR')}€</div><div class="muted">Total HC / an</div></div>
+        <div class="kpi"><div class="big">${annuel.toLocaleString('fr-FR')}€</div><div class="muted">Encaissements estimés / an</div></div>`;
+    }
+    ['b_rent','b_chg'].forEach(id=>document.getElementById(id).addEventListener('input',renderCompta));
+    renderCompta();
+  </script>
 </body>
 </html>
