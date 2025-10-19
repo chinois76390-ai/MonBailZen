@@ -1,748 +1,415 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>MonBailZen — v8 (finale)</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MonBailZen — v8 (finale)</title>
+  <meta name="description" content="MonBailZen : baux guidés, EDL multi-pièces avec photos/relevés, IRL (démo), exports CSV, signature (démo), démo 100% locale." />
+  <style>
+    :root{
+      --bg:#0e1014; --panel:#151B22; --soft:#10121a;
+      --text:#e6edf3; --muted:#9da7b1; --chip:#2a2f3a;
+      --gold:#40b04c; --acc:#86e38f; --warn:#f3d98a; --err:#ef4444;
+      --brand:#00bf15;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:linear-gradient(180deg,var(--bg),#0b0f15);
+      color:var(--text);
+      font:15px/1.6 Inter, system-ui, Segoe UI, Roboto, Arial;
+    }
+    .wrap{max-width:1200px;margin:0 auto;padding:16px}
+    .grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}
+    .col-12{grid-column:span 12}
+    .col-8{grid-column:span 8}
+    .col-4{grid-column:span 4}
+    @media (max-width:1100px){.col-8,.col-4{grid-column:span 12}}
 
-<!-- ====== Styles (thème sombre + or) ====== -->
-<style>
-:root{
-  --bg:#0b0f15; --panel:#151b22; --soft:#0f1219; --text:#e6edf3; --muted:#9aa3af;
-  --gold:#d4b04c; --gold2:#f3d98a; --accent:#68a8fe; --ok:#3ad9a0; --warn:#f5c76a; --err:#ff6464;
-  --border:#222a36;
-}
-*{box-sizing:border-box}
-html,body{height:100%}
-body{
-  margin:0; color:var(--text);
-  font:15px/1.6 Inter,system-ui,Segoe UI,Roboto,Arial;
-  background:linear-gradient(180deg,var(--bg),#0b0f15 60%,#0a0e14);
-}
-a{color:var(--accent);text-decoration:none}
-h1,h2,h3{margin:0 0 .6rem}
-.wrap{max-width:1100px;margin:0 auto;padding:16px}
-.top{
-  position:sticky; top:0; z-index:50;
-  background:#0b0f15e0; backdrop-filter:blur(10px); border-bottom:1px solid var(--border);
-}
-.brand{display:flex;align-items:center;gap:10px}
-.logo{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--gold),var(--gold2)); color:#111; font-weight:900; display:grid;place-items:center}
-.title{font-weight:800}
-.chip{font:12px/1 monospace;background:#243042;border:1px solid #2d394b;color:#9ec1ff;border-radius:999px;padding:2px 8px;margin-left:6px}
-.nav{display:flex;gap:8px;flex-wrap:wrap}
-.nav .btn{padding:10px 14px}
-.btn{
-  display:inline-flex;align-items:center;justify-content:center;gap:8px;
-  background:#223043;border:1px solid var(--border);color:var(--text);
-  padding:8px 12px;border-radius:999px;cursor:pointer;transition:.15s;
-}
-.btn:hover{transform:translateY(-1px)}
-.btn.gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#111;border:0;font-weight:800}
-.btn.ghost{background:transparent;border:1px solid var(--border);color:var(--text)}
-.btn.small{padding:6px 10px;font-size:13px}
-.tabs{display:flex;gap:8px;flex-wrap:wrap}
-.tabs .tab{padding:9px 12px;border-radius:12px;background:#192231;border:1px solid var(--border);cursor:pointer}
-.tabs .tab.active{background:linear-gradient(135deg,#1a2232,#303a4f);border-color:#3b475f}
+    header.top{position:sticky;top:0;background:#0e1014cc;backdrop-filter:blur(8px);z-index:30;border-bottom:1px solid #182233}
+    nav{display:flex;justify-content:space-between;align-items:center;padding:10px 0;gap:10px}
+    .brand{display:flex;align-items:center;gap:10px}
+    .logo{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--gold),var(--brand));display:grid;place-content:center;color:#111;font-weight:900}
+    .title{font-weight:800}
+    .badge{display:inline-flex;gap:6px;align-items:center;font-size:12px;background:var(--chip);border:1px solid #222b35;color:var(--muted);padding:2px 8px;border-radius:999px}
 
-.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}
-.col-12{grid-column:span 12}
-.col-6{grid-column:span 6}
-.col-4{grid-column:span 4}
-@media (max-width:900px){.col-6,.col-4{grid-column:span 12}}
+    .tabs{display:flex;flex-wrap:wrap;gap:8px}
+    .tab{cursor:pointer;border:1px solid var(--chip);padding:8px 12px;border-radius:999px;background:#0f1520;color:var(--text)}
+    .tab.active{background:linear-gradient(135deg,var(--gold),var(--acc));color:#111;border-color:transparent;font-weight:700}
+    .btn{display:inline-flex;gap:8px;align-items:center;padding:10px 14px;border:1px solid #223047;background:#0f1622;color:var(--text);border-radius:12px}
+    .btn:hover{border-color:#2b3a55}
+    .btn.gold{background:linear-gradient(135deg,var(--gold),var(--acc));color:#111;border:0;font-weight:800}
 
-.card{
-  background:var(--panel); border:1px solid var(--border);
-  border-radius:18px; padding:16px;
-}
-.kpi{display:flex;align-items:center;gap:12px}
-.kpi .num{font-size:26px;font-weight:900}
-.mono{font-family:ui-monospace,Menlo,Consolas,monospace}
+    section{padding:18px 0}
+    .card{background:var(--panel);border:1px solid #1b2432;border-radius:18px;padding:16px}
+    .card.soft{background:var(--soft)}
+    .kpi{display:flex;gap:8px;align-items:center}
+    .kpi b{font-size:28px}
+    .muted{color:var(--muted)}
+    .center{display:grid;place-items:center}
 
-input,select,textarea{
-  width:100%; background:#0f1724; color:var(--text);
-  border:1px solid #2a3547;border-radius:12px;padding:10px 12px; outline:none;
-}
-label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-@media (max-width:900px){.row{grid-template-columns:1fr}}
+    /* ---- PRICING ---- */
+    .switch{display:flex;align-items:center;gap:10px}
+    .switch .chip{background:#0f1622;border:1px solid #1f2a3a;color:var(--muted);padding:4px 10px;border-radius:999px}
+    .switch input{accent-color:var(--brand)}
+    .plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+    @media (max-width:900px){.plans{grid-template-columns:1fr}}
+    .plan{background:var(--panel);border:1px solid #223047;border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:12px}
+    .plan h3{margin:0}
+    .price{font-size:22px;font-weight:900}
+    .features{display:grid;gap:6px;margin:8px 0 4px}
+    .small{font-size:12px;color:var(--muted)}
+    .pro-chip{display:inline-flex;gap:6px;align-items:center;background:#16202e;border:1px dashed #2a3b55;color:#9dc2ff;padding:2px 8px;border-radius:8px;font-size:12px}
 
-.badge{display:inline-flex;align-items:center;gap:6px;background:#1b2435;border:1px solid #2f3a50;color:#c0c8d6;border-radius:999px;padding:6px 10px}
-.badge.ok{background:#0f2d24;border-color:#16493a;color:#76e8c1}
-.badge.warn{background:#2f2510;border-color:#4f3c12;color:#f8d58a}
+    /* ---- MODALS ---- */
+    .modal{position:fixed;inset:0;display:grid;place-items:center;background:#0009;z-index:50}
+    .modal.hidden{display:none}
+    .modal .box{width:min(820px,96vw);background:#141a22;border:1px solid #223047;border-radius:18px;padding:18px}
+    .modal .row{display:flex;gap:10px;justify-content:flex-end}
+    .sig-pad{background:#fff;border-radius:10px;height:240px}
 
-footer.wrap{opacity:.7;font-size:13px;border-top:1px solid var(--border);margin-top:40px}
+    /* forms */
+    input[type="email"], input[type="password"]{
+      width:100%;padding:10px 12px;border-radius:10px;border:1px solid #2a3b55;background:#0f1622;color:var(--text)
+    }
+    label{font-size:13px;color:var(--muted)}
+    .stack{display:grid;gap:10px}
 
-/* modal */
-.modal{display:none;place-items:center;position:fixed;inset:0;background:#0008;z-index:999}
-.modal.is-open{display:grid}
-.modal .panel{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:16px;min-width:min(720px,94vw);position:relative}
-.modal .close{position:absolute;right:10px;top:10px}
-
-/* tables */
-table{width:100%;border-collapse:collapse}
-th,td{border-bottom:1px solid #233046;padding:10px;text-align:left;font-size:14px}
-thead th{color:#9db0d1;font-weight:700}
-
-/* badge plan */
-.plan{display:inline-flex;align-items:center;gap:6px;background:#172131;border:1px solid #2a3345;color:#c2cee3;padding:6px 10px;border-radius:999px}
-.plan .dot{width:8px;height:8px;border-radius:99px;background:#5ba8ff}
-
-/* signature canvas */
-canvas.sig{background:#fff;border-radius:12px;border:1px dashed #999}
-
-/* alert */
-.alert{background:#112031;border:1px solid #23354c;border-radius:12px;padding:10px 12px;color:#9ec1ff}
-</style>
+    /* footer */
+    footer{border-top:1px solid #1c2736;margin-top:16px;padding:16px 0;color:var(--muted)}
+  </style>
 </head>
 <body>
-
-<!-- ====== Header / Nav ====== -->
-<header class="top">
-  <div class="wrap" style="display:flex;align-items:center;justify-content:space-between;gap:14px;">
-    <div class="brand">
-      <div class="logo">MBZ</div>
-      <div class="title">MonBailZen <span id="ver" class="chip">v8</span></div>
-      <span id="active-plan" class="plan" title="Plan sélectionné" style="margin-left:10px"><span class="dot"></span><b id="plan-name">Starter</b></span>
+  <header class="top">
+    <div class="wrap">
+      <nav>
+        <div class="brand">
+          <div class="logo">MBZ</div>
+          <div class="title">MonBailZen <span class="badge">v8</span></div>
+        </div>
+        <div class="tabs" id="site-tabs">
+          <button class="tab active" data-tab="home">Accueil</button>
+          <button class="tab" data-tab="features">Fonctionnalités</button>
+          <button class="tab" data-tab="pricing">Tarifs</button>
+          <button class="tab" data-tab="faq">FAQ</button>
+          <button class="tab" data-tab="contact">Contact</button>
+          <button class="tab btn gold" id="open-demo">Essayer la démo</button>
+          <button class="tab" id="open-login">Login</button>
+        </div>
+      </nav>
     </div>
-    <nav class="nav">
-      <button class="btn tab active" data-tab="home">Accueil</button>
-      <button class="btn tab" data-tab="features">Fonctionnalités</button>
-      <button class="btn tab" data-tab="pricing">Tarifs</button>
-      <button class="btn tab" data-tab="faq">FAQ</button>
-      <button class="btn tab" data-tab="contact">Contact</button>
-      <button class="btn gold small" data-tab="demo">Essayer la démo</button>
-      <button class="btn ghost small" id="btn-login">Login</button>
-    </nav>
-  </div>
-</header>
+  </header>
 
-<main class="wrap">
-
-  <!-- ====== Accueil ====== -->
-  <section id="r-home">
-    <div class="grid">
-      <div class="col-8">
-        <div class="card">
-          <h1>Gérez vos locations en toute sérénité</h1>
-          <p>Baux guidés, EDL multi-pièces + photos & anomalies, IRL automatique, quittances & exports CSV, signature (démo), tableau de bord. Données locales 100%.</p>
-          <div class="tabs" style="margin-top:8px">
-            <span class="badge ok">–70% de temps</span>
-            <span class="badge">ALUR • ELAN • eIDAS (démo)</span>
-            <span class="badge">PDF (mock) • CSV</span>
-            <span class="badge">Satisfaction 4,8/5</span>
+  <main class="wrap">
+    <!-- ACCUEIL -->
+    <section id="r-home">
+      <div class="grid">
+        <div class="col-8">
+          <div class="card soft">
+            <div class="kpi"><b>1:00</b> <span>Créez un bail légal complet (démo).</span></div>
           </div>
-          <div style="display:flex;gap:10px;margin-top:16px">
-            <button class="btn gold" data-tab="demo">Démarrer la démo</button>
-            <a class="btn" data-tab="features">Voir les fonctionnalités</a>
+          <div class="card soft" style="margin-top:10px">
+            <div class="kpi"><b>8</b> <span>Pièces EDL illimitées avec photos / relevés.</span></div>
+          </div>
+          <div class="card soft" style="margin-top:10px">
+            <div class="kpi"><b>CSV</b> <span>Exports comptables en un clic.</span></div>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="card">
+            <h3>Pourquoi MonBailZen ?</h3>
+            <ul>
+              <li>Formulaires guidés bailleur / locataire / garant</li>
+              <li>EDL multi-pièces (murs, sols, plafonds, menuiseries, radiateurs, appareils)</li>
+              <li>Photos & anomalies par pièce</li>
+              <li>IRL automatique (démo)</li>
+            </ul>
+            <div class="pro-chip">Logo propriétaire — Pro</div>
           </div>
         </div>
       </div>
-      <div class="col-4">
-        <div class="card">
-          <div class="kpi"><div class="num">1:00</div><div>Créez un bail legal complet (démo).</div></div>
-          <div class="kpi"><div class="num">8</div><div>Pièces EDL illimitées avec photos / relevés.</div></div>
-          <div class="kpi"><div class="num">CSV</div><div>Exports comptables en un clic.</div></div>
-        </div>
-        <div class="card" style="margin-top:12px">
-          <h3>Pourquoi MonBailZen ?</h3>
+    </section>
+
+    <!-- FONCTIONNALITÉS -->
+    <section id="r-features" class="hidden">
+      <div class="grid">
+        <div class="col-12 card">
+          <h2>Fonctionnalités clés</h2>
           <ul>
-            <li>Formulaires guidés bailleur / locataire / garant</li>
-            <li>EDL multi-pièces (murs, sols, plafonds, menuiseries, radiateurs, appareils)</li>
-            <li>Photos & anomalies par pièce</li>
-            <li>IRL automatique (démo)</li>
-            <li class="pro-only">Logo propriétaire — <b>Pro</b></li>
+            <li>Baux guidés (vide, meublé, colocation, mobilité) – clauses & annexes.</li>
+            <li>EDL illimités – états détaillés par élément (menus déroulants), photos & anomalies.</li>
+            <li>Compteurs (électricité/gaz/eau) avec valeur & photo.</li>
+            <li>Compatibilité : entrées libres, IRL (démo), export CSV.</li>
+            <li>Signature (démo) et <b>logo propriétaire en Pro</b>.</li>
           </ul>
+          <div class="center" style="margin-top:10px">
+            <button class="btn" id="btn-signature">Signature (démo)</button>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ====== Fonctionnalités ====== -->
-  <section id="r-features" hidden>
-    <div class="grid">
-      <div class="col-6"><div class="card">
-        <h3>Baux</h3>
-        <p>Types, durée, dépôt, IRL, clauses, annexes, inventaire meublé + photos, signature (démo).</p>
-        <button class="btn small" data-tab="demo">Ouvrir la démo</button>
-      </div></div>
-      <div class="col-6"><div class="card">
-        <h3>États des lieux</h3>
-        <p>Pièces illimitées, états par élément (menus déroulants), photos / anomalies, relevés de compteurs (avec photo), signature (démo).</p>
-        <button class="btn small" data-tab="demo">Ouvrir la démo</button>
-      </div></div>
-      <div class="col-6"><div class="card">
-        <h3>Comptabilité</h3>
-        <p>Encaissements & dépenses, export CSV, synthèse rapide.</p>
-      </div></div>
-      <div class="col-6"><div class="card">
-        <h3>Signature</h3>
-        <p>eIDAS simulée (démo locale). Preuve basique + sauvegarde locale.</p>
-        <button class="btn small" data-modal-open="sig_modal">Tester la signature</button>
-      </div></div>
-    </div>
-  </section>
-
-  <!-- ====== Tarifs ====== -->
-  <section id="r-pricing" hidden>
-    <div class="card">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
-        <h2>Tarifs</h2>
-        <div>
-          <span class="badge">Facturation</span>
-          <label class="badge" style="cursor:pointer">
-            <input id="toggle-annual" type="checkbox" style="accent-color:#f0c84a;margin-right:8px"> Annuel (–2 mois)
-          </label>
-        </div>
-      </div>
-      <div class="grid" style="margin-top:10px">
-        <div class="col-4"><div class="card">
-          <h3>Starter</h3>
-          <div class="mono" id="p-starter">0€ / mois</div>
-          <ul><li>1 bien</li><li>Démo locale</li></ul>
-          <button class="btn small choose-plan" data-plan="Starter">Essayer</button>
-        </div></div>
-        <div class="col-4"><div class="card">
-          <h3>Pro</h3>
-          <div class="mono" id="p-pro">9€ / mois</div>
-          <ul><li>Jusqu’à 10 biens</li><li>Logo propriétaire</li></ul>
-          <button class="btn gold small choose-plan" data-plan="Pro">Choisir</button>
-        </div></div>
-        <div class="col-4"><div class="card">
-          <h3>Business</h3>
-          <div class="mono" id="p-biz">19€ / mois</div>
-          <ul><li>Illimité</li><li>Support prioritaire</li></ul>
-          <button class="btn small choose-plan" data-plan="Business">Choisir</button>
-        </div></div>
-      </div>
-      <p class="alert" style="margin-top:12px">Les montants sont indicatifs (démo). Basculer mensuel/annuel via le commutateur.</p>
-    </div>
-  </section>
-
-  <!-- ====== FAQ ====== -->
-  <section id="r-faq" hidden>
-    <div class="card">
-      <h2>FAQ</h2>
-      <p><b>Mes données ?</b> Tout est stocké localement (localStorage) dans cette démo.</p>
-      <p><b>Signature ?</b> C’est une simulation locale (non opposable) pour tester les parcours.</p>
-    </div>
-  </section>
-
-  <!-- ====== Contact ====== -->
-  <section id="r-contact" hidden>
-    <div class="card">
-      <h2>Contact</h2>
-      <div class="row">
-        <div><label>Nom</label><input id="c_name" placeholder="Votre nom"></div>
-        <div><label>Email</label><input id="c_email" placeholder="vous@exemple.com"></div>
-      </div>
-      <label style="margin-top:10px">Message</label>
-      <textarea id="c_msg" rows="4" placeholder="Votre message..."></textarea>
-      <div style="margin-top:10px"><button class="btn gold small" id="c_send">Envoyer (démo)</button></div>
-    </div>
-  </section>
-
-  <!-- ====== Démo (Baux, EDL, Comptabilité, Paramètres) ====== -->
-  <section id="r-demo" hidden>
-    <div class="tabs" style="margin-bottom:8px">
-      <button class="btn tab small subtab active" data-sub="lease">Baux</button>
-      <button class="btn tab small subtab" data-sub="edl">États des lieux</button>
-      <button class="btn tab small subtab" data-sub="inventory">Inventaire</button>
-      <button class="btn tab small subtab" data-sub="acct">Comptabilité</button>
-      <button class="btn tab small subtab" data-sub="settings">Paramètres</button>
-    </div>
-
-    <!-- Bail -->
-    <div id="d-lease">
+    <!-- TARIFS -->
+    <section id="r-pricing" class="hidden">
       <div class="grid">
-        <div class="col-6"><div class="card">
-          <h3>Bail — Infos</h3>
-          <div class="row">
-            <div>
-              <label>Type</label>
-              <select id="b_type"><option>Vide</option><option>Meublé</option><option>Colocation</option></select>
-            </div>
-            <div>
-              <label>Durée (mois)</label>
-              <input id="b_term" type="number" min="1" value="12">
+        <div class="col-12 card">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+            <h2 style="margin:0">Tarifs</h2>
+            <div class="switch">
+              <span class="chip">Facturation</span>
+              <label><input type="checkbox" id="toggle-annual" /> <span>Annuel (–2 mois)</span></label>
+              <label><input type="checkbox" id="toggle-pause" /> <span>Pause & sauvegarde</span></label>
             </div>
           </div>
-          <div class="row" style="margin-top:8px">
-            <div><label>Loyer (€)</label><input id="b_rent" type="number" value="650"></div>
-            <div><label>Dépôt (€)</label><input id="b_dep" type="number" value="650"></div>
-          </div>
-          <div class="row" style="margin-top:8px">
-            <div><label>IRL (démo) — indice</label><input id="b_irl" type="number" value="3.5" step="0.1"></div>
-            <div><label>IRL révisé (€)</label><input id="b_irl_new" type="number" readonly></div>
-          </div>
-          <div style="margin-top:10px;display:flex;gap:8px">
-            <button class="btn small" id="btn-irl">Calculer IRL</button>
-            <button class="btn" data-modal-open="sig_modal">Signer (démo)</button>
-          </div>
-        </div></div>
 
-        <div class="col-6"><div class="card">
-          <h3>Annexes & Inventaire meublé</h3>
-          <div id="inv-list"></div>
-          <div class="row" style="margin-top:8px">
-            <div><input id="inv-name" placeholder="Ex: Canapé"></div>
-            <div><input id="inv-qty" type="number" min="1" value="1"></div>
-          </div>
-          <div style="margin-top:8px"><input id="inv-photo" type="file" accept="image/*"></div>
-          <div style="margin-top:8px;display:flex;gap:8px">
-            <button class="btn small" id="inv-add">Ajouter élément</button>
-            <button class="btn small" id="inv-clear">Vider</button>
-          </div>
-        </div></div>
-      </div>
-    </div>
+          <div class="plans" style="margin-top:14px">
+            <div class="plan">
+              <h3>Starter</h3>
+              <div class="price" id="p-starter">0€ / mois</div>
+              <div class="features">
+                <div>1 bien</div>
+                <div>Démo locale</div>
+              </div>
+              <button class="btn">Essayer</button>
+            </div>
 
-    <!-- EDL -->
-    <div id="d-edl" hidden>
-      <div class="card">
-        <h3>États des lieux</h3>
-        <div id="edl-pieces" class="grid"></div>
-        <div style="margin-top:10px;display:flex;gap:8px">
-          <button class="btn small" id="edl-add">Ajouter une pièce</button>
-          <button class="btn small" id="edl-clear">Tout effacer</button>
+            <div class="plan">
+              <h3>Pro</h3>
+              <div class="price" id="p-pro">9€ / mois</div>
+              <div class="features">
+                <div>Jusqu’à 10 biens</div>
+                <div>Logo propriétaire</div>
+              </div>
+              <button class="btn gold">Choisir</button>
+            </div>
+
+            <div class="plan">
+              <h3>Business</h3>
+              <div class="price" id="p-biz">19€ / mois</div>
+              <div class="features">
+                <div>Illimité</div>
+                <div>Support prioritaire</div>
+              </div>
+              <button class="btn">Choisir</button>
+            </div>
+          </div>
+
+          <div class="small" style="margin-top:10px">
+            Les montants sont indicatifs (démo). Bascule mensuel/annuel et option <b>Pause & sauvegarde</b> via les commutateurs.
+          </div>
         </div>
-        <p class="alert" style="margin-top:10px">Chaque pièce contient : menus déroulants d’état (murs, sols, plafonds, menuiseries, radiateurs, appareils), photos & anomalies, relevés de compteurs (avec photo).</p>
       </div>
-    </div>
+    </section>
 
-    <!-- Inventaire (vue dédiée) -->
-    <div id="d-inventory" hidden>
-      <div class="card">
-        <h3>Inventaire global</h3>
-        <div id="inv-table-wrap"></div>
-      </div>
-    </div>
-
-    <!-- Comptabilité -->
-    <div id="d-acct" hidden>
-      <div class="card">
-        <h3>Encaissements & Dépenses</h3>
-        <div class="row">
-          <div><input id="tx-label" placeholder="Libellé (loyer, dépôt, frais...)"></div>
-          <div><input id="tx-amt" type="number" placeholder="Montant (ex: 650)"></div>
-        </div>
-        <div class="row" style="margin-top:8px">
-          <div>
-            <select id="tx-type">
-              <option value="in">Encaissement</option>
-              <option value="out">Dépense</option>
-            </select>
-          </div>
-          <div><input id="tx-date" type="date"></div>
-        </div>
-        <div style="margin-top:8px;display:flex;gap:8px">
-          <button class="btn small" id="tx-add">Ajouter</button>
-          <button class="btn small" id="tx-csv">Exporter CSV</button>
-        </div>
-        <div id="tx-list" style="margin-top:12px"></div>
-      </div>
-    </div>
-
-    <!-- Paramètres -->
-    <div id="d-settings" hidden>
+    <!-- FAQ -->
+    <section id="r-faq" class="hidden">
       <div class="grid">
-        <div class="col-6"><div class="card">
-          <h3>Compte</h3>
-          <div class="row">
-            <div><label>Nom</label><input id="u_name" placeholder="Votre nom"></div>
-            <div><label>Email</label><input id="u_email" placeholder="vous@exemple.com"></div>
-          </div>
-          <div style="margin-top:8px"><button class="btn small" id="u_save">Sauvegarder</button></div>
-        </div></div>
-
-        <div class="col-6"><div class="card">
-          <h3>Logo propriétaire <span class="badge">Pro</span></h3>
-          <input id="u_logo" type="file" accept="image/*">
-          <div style="margin-top:8px"><img id="u_logo_preview" style="max-width:200px;border-radius:12px;display:none"></div>
-          <p style="margin-top:8px" class="alert">Disponible si le plan actif est <b>Pro</b> ou <b>Business</b>.</p>
-        </div></div>
-      </div>
-    </div>
-
-  </section>
-</main>
-
-<footer class="wrap">© 2025 MonBailZen — Démo front-end autonome. eIDAS simulée. Données locales.</footer>
-
-<!-- ====== Modal Signature ====== -->
-<div id="sig_modal" class="modal" aria-hidden="true">
-  <div class="panel">
-    <button class="btn small close" data-modal-close="sig_modal">Fermer</button>
-    <h3>Signature (démo)</h3>
-    <canvas id="sig_canvas" class="sig" width="680" height="260"></canvas>
-    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:10px">
-      <button class="btn small" id="sig_clear">Effacer</button>
-      <button class="btn gold small" id="sig_save">Enregistrer</button>
-    </div>
-  </div>
-</div>
-
-<!-- ====== Modal Login ====== -->
-<div id="login_modal" class="modal" aria-hidden="true">
-  <div class="panel">
-    <button class="btn small close" data-modal-close="login_modal">Fermer</button>
-    <h3>Connexion (démo locale)</h3>
-    <div class="row" style="margin-top:8px">
-      <div><input id="l_email" placeholder="Email"></div>
-      <div><input id="l_pwd" type="password" placeholder="Mot de passe"></div>
-    </div>
-    <div style="margin-top:10px;display:flex;gap:8px">
-      <button class="btn gold small" id="l_ok">Se connecter</button>
-      <button class="btn small" id="l_out">Se déconnecter</button>
-    </div>
-    <p class="alert" style="margin-top:10px">Démo : aucune API, statut stocké localement.</p>
-  </div>
-</div>
-
-<!-- ====== Scripts ====== -->
-<script>
-/* utilitaires */
-const $=(s,r=document)=>r.querySelector(s);
-const $$=(s,r=document)=>[...r.querySelectorAll(s)];
-const store=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
-const read=(k,def)=>{try{return JSON.parse(localStorage.getItem(k))??def}catch{return def}};
-
-/* navigation */
-function showTab(id){
-  const tab=id||location.hash.replace("#","")||"home";
-  $$("section[id^='r-']").forEach(s=>s.hidden = s.id!=="r-"+tab);
-  $$(".tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===tab));
-  if(tab==="demo") showSub(read("mbz.sub","lease"));
-}
-$$(".tab").forEach(b=>b.addEventListener("click",()=>{ location.hash=b.dataset.tab; showTab(b.dataset.tab); }));
-window.addEventListener("hashchange",()=>showTab());
-showTab();
-
-/* sous-onglets démo */
-function showSub(name){
-  ["lease","edl","inventory","acct","settings"].forEach(n=>{
-    $("#d-"+n).hidden = (n!==name);
-  });
-  $$(".subtab").forEach(b=>b.classList.toggle("active",b.dataset.sub===name));
-  store("mbz.sub",name);
-}
-$$(".subtab").forEach(b=>b.addEventListener("click",()=>showSub(b.dataset.sub)));
-
-/* pricing toggle */
-function setPrices(annual){
-  $("#p-starter").textContent = annual?"0€ / an":"0€ / mois";
-  $("#p-pro").textContent     = annual?"90€ / an":"9€ / mois";
-  $("#p-biz").textContent     = annual?"190€ / an":"19€ / mois";
-  store("mbz.annual",annual);
-}
-$("#toggle-annual").checked = read("mbz.annual",false);
-setPrices($("#toggle-annual").checked);
-$("#toggle-annual").addEventListener("change",e=>setPrices(e.target.checked));
-
-/* plan selection + badge */
-function setPlan(name){
-  $("#plan-name").textContent=name;
-  store("mbz.plan",name);
-  toggleProFeatures();
-}
-$$(".choose-plan").forEach(b=>b.addEventListener("click",()=>setPlan(b.dataset.plan)));
-setPlan(read("mbz.plan","Starter"));
-
-/* login (local) */
-$("#btn-login").addEventListener("click",()=>openModal("login_modal"));
-$("#l_ok").addEventListener("click",()=>{
-  const email=$("#l_email").value.trim();
-  if(!email) return alert("Saisir un email.");
-  store("mbz.user",{email,logged:true});
-  closeModal("login_modal");
-});
-$("#l_out").addEventListener("click",()=>{
-  store("mbz.user",{logged:false});
-  closeModal("login_modal");
-});
-
-/* contact (démo) */
-$("#c_send")?.addEventListener("click",()=>alert("Message envoyé (démo)."));
-
-/* IRL démo */
-$("#btn-irl")?.addEventListener("click",()=>{
-  const base=parseFloat($("#b_rent").value||0);
-  const irl =parseFloat($("#b_irl").value||0);
-  $("#b_irl_new").value = (base*(1+irl/100)).toFixed(2);
-});
-
-/* inventaire meublé (dans Bail) */
-function refreshInv(){
-  const items=read("mbz.inv",[]);
-  const box=$("#inv-list"); box.innerHTML="";
-  items.forEach((it,i)=>{
-    const row=document.createElement("div");
-    row.className="card";
-    row.innerHTML=`
-      <div style="display:flex;align-items:center;gap:12px">
-        ${it.photo?`<img src="${it.photo}" style="width:56px;height:56px;object-fit:cover;border-radius:10px">`:``}
-        <div style="flex:1"><b>${it.name}</b> × ${it.qty}</div>
-        <button class="btn small" data-x="${i}">Suppr.</button>
-      </div>`;
-    row.querySelector("button").onclick=()=>{
-      const arr=read("mbz.inv",[]); arr.splice(i,1); store("mbz.inv",arr); refreshInv(); refreshInvTable();
-    };
-    box.appendChild(row);
-  });
-}
-$("#inv-add")?.addEventListener("click",()=>{
-  const name=$("#inv-name").value.trim(); const qty=parseInt($("#inv-qty").value||1,10);
-  if(!name) return;
-  const f=$("#inv-photo").files?.[0];
-  if(f){
-    const rd=new FileReader();
-    rd.onload=()=>{ addInv(name,qty,rd.result); };
-    rd.readAsDataURL(f);
-  }else addInv(name,qty,null);
-});
-function addInv(name,qty,photo){
-  const items=read("mbz.inv",[]); items.push({name,qty,photo}); store("mbz.inv",items);
-  $("#inv-name").value=""; $("#inv-qty").value=1; $("#inv-photo").value="";
-  refreshInv(); refreshInvTable();
-}
-$("#inv-clear")?.addEventListener("click",()=>{ store("mbz.inv",[]); refreshInv(); refreshInvTable(); });
-refreshInv();
-
-/* inventaire — vue table */
-function refreshInvTable(){
-  const items=read("mbz.inv",[]);
-  const w=$("#inv-table-wrap");
-  w.innerHTML= items.length? `
-  <table><thead><tr><th>Élément</th><th>Qté</th></tr></thead>
-  <tbody>${items.map(it=>`<tr><td>${it.name}</td><td>${it.qty}</td></tr>`).join("")}</tbody></table>`:
-  `<div class="alert">Aucun élément. Ajoutez-en depuis l’onglet <b>Baux</b>.</div>`;
-}
-refreshInvTable();
-
-/* EDL — pièces */
-function pieceTemplate(id){
-  return `
-  <div class="card" data-piece="${id}">
-    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
-      <h4>Pièce #${id}</h4>
-      <button class="btn small piece-del">Supprimer</button>
-    </div>
-
-    <div class="row" style="margin-top:8px">
-      <div><label>Nom de la pièce</label><input class="p-name" placeholder="Ex: Salon"></div>
-      <div><label>Photos (max 5)</label><input class="p-photos" type="file" accept="image/*" multiple></div>
-    </div>
-
-    <div class="row" style="margin-top:8px">
-      <div>
-        <label>Murs</label>
-        <select class="p-murs">
-          <option>Neuf</option><option selected>Bon</option><option>Usage</option><option>À rénover</option>
-        </select>
-      </div>
-      <div>
-        <label>Sols</label>
-        <select class="p-sols">
-          <option>Neuf</option><option selected>Bon</option><option>Usage</option><option>À rénover</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="row" style="margin-top:8px">
-      <div>
-        <label>Plafonds</label>
-        <select class="p-plafonds">
-          <option>Neuf</option><option selected>Bon</option><option>Usage</option><option>À rénover</option>
-        </select>
-      </div>
-      <div>
-        <label>Menuiseries</label>
-        <select class="p-menuis">
-          <option>Neuf</option><option selected>Bon</option><option>Usage</option><option>À rénover</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="row" style="margin-top:8px">
-      <div>
-        <label>Radiateurs</label>
-        <select class="p-rad">
-          <option>Neuf</option><option selected>Bon</option><option>Usage</option><option>À rénover</option>
-        </select>
-      </div>
-      <div>
-        <label>Appareils</label>
-        <select class="p-app">
-          <option>Neuf</option><option selected>Bon</option><option>Usage</option><option>À rénover</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="row" style="margin-top:8px">
-      <div>
-        <label>Anomalies (texte libre)</label>
-        <textarea class="p-ano" rows="2"></textarea>
-      </div>
-      <div>
-        <label>Relevé compteurs (kWh/m³) + photo</label>
-        <div class="row">
-          <div><input class="p-counter" placeholder="Valeur ex: 15342"></div>
-          <div><input class="p-counter-photo" type="file" accept="image/*"></div>
+        <div class="col-12 card">
+          <h2>FAQ</h2>
+          <p><b>Pause & sauvegarde</b> : pendant la pause, la facturation est réduite (données conservées, accès en lecture).</p>
+          <p><b>Démo locale</b> : toutes les données restent dans votre navigateur (localStorage).</p>
         </div>
       </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="r-contact" class="hidden">
+      <div class="grid">
+        <div class="col-12 card">
+          <h2>Contact</h2>
+          <p class="muted">Démo front-end autonome. L’envoi de message n’est pas activé sur cette version.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      © 2025 MonBailZen — Démo front-end autonome. eIDAS simulée. Données locales.
     </div>
-  </div>`;
-}
-function savePieces(){
-  const data=[];
-  $$("#edl-pieces [data-piece]").forEach(card=>{
-    const photosInput = $(".p-photos",card);
-    const files = [...(photosInput?.files||[])].slice(0,5);
-    const photosPromises = files.map(f=>fileToDataURL(f));
-    const counterPhotoInput = $(".p-counter-photo",card);
-    const counterFile = (counterPhotoInput?.files||[])[0];
+  </footer>
 
-    data.push({card, photosPromises, counterFile});
-  });
-  // Lire fichiers puis stocker
-  Promise.all(data.map(async d=>{
-    const photos = await Promise.all(d.photosPromises);
-    const counterPhoto = d.counterFile ? await fileToDataURL(d.counterFile) : null;
-    const card=d.card;
-    return {
-      name: $(".p-name",card).value,
-      murs: $(".p-murs",card).value,
-      sols: $(".p-sols",card).value,
-      plafonds: $(".p-plafonds",card).value,
-      menuis: $(".p-menuis",card).value,
-      rad: $(".p-rad",card).value,
-      app: $(".p-app",card).value,
-      ano: $(".p-ano",card).value,
-      counter: $(".p-counter",card).value,
-      photos, counterPhoto
+  <!-- MODAL SIGNATURE (démo) -->
+  <div id="sig_modal" class="modal hidden" aria-hidden="true">
+    <div class="box">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+        <h3 style="margin:0">Signature (démo)</h3>
+        <button class="btn" id="sig_close">Fermer</button>
+      </div>
+      <div style="margin-top:10px" class="sig-pad" id="sig_pad"></div>
+      <div class="row" style="margin-top:10px;justify-content:space-between">
+        <button class="btn" id="sig_clear">Effacer</button>
+        <button class="btn gold" id="sig_save">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL LOGIN -->
+  <div id="login_modal" class="modal hidden" aria-hidden="true">
+    <div class="box">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+        <h3 style="margin:0">Connexion</h3>
+        <button class="btn" id="login_close">Fermer</button>
+      </div>
+      <div class="stack" style="margin-top:12px">
+        <label>Email</label>
+        <input type="email" id="login_email" placeholder="vous@exemple.com" />
+        <label>Mot de passe</label>
+        <input type="password" id="login_pass" placeholder="••••••••" />
+        <div class="row" style="justify-content:flex-end;margin-top:6px">
+          <button class="btn gold" id="login_ok">Se connecter</button>
+        </div>
+      </div>
+      <div class="small" id="login_info" style="margin-top:8px;color:var(--muted)"></div>
+    </div>
+  </div>
+
+  <script>
+    /* ============ PRIX CENTRALISÉS ============ 
+       Ajuste ici, tout le site suit automatiquement */
+    const PRICES = {
+      monthly:  { Starter: 0,  Pro: 9,  Business: 19 },  // €/mois
+      annual:   { Starter: 0,  Pro: 90, Business: 190 }  // €/an (–2 mois)
     };
-  })).then(arr=>{
-    store("mbz.edl",arr);
-    alert("Pièces enregistrées (localStorage).");
-  });
-}
-function renderPieces(){
-  const wrap=$("#edl-pieces"); wrap.innerHTML="";
-  const arr=read("mbz.edl",[]);
-  arr.forEach((p,i)=>{
-    const cont=document.createElement("div");
-    cont.className="col-12";
-    cont.innerHTML=pieceTemplate(i+1);
-    $(".p-name",cont).value=p.name||"";
-    $(".p-murs",cont).value=p.murs||"Bon";
-    $(".p-sols",cont).value=p.sols||"Bon";
-    $(".p-plafonds",cont).value=p.plafonds||"Bon";
-    $(".p-menuis",cont).value=p.menuis||"Bon";
-    $(".p-rad",cont).value=p.rad||"Bon";
-    $(".p-app",cont).value=p.app||"Bon";
-    $(".p-ano",cont).value=p.ano||"";
-    $(".p-counter",cont).value=p.counter||"";
-    $(".piece-del",cont).onclick=()=>{
-      const list=read("mbz.edl",[]); list.splice(i,1); store("mbz.edl",list); renderPieces();
+    // Prix pendant la pause & sauvegarde (€/mois équivalent)
+    const PAUSE_PRICES = { Starter: 0, Pro: 1, Business: 1 };
+
+    // --- état UI persistant ---
+    const ui = {
+      annual: JSON.parse(localStorage.getItem("mbz.annual") ?? "false"),
+      paused: JSON.parse(localStorage.getItem("mbz.paused") ?? "false"),
     };
-    wrap.appendChild(cont);
-  });
-}
-$("#edl-add")?.addEventListener("click",()=>{
-  const wrap=$("#edl-pieces");
-  const n=wrap.children.length+1;
-  const col=document.createElement("div");
-  col.className="col-12";
-  col.innerHTML=pieceTemplate(n);
-  $(".piece-del",col).onclick=()=>col.remove();
-  wrap.appendChild(col);
-});
-$("#edl-clear")?.addEventListener("click",()=>{ store("mbz.edl",[]); renderPieces(); });
-/* bouton sauvegarde auto à la sortie de la section EDL */
-document.addEventListener("visibilitychange",()=>{ if(!document.hidden && !$("#d-edl").hidden) savePieces(); });
 
-function fileToDataURL(f){ return new Promise(res=>{ const r=new FileReader(); r.onload=()=>res(r.result); r.readAsDataURL(f); }); }
+    // --- helpers DOM ---
+    const $ = (s, r=document) => r.querySelector(s);
+    const $$ = (s, r=document) => [...r.querySelectorAll(s)];
 
-/* comptabilité */
-function renderTx(){
-  const tx=read("mbz.tx",[]);
-  const box=$("#tx-list"); if(!box) return;
-  const totalIn = tx.filter(t=>t.type==="in").reduce((a,b)=>a+Number(b.amt||0),0);
-  const totalOut= tx.filter(t=>t.type==="out").reduce((a,b)=>a+Number(b.amt||0),0);
-  box.innerHTML = `
-  <div class="badge">Solde: <b class="mono">${(totalIn-totalOut).toFixed(2)} €</b></div>
-  <table style="margin-top:8px"><thead><tr><th>Date</th><th>Type</th><th>Libellé</th><th>Montant</th><th></th></tr></thead>
-  <tbody>${tx.map((t,i)=>`<tr><td>${t.date||""}</td><td>${t.type==="in"?"Enc.":"Dép."}</td><td>${t.label}</td><td class="mono">${Number(t.amt).toFixed(2)} €</td><td><button class="btn small" data-del="${i}">Suppr.</button></td></tr>`).join("")}</tbody></table>`;
-  $$("[data-del]",box).forEach(b=>b.onclick=()=>{ const arr=read("mbz.tx",[]); arr.splice(Number(b.dataset.del),1); store("mbz.tx",arr); renderTx(); });
-}
-$("#tx-add")?.addEventListener("click",()=>{
-  const label=$("#tx-label").value.trim(), amt=Number($("#tx-amt").value||0);
-  if(!label || !amt) return alert("Libellé et montant requis.");
-  const t={label, amt, type:$("#tx-type").value, date:$("#tx-date").value||new Date().toISOString().slice(0,10)};
-  const arr=read("mbz.tx",[]); arr.push(t); store("mbz.tx",arr); renderTx();
-  $("#tx-label").value=""; $("#tx-amt").value="";
-});
-$("#tx-csv")?.addEventListener("click",()=>{
-  const tx=read("mbz.tx",[]);
-  const rows=[["date","type","label","montant"], ...tx.map(t=>[t.date,t.type,t.label,t.amt])];
-  const csv=rows.map(r=>r.map(x=>`"${(x??"").toString().replace(/"/g,'""')}"`).join(",")).join("\n");
-  const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"})); a.download="mbz-compta.csv"; a.click();
-});
-renderTx();
+    // --- tabs ---
+    const sections = {
+      home: $("#r-home"),
+      features: $("#r-features"),
+      pricing: $("#r-pricing"),
+      faq: $("#r-faq"),
+      contact: $("#r-contact"),
+    };
+    function showTab(name){
+      Object.values(sections).forEach(el=>el.classList.add("hidden"));
+      sections[name].classList.remove("hidden");
+      $$("#site-tabs .tab").forEach(b=>b.classList.toggle("active", b.dataset.tab===name));
+      location.hash = "#"+name;
+    }
+    $$("#site-tabs .tab[data-tab]").forEach(b=>{
+      b.addEventListener("click", ()=>showTab(b.dataset.tab));
+    });
+    // hash route
+    addEventListener("hashchange", ()=>{
+      const h = (location.hash||"#home").slice(1);
+      if(sections[h]) showTab(h);
+    });
+    showTab((location.hash||"#home").slice(1) in sections ? (location.hash||"#home").slice(1) : "home");
 
-/* paramètres + logo (Pro) */
-function toggleProFeatures(){
-  const plan=read("mbz.plan","Starter");
-  const pro = (plan==="Pro"||plan==="Business");
-  $("#u_logo").disabled=!pro;
-  $(".pro-only")?.classList.toggle("badge",!pro);
-}
-$("#u_logo")?.addEventListener("change", async e=>{
-  const plan=read("mbz.plan","Starter");
-  if(!(plan==="Pro"||plan==="Business")) return alert("Réservé au plan Pro ou Business.");
-  const f=e.target.files?.[0]; if(!f) return;
-  const data=await fileToDataURL(f);
-  store("mbz.logo",data);
-  renderLogo();
-});
-function renderLogo(){
-  const data=read("mbz.logo",null);
-  const img=$("#u_logo_preview");
-  if(data){ img.src=data; img.style.display="block"; } else img.style.display="none";
-}
-renderLogo();
+    // --- pricing ---
+    const elAnnual = $("#toggle-annual");
+    const elPause  = $("#toggle-pause");
+    elAnnual.checked = ui.annual;
+    elPause.checked  = ui.paused;
 
-/* modal system */
-function openModal(id){ const m=$("#"+id); if(!m) return; m.classList.add("is-open"); m.setAttribute("aria-hidden","false"); }
-function closeModal(id){ const m=$("#"+id); if(!m) return; m.classList.remove("is-open"); m.setAttribute("aria-hidden","true"); }
-document.addEventListener("click",e=>{
-  const t=e.target.closest("[data-modal-open]"); if(t) openModal(t.dataset.modalOpen);
-  const c=e.target.closest("[data-modal-close]"); if(c) closeModal(c.dataset.modalClose);
-  const m=e.target.closest(".modal"); if(m && e.target===m) m.classList.remove("is-open");
-});
-window.addEventListener("keydown",e=>{ if(e.key==="Escape") $$(".modal.is-open").forEach(m=>m.classList.remove("is-open")); });
+    function formatPrice(v, annual){
+      return v + "€ / " + (annual ? "an" : "mois");
+    }
+    function setPrices(){
+      const annual = elAnnual.checked;
+      const paused = elPause.checked;
+      let p = annual ? PRICES.annual : PRICES.monthly;
 
-/* signature */
-(function(){
-  const can=$("#sig_canvas"); if(!can) return;
-  const ctx=can.getContext("2d"); let draw=false, last=null;
-  const get=(e)=>{const r=can.getBoundingClientRect(); const i=e.touches?e.touches[0]:e; return {x:i.clientX-r.left,y:i.clientY-r.top};};
-  const start=e=>{draw=true; last=get(e);};
-  const move =e=>{ if(!draw) return; const p=get(e); ctx.lineWidth=2.5; ctx.lineCap="round"; ctx.strokeStyle="#111"; ctx.beginPath(); ctx.moveTo(last.x,last.y); ctx.lineTo(p.x,p.y); ctx.stroke(); last=p;};
-  const stop =()=> draw=false;
-  ["mousedown","touchstart"].forEach(ev=>can.addEventListener(ev,start,{passive:true}));
-  ["mousemove","touchmove"].forEach(ev=>can.addEventListener(ev,move,{passive:true}));
-  ["mouseup","mouseleave","touchend"].forEach(ev=>can.addEventListener(ev,stop,{passive:true}));
-  $("#sig_clear").addEventListener("click",()=>ctx.clearRect(0,0,can.width,can.height));
-  $("#sig_save").addEventListener("click",()=>{
-    const data=can.toDataURL("image/png"); store("mbz.sig",data); closeModal("sig_modal");
-    alert("Signature enregistrée localement.");
-  });
-})();
+      if(paused){
+        // pendant la pause, on affiche un équivalent mensuel réduit (info)
+        $("#p-starter").textContent = formatPrice(PAUSE_PRICES.Starter, false) + " (pause)";
+        $("#p-pro").textContent     = formatPrice(PAUSE_PRICES.Pro, false)     + " (pause)";
+        $("#p-biz").textContent     = formatPrice(PAUSE_PRICES.Business, false)+ " (pause)";
+      }else{
+        $("#p-starter").textContent = formatPrice(p.Starter, annual);
+        $("#p-pro").textContent     = formatPrice(p.Pro, annual);
+        $("#p-biz").textContent     = formatPrice(p.Business, annual);
+      }
+      localStorage.setItem("mbz.annual", JSON.stringify(annual));
+      localStorage.setItem("mbz.paused", JSON.stringify(paused));
+    }
+    elAnnual.addEventListener("change", setPrices);
+    elPause.addEventListener("change", setPrices);
+    setPrices();
 
-/* initialisations */
-renderPieces();
-toggleProFeatures();
-</script>
+    // --- demo buttons ---
+    $("#open-demo").addEventListener("click", ()=>showTab("features"));
+    $("#btn-signature").addEventListener("click", ()=>openSig());
+
+    // --- signature (démo) ---
+    const sigModal = $("#sig_modal");
+    const sigPad = $("#sig_pad");
+    let drawing=false, ctx, last=[0,0];
+
+    function openSig(){
+      sigModal.classList.remove("hidden");
+      sigModal.setAttribute("aria-hidden","false");
+      // init canvas
+      if(!sigPad.querySelector("canvas")){
+        const c=document.createElement("canvas");
+        c.width=sigPad.clientWidth; c.height=sigPad.clientHeight;
+        sigPad.appendChild(c);
+        ctx=c.getContext("2d");
+        ctx.lineWidth=2; ctx.lineCap="round"; ctx.strokeStyle="#111";
+        const pos = e => {
+          const r=c.getBoundingClientRect();
+          return [(e.touches?e.touches[0].clientX:e.clientX)-r.left,(e.touches?e.touches[0].clientY:e.clientY)-r.top];
+        };
+        const down = e=>{drawing=true; last=pos(e)};
+        const move = e=>{
+          if(!drawing) return;
+          const p=pos(e);
+          ctx.beginPath(); ctx.moveTo(last[0],last[1]); ctx.lineTo(p[0],p[1]); ctx.stroke();
+          last=p;
+        };
+        const up = ()=>drawing=false;
+        c.addEventListener("mousedown",down); c.addEventListener("mousemove",move); addEventListener("mouseup",up);
+        c.addEventListener("touchstart",down,{passive:true}); c.addEventListener("touchmove",move,{passive:true}); addEventListener("touchend",up);
+      }
+    }
+    $("#sig_close").addEventListener("click", ()=>{
+      sigModal.classList.add("hidden");
+      sigModal.setAttribute("aria-hidden","true");
+    });
+    $("#sig_clear").addEventListener("click", ()=>{
+      const c=sigPad.querySelector("canvas"); if(c){const x=c.getContext("2d"); x.clearRect(0,0,c.width,c.height);}
+    });
+    $("#sig_save").addEventListener("click", ()=>{
+      const c=sigPad.querySelector("canvas"); if(!c) return;
+      const data=c.toDataURL("image/png");
+      localStorage.setItem("mbz.signature", data);
+      alert("Signature enregistrée (localStorage).");
+    });
+
+    // --- login (démo locale) ---
+    const loginModal=$("#login_modal");
+    $("#open-login").addEventListener("click", ()=>{
+      loginModal.classList.remove("hidden");
+      loginModal.setAttribute("aria-hidden","false");
+      $("#login_info").textContent="";
+    });
+    $("#login_close").addEventListener("click", ()=>{
+      loginModal.classList.add("hidden");
+      loginModal.setAttribute("aria-hidden","true");
+    });
+    $("#login_ok").addEventListener("click", ()=>{
+      const email=$("#login_email").value.trim();
+      const pass=$("#login_pass").value;
+      if(!email || !pass){ $("#login_info").textContent="Renseignez email et mot de passe."; return; }
+      // démo : on simule un succès
+      localStorage.setItem("mbz.user", JSON.stringify({email, ts:Date.now()}));
+      $("#login_info").textContent="Connecté (démo).";
+      setTimeout(()=>{$("#login_close").click();},700);
+    });
+
+  </script>
 </body>
 </html>
