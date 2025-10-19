@@ -5,7 +5,45 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>MonBailZen — v8 (SaaS démo complète)</title>
 <meta name="description" content="Baux, EDL, Inventaire, Compteurs, IRL, Quittances, Comptabilité, Signature, Dashboard. Démo locale tout-en-un.">
-<style>
+<style><style>
+:root{
+  --bg:#0b0f15;
+  --panel:#151b22;
+  --soft:#10121a;
+  --text:#e6edf3;
+  --muted:#9da7b1;
+  --gold:#d4b04c;
+  --gold-2:#f3d98a;
+  --accent:#68a8fe;
+  --ok:#38d39f;--warn:#f5c76a;--err:#ff6464;
+}
+body{
+  margin:0;
+  background:linear-gradient(180deg,var(--bg),#0b0f15);
+  color:var(--text);
+  font:15px/1.6 Inter,system-ui,Segoe UI,Roboto,Arial
+}
+.btn.gold{
+  background:linear-gradient(135deg,var(--gold),var(--gold-2));
+  color:#111;
+  border:0
+}
+.card{
+  background:var(--panel);
+  border:1px solid #2c3240;
+  border-radius:18px;
+  padding:16px
+}
+.top{
+  position:sticky;
+  top:0;
+  background:#0b0f15cc;
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid #222;
+  z-index:50
+}
+</style>
+
 :root{
   --bg:#0c1017;--panel:#151b22;--soft:#10141c;--text:#e6edf3;--muted:#9aa6b2;--line:#273145;
   --gold:#cdbd6f;--accent:#69a8ff;--ok:#36d399;--warn:#fbbd23;--err:#ef4444
@@ -63,6 +101,109 @@ tfoot td{font-weight:700}
 .pro-badge{display:inline-block;margin-left:8px;padding:2px 6px;border-radius:6px;border:1px solid var(--line);background:#0f1420;font-size:12px}
 </style>
 </head>
+<script><div id="sig_modal" class="modal" aria-hidden="true" style="display:none;place-items:center;background:#0008;position:fixed;inset:0;z-index:999;">
+  <div class="card" style="width:min(720px,92vw);position:relative">
+    <button class="btn" data-modal-close="sig_modal" style="position:absolute;right:10px;top:10px">Fermer</button>
+    <h3>Signature (démo)</h3>
+    <canvas id="sig_canvas" width="640" height="260" style="background:#fff;border-radius:12px"></canvas>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:10px">
+      <button class="btn" id="sig_clear">Effacer</button>
+      <button class="btn gold" id="sig_save">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+  
+const $ = (s,root=document)=>root.querySelector(s);
+const $$ = (s,root=document)=>[...root.querySelectorAll(s)];
+
+/* -------- Navigation -------- */
+function showTab(hash){
+  const r = (hash||location.hash||"#home").replace("#","");
+  $$("section[id^='r-']").forEach(sec=>sec.style.display=(sec.id==="r-"+r)?"block":"none");
+  $$("button[data-tab]").forEach(btn=>btn.classList.toggle("active",btn.dataset.tab===r));
+}
+window.addEventListener("hashchange",()=>showTab());
+document.addEventListener("DOMContentLoaded",()=>showTab());
+
+/* -------- Modal système -------- */
+function openModal(id){
+  const m=$("#"+id);
+  if(!m)return;
+  m.style.display="grid";
+  m.classList.add("is-open");
+}
+function closeModal(id){
+  const m=$("#"+id);
+  if(!m)return;
+  m.style.display="none";
+  m.classList.remove("is-open");
+}
+document.addEventListener("click",e=>{
+  const open=e.target.closest("[data-modal-open]");
+  if(open){openModal(open.dataset.modalOpen);}
+  const close=e.target.closest("[data-modal-close]");
+  if(close){closeModal(close.dataset.modalClose);}
+  const m=e.target.closest(".modal");
+  if(m && e.target===m)closeModal(m.id);
+});
+window.addEventListener("keydown",e=>{
+  if(e.key==="Escape")$$(".modal.is-open").forEach(m=>closeModal(m.id));
+});
+
+/* -------- Signature -------- */
+(function(){
+  const can=$("#sig_canvas");
+  if(!can)return;
+  const ctx=can.getContext("2d");
+  let draw=false,last=null;
+  const pos=e=>{
+    const r=can.getBoundingClientRect();
+    return {x:(e.touches?e.touches[0].clientX:e.clientX)-r.left,
+            y:(e.touches?e.touches[0].clientY:e.clientY)-r.top};
+  };
+  const start=e=>{draw=true;last=pos(e)};
+  const move=e=>{
+    if(!draw)return;
+    const p=pos(e);
+    ctx.strokeStyle="#000";
+    ctx.lineWidth=2.5;
+    ctx.lineCap="round";
+    ctx.beginPath();
+    ctx.moveTo(last.x,last.y);
+    ctx.lineTo(p.x,p.y);
+    ctx.stroke();
+    last=p;
+  };
+  const stop=()=>draw=false;
+  ["mousedown","touchstart"].forEach(ev=>can.addEventListener(ev,start,{passive:true}));
+  ["mousemove","touchmove"].forEach(ev=>can.addEventListener(ev,move,{passive:true}));
+  ["mouseup","mouseleave","touchend"].forEach(ev=>can.addEventListener(ev,stop,{passive:true}));
+  $("#sig_clear")?.addEventListener("click",()=>ctx.clearRect(0,0,can.width,can.height));
+  $("#sig_save")?.addEventListener("click",()=>{
+    const data=can.toDataURL("image/png");
+    localStorage.setItem("mbz.signature",data);
+    closeModal("sig_modal");
+  });
+})();
+
+/* -------- Ajouter pièce EDL -------- */
+$("#edl_add_piece")?.addEventListener("click",()=>{
+  const wrap=$("#edl_pieces");
+  const div=document.createElement("div");
+  div.className="card";
+  div.innerHTML=`
+  <h4>Nouvelle pièce</h4>
+  <input placeholder='Nom de la pièce' class='input'><br>
+  <strong>État</strong>
+  <select>
+    <option>Neuf</option><option>Bon</option>
+    <option>Usage</option><option>À rénover</option>
+  </select><br>
+  <input type='file' accept='image/*' multiple>`;
+  wrap.appendChild(div);
+});
+</script>
 <body>
 
 <header class="top">
