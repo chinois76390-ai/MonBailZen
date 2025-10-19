@@ -2,760 +2,747 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>MonBailZen — v8 (SaaS démo complète)</title>
-<meta name="description" content="Baux, EDL, Inventaire, Compteurs, IRL, Quittances, Comptabilité, Signature, Dashboard. Démo locale tout-en-un.">
-<style><style>
-:root{
-  --bg:#0b0f15;
-  --panel:#151b22;
-  --soft:#10121a;
-  --text:#e6edf3;
-  --muted:#9da7b1;
-  --gold:#d4b04c;
-  --gold-2:#f3d98a;
-  --accent:#68a8fe;
-  --ok:#38d39f;--warn:#f5c76a;--err:#ff6464;
-}
-body{
-  margin:0;
-  background:linear-gradient(180deg,var(--bg),#0b0f15);
-  color:var(--text);
-  font:15px/1.6 Inter,system-ui,Segoe UI,Roboto,Arial
-}
-.btn.gold{
-  background:linear-gradient(135deg,var(--gold),var(--gold-2));
-  color:#111;
-  border:0
-}
-.card{
-  background:var(--panel);
-  border:1px solid #2c3240;
-  border-radius:18px;
-  padding:16px
-}
-.top{
-  position:sticky;
-  top:0;
-  background:#0b0f15cc;
-  backdrop-filter:blur(8px);
-  border-bottom:1px solid #222;
-  z-index:50
-}
-</style>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MonBailZen — v8 (finale)</title>
 
+<!-- ====== Styles (thème sombre + or) ====== -->
+<style>
 :root{
-  --bg:#0c1017;--panel:#151b22;--soft:#10141c;--text:#e6edf3;--muted:#9aa6b2;--line:#273145;
-  --gold:#cdbd6f;--accent:#69a8ff;--ok:#36d399;--warn:#fbbd23;--err:#ef4444
+  --bg:#0b0f15; --panel:#151b22; --soft:#0f1219; --text:#e6edf3; --muted:#9aa3af;
+  --gold:#d4b04c; --gold2:#f3d98a; --accent:#68a8fe; --ok:#3ad9a0; --warn:#f5c76a; --err:#ff6464;
+  --border:#222a36;
 }
-*{box-sizing:border-box} html,body{height:100%}
-body{margin:0;background:#0b0f15;color:var(--text);font:15px/1.55 Inter,system-ui,Segoe UI,Roboto,Arial}
-.wrap{max-width:1200px;margin:0 auto;padding:16px}
-.top{position:sticky;top:0;background:#0c1017e6;backdrop-filter:blur(8px);z-index:50;border-bottom:1px solid var(--line)}
-.brand{display:flex;gap:10px;align-items:center;justify-content:space-between}
-.logo{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;font-weight:900;border:1px solid #2c364a;background:linear-gradient(135deg,#2c3549,#1b2436);color:#fff}
-.title{font-size:18px}
-.badge{display:inline-flex;gap:6px;align-items:center;font-size:12px;padding:3px 8px;border-radius:20px;border:1px solid var(--line);background:#121826}
-.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.tab{cursor:pointer;padding:9px 14px;border-radius:999px;border:1px solid var(--line);background:#121826;color:var(--text)}
-.tab.active{background:linear-gradient(135deg,#2f3a50,#1e2638);color:#fff;border-color:#41506a}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:#1b2231;color:#fff;text-decoration:none;font-weight:600;cursor:pointer}
-.btn.gold{background:linear-gradient(135deg,#d8c97a,#a59746);color:#111;border:none}
-.btn.ghost{background:transparent}
-.btn.small{padding:8px 12px;font-size:13px}
-.grid{display:grid;gap:16px}
-@media(min-width:900px){.grid.cols-2{grid-template-columns:1fr 1fr}.grid.cols-3{grid-template-columns:repeat(3,1fr)}.grid.cols-4{grid-template-columns:repeat(4,1fr)}}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px}
-.card h3{margin:0 0 10px;font-size:18px}
-hr.sep{border:none;border-top:1px dashed var(--line);margin:20px 0}
-.kv{display:grid;grid-template-columns:170px 1fr;gap:6px 12px}
-.kv label{color:var(--muted)}
-input,select,textarea{width:100%;background:#0f1420;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:10px}
-input[type="date"],input[type="month"]{padding:8px 10px}
-.small{font-size:12px;color:var(--muted)}
-.right{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.chips{display:flex;flex-wrap:wrap;gap:8px}
-.chip{background:#0f1420;border:1px solid var(--line);color:#cbd5e1;padding:4px 10px;border-radius:999px;font-size:12px}
-.notice{padding:10px;border:1px solid var(--line);background:#0f1420;border-radius:12px}
-.ok{color:var(--ok)}.warn{color:var(--warn)}.err{color:var(--err)}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; color:var(--text);
+  font:15px/1.6 Inter,system-ui,Segoe UI,Roboto,Arial;
+  background:linear-gradient(180deg,var(--bg),#0b0f15 60%,#0a0e14);
+}
+a{color:var(--accent);text-decoration:none}
+h1,h2,h3{margin:0 0 .6rem}
+.wrap{max-width:1100px;margin:0 auto;padding:16px}
+.top{
+  position:sticky; top:0; z-index:50;
+  background:#0b0f15e0; backdrop-filter:blur(10px); border-bottom:1px solid var(--border);
+}
+.brand{display:flex;align-items:center;gap:10px}
+.logo{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--gold),var(--gold2)); color:#111; font-weight:900; display:grid;place-items:center}
+.title{font-weight:800}
+.chip{font:12px/1 monospace;background:#243042;border:1px solid #2d394b;color:#9ec1ff;border-radius:999px;padding:2px 8px;margin-left:6px}
+.nav{display:flex;gap:8px;flex-wrap:wrap}
+.nav .btn{padding:10px 14px}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  background:#223043;border:1px solid var(--border);color:var(--text);
+  padding:8px 12px;border-radius:999px;cursor:pointer;transition:.15s;
+}
+.btn:hover{transform:translateY(-1px)}
+.btn.gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#111;border:0;font-weight:800}
+.btn.ghost{background:transparent;border:1px solid var(--border);color:var(--text)}
+.btn.small{padding:6px 10px;font-size:13px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap}
+.tabs .tab{padding:9px 12px;border-radius:12px;background:#192231;border:1px solid var(--border);cursor:pointer}
+.tabs .tab.active{background:linear-gradient(135deg,#1a2232,#303a4f);border-color:#3b475f}
+
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}
+.col-12{grid-column:span 12}
+.col-6{grid-column:span 6}
+.col-4{grid-column:span 4}
+@media (max-width:900px){.col-6,.col-4{grid-column:span 12}}
+
+.card{
+  background:var(--panel); border:1px solid var(--border);
+  border-radius:18px; padding:16px;
+}
+.kpi{display:flex;align-items:center;gap:12px}
+.kpi .num{font-size:26px;font-weight:900}
+.mono{font-family:ui-monospace,Menlo,Consolas,monospace}
+
+input,select,textarea{
+  width:100%; background:#0f1724; color:var(--text);
+  border:1px solid #2a3547;border-radius:12px;padding:10px 12px; outline:none;
+}
+label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:900px){.row{grid-template-columns:1fr}}
+
+.badge{display:inline-flex;align-items:center;gap:6px;background:#1b2435;border:1px solid #2f3a50;color:#c0c8d6;border-radius:999px;padding:6px 10px}
+.badge.ok{background:#0f2d24;border-color:#16493a;color:#76e8c1}
+.badge.warn{background:#2f2510;border-color:#4f3c12;color:#f8d58a}
+
+footer.wrap{opacity:.7;font-size:13px;border-top:1px solid var(--border);margin-top:40px}
+
+/* modal */
+.modal{display:none;place-items:center;position:fixed;inset:0;background:#0008;z-index:999}
+.modal.is-open{display:grid}
+.modal .panel{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:16px;min-width:min(720px,94vw);position:relative}
+.modal .close{position:absolute;right:10px;top:10px}
+
+/* tables */
 table{width:100%;border-collapse:collapse}
-th,td{padding:8px;border-bottom:1px solid #223047;text-align:left}
-tfoot td{font-weight:700}
-.thumb{display:inline-flex;align-items:center;gap:6px;padding:4px 8px;margin:4px 6px 0 0;font-size:12px;border:1px solid var(--line);border-radius:8px;background:#0f1420}
-.footer{margin:28px 0;color:#9aa6b2;font-size:12px;text-align:center}
-.hidden{display:none!important}
-/* Modal */
-.modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:#0008;z-index:99}
-.modal.open{display:flex}
-.modal .box{width:min(860px,92vw);background:#151b24;border:1px solid var(--line);border-radius:16px;padding:16px}
-.modal header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-.canvas{background:#fff;height:280px;border-radius:8px}
-/* Hero */
-.hero{padding:30px;border:1px dashed var(--line);border-radius:16px;background:linear-gradient(180deg,#101625,#0f1420)}
-.price{font-size:28px;font-weight:800}
-.right-bar{display:flex;gap:8px;align-items:center}
-/* login */
-.login{display:grid;place-items:center;min-height:60vh}
-.login .box{max-width:420px;width:96%;background:#151b24;border:1px solid var(--line);border-radius:16px;padding:16px}
-.logo-sm{height:40px}
-.pro-badge{display:inline-block;margin-left:8px;padding:2px 6px;border-radius:6px;border:1px solid var(--line);background:#0f1420;font-size:12px}
+th,td{border-bottom:1px solid #233046;padding:10px;text-align:left;font-size:14px}
+thead th{color:#9db0d1;font-weight:700}
+
+/* badge plan */
+.plan{display:inline-flex;align-items:center;gap:6px;background:#172131;border:1px solid #2a3345;color:#c2cee3;padding:6px 10px;border-radius:999px}
+.plan .dot{width:8px;height:8px;border-radius:99px;background:#5ba8ff}
+
+/* signature canvas */
+canvas.sig{background:#fff;border-radius:12px;border:1px dashed #999}
+
+/* alert */
+.alert{background:#112031;border:1px solid #23354c;border-radius:12px;padding:10px 12px;color:#9ec1ff}
 </style>
 </head>
-<script><div id="sig_modal" class="modal" aria-hidden="true" style="display:none;place-items:center;background:#0008;position:fixed;inset:0;z-index:999;">
-  <div class="card" style="width:min(720px,92vw);position:relative">
-    <button class="btn" data-modal-close="sig_modal" style="position:absolute;right:10px;top:10px">Fermer</button>
-    <h3>Signature (démo)</h3>
-    <canvas id="sig_canvas" width="640" height="260" style="background:#fff;border-radius:12px"></canvas>
-    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:10px">
-      <button class="btn" id="sig_clear">Effacer</button>
-      <button class="btn gold" id="sig_save">Enregistrer</button>
-    </div>
-  </div>
-</div>
-
-  
-const $ = (s,root=document)=>root.querySelector(s);
-const $$ = (s,root=document)=>[...root.querySelectorAll(s)];
-
-/* -------- Navigation -------- */
-function showTab(hash){
-  const r = (hash||location.hash||"#home").replace("#","");
-  $$("section[id^='r-']").forEach(sec=>sec.style.display=(sec.id==="r-"+r)?"block":"none");
-  $$("button[data-tab]").forEach(btn=>btn.classList.toggle("active",btn.dataset.tab===r));
-}
-window.addEventListener("hashchange",()=>showTab());
-document.addEventListener("DOMContentLoaded",()=>showTab());
-
-/* -------- Modal système -------- */
-function openModal(id){
-  const m=$("#"+id);
-  if(!m)return;
-  m.style.display="grid";
-  m.classList.add("is-open");
-}
-function closeModal(id){
-  const m=$("#"+id);
-  if(!m)return;
-  m.style.display="none";
-  m.classList.remove("is-open");
-}
-document.addEventListener("click",e=>{
-  const open=e.target.closest("[data-modal-open]");
-  if(open){openModal(open.dataset.modalOpen);}
-  const close=e.target.closest("[data-modal-close]");
-  if(close){closeModal(close.dataset.modalClose);}
-  const m=e.target.closest(".modal");
-  if(m && e.target===m)closeModal(m.id);
-});
-window.addEventListener("keydown",e=>{
-  if(e.key==="Escape")$$(".modal.is-open").forEach(m=>closeModal(m.id));
-});
-
-/* -------- Signature -------- */
-(function(){
-  const can=$("#sig_canvas");
-  if(!can)return;
-  const ctx=can.getContext("2d");
-  let draw=false,last=null;
-  const pos=e=>{
-    const r=can.getBoundingClientRect();
-    return {x:(e.touches?e.touches[0].clientX:e.clientX)-r.left,
-            y:(e.touches?e.touches[0].clientY:e.clientY)-r.top};
-  };
-  const start=e=>{draw=true;last=pos(e)};
-  const move=e=>{
-    if(!draw)return;
-    const p=pos(e);
-    ctx.strokeStyle="#000";
-    ctx.lineWidth=2.5;
-    ctx.lineCap="round";
-    ctx.beginPath();
-    ctx.moveTo(last.x,last.y);
-    ctx.lineTo(p.x,p.y);
-    ctx.stroke();
-    last=p;
-  };
-  const stop=()=>draw=false;
-  ["mousedown","touchstart"].forEach(ev=>can.addEventListener(ev,start,{passive:true}));
-  ["mousemove","touchmove"].forEach(ev=>can.addEventListener(ev,move,{passive:true}));
-  ["mouseup","mouseleave","touchend"].forEach(ev=>can.addEventListener(ev,stop,{passive:true}));
-  $("#sig_clear")?.addEventListener("click",()=>ctx.clearRect(0,0,can.width,can.height));
-  $("#sig_save")?.addEventListener("click",()=>{
-    const data=can.toDataURL("image/png");
-    localStorage.setItem("mbz.signature",data);
-    closeModal("sig_modal");
-  });
-})();
-
-/* -------- Ajouter pièce EDL -------- */
-$("#edl_add_piece")?.addEventListener("click",()=>{
-  const wrap=$("#edl_pieces");
-  const div=document.createElement("div");
-  div.className="card";
-  div.innerHTML=`
-  <h4>Nouvelle pièce</h4>
-  <input placeholder='Nom de la pièce' class='input'><br>
-  <strong>État</strong>
-  <select>
-    <option>Neuf</option><option>Bon</option>
-    <option>Usage</option><option>À rénover</option>
-  </select><br>
-  <input type='file' accept='image/*' multiple>`;
-  wrap.appendChild(div);
-});
-</script>
 <body>
 
+<!-- ====== Header / Nav ====== -->
 <header class="top">
-  <div class="wrap nav">
+  <div class="wrap" style="display:flex;align-items:center;justify-content:space-between;gap:14px;">
     <div class="brand">
       <div class="logo">MBZ</div>
-      <div class="title">MonBailZen <span class="badge">v8</span></div>
-      <div class="right-bar">
-        <span id="who" class="small">Non connecté</span>
-        <button class="btn small" id="btnLogin">Login</button>
-        <button class="btn small hidden" id="btnLogout">Logout</button>
-      </div>
+      <div class="title">MonBailZen <span id="ver" class="chip">v8</span></div>
+      <span id="active-plan" class="plan" title="Plan sélectionné" style="margin-left:10px"><span class="dot"></span><b id="plan-name">Starter</b></span>
     </div>
-    <nav class="tabs" id="site-tabs">
-      <button class="tab active" data-tab="home">Accueil</button>
-      <button class="tab" data-tab="features">Fonctionnalités</button>
-      <button class="tab" data-tab="lease">Baux</button>
-      <button class="tab" data-tab="edl">États des lieux</button>
-      <button class="tab" data-tab="quittance">Quittance</button>
-      <button class="tab" data-tab="pricing">Tarifs</button>
-      <button class="tab" data-tab="dashboard">Dashboard</button>
-      <button class="tab" data-tab="faq">FAQ</button>
-      <button class="tab" data-tab="contact">Contact</button>
+    <nav class="nav">
+      <button class="btn tab active" data-tab="home">Accueil</button>
+      <button class="btn tab" data-tab="features">Fonctionnalités</button>
+      <button class="btn tab" data-tab="pricing">Tarifs</button>
+      <button class="btn tab" data-tab="faq">FAQ</button>
+      <button class="btn tab" data-tab="contact">Contact</button>
+      <button class="btn gold small" data-tab="demo">Essayer la démo</button>
+      <button class="btn ghost small" id="btn-login">Login</button>
     </nav>
   </div>
 </header>
 
-<!-- LOGIN (modale simple) -->
-<div id="loginModal" class="modal" aria-hidden="true">
-  <div class="box" role="dialog" aria-modal="true" aria-labelledby="lg_t">
-    <header><strong id="lg_t">Connexion</strong><button class="btn ghost" id="lg_close">Fermer</button></header>
-    <div class="kv">
-      <label>Email</label><input id="lg_mail" type="email" placeholder="vous@exemple.fr">
-      <label>Mot de passe</label><input id="lg_pwd" type="password" placeholder="••••••••">
-      <label>Plan (démo)</label>
-      <select id="lg_plan">
-        <option value="starter">Starter</option>
-        <option value="pro">Pro</option>
-      </select>
-      <label id="proLogoLabel" class="hidden">Logo (Pro)</label>
-      <input id="proLogo" type="file" accept="image/*" class="hidden">
-    </div>
-    <div class="right" style="margin-top:10px">
-      <button class="btn" id="lg_ok">Se connecter (démo)</button>
-    </div>
-    <div class="small" style="margin-top:8px">Démo locale : aucune donnée envoyée, tout reste dans votre navigateur.</div>
-  </div>
-</div>
+<main class="wrap">
 
-<!-- SIGNATURE (démo) -->
+  <!-- ====== Accueil ====== -->
+  <section id="r-home">
+    <div class="grid">
+      <div class="col-8">
+        <div class="card">
+          <h1>Gérez vos locations en toute sérénité</h1>
+          <p>Baux guidés, EDL multi-pièces + photos & anomalies, IRL automatique, quittances & exports CSV, signature (démo), tableau de bord. Données locales 100%.</p>
+          <div class="tabs" style="margin-top:8px">
+            <span class="badge ok">–70% de temps</span>
+            <span class="badge">ALUR • ELAN • eIDAS (démo)</span>
+            <span class="badge">PDF (mock) • CSV</span>
+            <span class="badge">Satisfaction 4,8/5</span>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:16px">
+            <button class="btn gold" data-tab="demo">Démarrer la démo</button>
+            <a class="btn" data-tab="features">Voir les fonctionnalités</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="card">
+          <div class="kpi"><div class="num">1:00</div><div>Créez un bail legal complet (démo).</div></div>
+          <div class="kpi"><div class="num">8</div><div>Pièces EDL illimitées avec photos / relevés.</div></div>
+          <div class="kpi"><div class="num">CSV</div><div>Exports comptables en un clic.</div></div>
+        </div>
+        <div class="card" style="margin-top:12px">
+          <h3>Pourquoi MonBailZen ?</h3>
+          <ul>
+            <li>Formulaires guidés bailleur / locataire / garant</li>
+            <li>EDL multi-pièces (murs, sols, plafonds, menuiseries, radiateurs, appareils)</li>
+            <li>Photos & anomalies par pièce</li>
+            <li>IRL automatique (démo)</li>
+            <li class="pro-only">Logo propriétaire — <b>Pro</b></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== Fonctionnalités ====== -->
+  <section id="r-features" hidden>
+    <div class="grid">
+      <div class="col-6"><div class="card">
+        <h3>Baux</h3>
+        <p>Types, durée, dépôt, IRL, clauses, annexes, inventaire meublé + photos, signature (démo).</p>
+        <button class="btn small" data-tab="demo">Ouvrir la démo</button>
+      </div></div>
+      <div class="col-6"><div class="card">
+        <h3>États des lieux</h3>
+        <p>Pièces illimitées, états par élément (menus déroulants), photos / anomalies, relevés de compteurs (avec photo), signature (démo).</p>
+        <button class="btn small" data-tab="demo">Ouvrir la démo</button>
+      </div></div>
+      <div class="col-6"><div class="card">
+        <h3>Comptabilité</h3>
+        <p>Encaissements & dépenses, export CSV, synthèse rapide.</p>
+      </div></div>
+      <div class="col-6"><div class="card">
+        <h3>Signature</h3>
+        <p>eIDAS simulée (démo locale). Preuve basique + sauvegarde locale.</p>
+        <button class="btn small" data-modal-open="sig_modal">Tester la signature</button>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- ====== Tarifs ====== -->
+  <section id="r-pricing" hidden>
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
+        <h2>Tarifs</h2>
+        <div>
+          <span class="badge">Facturation</span>
+          <label class="badge" style="cursor:pointer">
+            <input id="toggle-annual" type="checkbox" style="accent-color:#f0c84a;margin-right:8px"> Annuel (–2 mois)
+          </label>
+        </div>
+      </div>
+      <div class="grid" style="margin-top:10px">
+        <div class="col-4"><div class="card">
+          <h3>Starter</h3>
+          <div class="mono" id="p-starter">0€ / mois</div>
+          <ul><li>1 bien</li><li>Démo locale</li></ul>
+          <button class="btn small choose-plan" data-plan="Starter">Essayer</button>
+        </div></div>
+        <div class="col-4"><div class="card">
+          <h3>Pro</h3>
+          <div class="mono" id="p-pro">9€ / mois</div>
+          <ul><li>Jusqu’à 10 biens</li><li>Logo propriétaire</li></ul>
+          <button class="btn gold small choose-plan" data-plan="Pro">Choisir</button>
+        </div></div>
+        <div class="col-4"><div class="card">
+          <h3>Business</h3>
+          <div class="mono" id="p-biz">19€ / mois</div>
+          <ul><li>Illimité</li><li>Support prioritaire</li></ul>
+          <button class="btn small choose-plan" data-plan="Business">Choisir</button>
+        </div></div>
+      </div>
+      <p class="alert" style="margin-top:12px">Les montants sont indicatifs (démo). Basculer mensuel/annuel via le commutateur.</p>
+    </div>
+  </section>
+
+  <!-- ====== FAQ ====== -->
+  <section id="r-faq" hidden>
+    <div class="card">
+      <h2>FAQ</h2>
+      <p><b>Mes données ?</b> Tout est stocké localement (localStorage) dans cette démo.</p>
+      <p><b>Signature ?</b> C’est une simulation locale (non opposable) pour tester les parcours.</p>
+    </div>
+  </section>
+
+  <!-- ====== Contact ====== -->
+  <section id="r-contact" hidden>
+    <div class="card">
+      <h2>Contact</h2>
+      <div class="row">
+        <div><label>Nom</label><input id="c_name" placeholder="Votre nom"></div>
+        <div><label>Email</label><input id="c_email" placeholder="vous@exemple.com"></div>
+      </div>
+      <label style="margin-top:10px">Message</label>
+      <textarea id="c_msg" rows="4" placeholder="Votre message..."></textarea>
+      <div style="margin-top:10px"><button class="btn gold small" id="c_send">Envoyer (démo)</button></div>
+    </div>
+  </section>
+
+  <!-- ====== Démo (Baux, EDL, Comptabilité, Paramètres) ====== -->
+  <section id="r-demo" hidden>
+    <div class="tabs" style="margin-bottom:8px">
+      <button class="btn tab small subtab active" data-sub="lease">Baux</button>
+      <button class="btn tab small subtab" data-sub="edl">États des lieux</button>
+      <button class="btn tab small subtab" data-sub="inventory">Inventaire</button>
+      <button class="btn tab small subtab" data-sub="acct">Comptabilité</button>
+      <button class="btn tab small subtab" data-sub="settings">Paramètres</button>
+    </div>
+
+    <!-- Bail -->
+    <div id="d-lease">
+      <div class="grid">
+        <div class="col-6"><div class="card">
+          <h3>Bail — Infos</h3>
+          <div class="row">
+            <div>
+              <label>Type</label>
+              <select id="b_type"><option>Vide</option><option>Meublé</option><option>Colocation</option></select>
+            </div>
+            <div>
+              <label>Durée (mois)</label>
+              <input id="b_term" type="number" min="1" value="12">
+            </div>
+          </div>
+          <div class="row" style="margin-top:8px">
+            <div><label>Loyer (€)</label><input id="b_rent" type="number" value="650"></div>
+            <div><label>Dépôt (€)</label><input id="b_dep" type="number" value="650"></div>
+          </div>
+          <div class="row" style="margin-top:8px">
+            <div><label>IRL (démo) — indice</label><input id="b_irl" type="number" value="3.5" step="0.1"></div>
+            <div><label>IRL révisé (€)</label><input id="b_irl_new" type="number" readonly></div>
+          </div>
+          <div style="margin-top:10px;display:flex;gap:8px">
+            <button class="btn small" id="btn-irl">Calculer IRL</button>
+            <button class="btn" data-modal-open="sig_modal">Signer (démo)</button>
+          </div>
+        </div></div>
+
+        <div class="col-6"><div class="card">
+          <h3>Annexes & Inventaire meublé</h3>
+          <div id="inv-list"></div>
+          <div class="row" style="margin-top:8px">
+            <div><input id="inv-name" placeholder="Ex: Canapé"></div>
+            <div><input id="inv-qty" type="number" min="1" value="1"></div>
+          </div>
+          <div style="margin-top:8px"><input id="inv-photo" type="file" accept="image/*"></div>
+          <div style="margin-top:8px;display:flex;gap:8px">
+            <button class="btn small" id="inv-add">Ajouter élément</button>
+            <button class="btn small" id="inv-clear">Vider</button>
+          </div>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- EDL -->
+    <div id="d-edl" hidden>
+      <div class="card">
+        <h3>États des lieux</h3>
+        <div id="edl-pieces" class="grid"></div>
+        <div style="margin-top:10px;display:flex;gap:8px">
+          <button class="btn small" id="edl-add">Ajouter une pièce</button>
+          <button class="btn small" id="edl-clear">Tout effacer</button>
+        </div>
+        <p class="alert" style="margin-top:10px">Chaque pièce contient : menus déroulants d’état (murs, sols, plafonds, menuiseries, radiateurs, appareils), photos & anomalies, relevés de compteurs (avec photo).</p>
+      </div>
+    </div>
+
+    <!-- Inventaire (vue dédiée) -->
+    <div id="d-inventory" hidden>
+      <div class="card">
+        <h3>Inventaire global</h3>
+        <div id="inv-table-wrap"></div>
+      </div>
+    </div>
+
+    <!-- Comptabilité -->
+    <div id="d-acct" hidden>
+      <div class="card">
+        <h3>Encaissements & Dépenses</h3>
+        <div class="row">
+          <div><input id="tx-label" placeholder="Libellé (loyer, dépôt, frais...)"></div>
+          <div><input id="tx-amt" type="number" placeholder="Montant (ex: 650)"></div>
+        </div>
+        <div class="row" style="margin-top:8px">
+          <div>
+            <select id="tx-type">
+              <option value="in">Encaissement</option>
+              <option value="out">Dépense</option>
+            </select>
+          </div>
+          <div><input id="tx-date" type="date"></div>
+        </div>
+        <div style="margin-top:8px;display:flex;gap:8px">
+          <button class="btn small" id="tx-add">Ajouter</button>
+          <button class="btn small" id="tx-csv">Exporter CSV</button>
+        </div>
+        <div id="tx-list" style="margin-top:12px"></div>
+      </div>
+    </div>
+
+    <!-- Paramètres -->
+    <div id="d-settings" hidden>
+      <div class="grid">
+        <div class="col-6"><div class="card">
+          <h3>Compte</h3>
+          <div class="row">
+            <div><label>Nom</label><input id="u_name" placeholder="Votre nom"></div>
+            <div><label>Email</label><input id="u_email" placeholder="vous@exemple.com"></div>
+          </div>
+          <div style="margin-top:8px"><button class="btn small" id="u_save">Sauvegarder</button></div>
+        </div></div>
+
+        <div class="col-6"><div class="card">
+          <h3>Logo propriétaire <span class="badge">Pro</span></h3>
+          <input id="u_logo" type="file" accept="image/*">
+          <div style="margin-top:8px"><img id="u_logo_preview" style="max-width:200px;border-radius:12px;display:none"></div>
+          <p style="margin-top:8px" class="alert">Disponible si le plan actif est <b>Pro</b> ou <b>Business</b>.</p>
+        </div></div>
+      </div>
+    </div>
+
+  </section>
+</main>
+
+<footer class="wrap">© 2025 MonBailZen — Démo front-end autonome. eIDAS simulée. Données locales.</footer>
+
+<!-- ====== Modal Signature ====== -->
 <div id="sig_modal" class="modal" aria-hidden="true">
-  <div class="box" role="dialog" aria-modal="true" aria-labelledby="sig_t">
-    <header>
-      <strong id="sig_t">Signature (démo)</strong>
-      <button class="btn ghost" id="sig_close">Fermer</button>
-    </header>
-    <canvas id="sig_pad" class="canvas"></canvas>
-    <div class="right" style="margin-top:10px">
-      <button class="btn ghost" id="sig_clear">Effacer</button>
-      <button class="btn" id="sig_save">Enregistrer</button>
+  <div class="panel">
+    <button class="btn small close" data-modal-close="sig_modal">Fermer</button>
+    <h3>Signature (démo)</h3>
+    <canvas id="sig_canvas" class="sig" width="680" height="260"></canvas>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:10px">
+      <button class="btn small" id="sig_clear">Effacer</button>
+      <button class="btn gold small" id="sig_save">Enregistrer</button>
     </div>
   </div>
 </div>
 
-<!-- ACCUEIL -->
-<main class="wrap" id="home" data-view>
-  <div class="grid cols-2">
-    <section class="card hero">
-      <h2>Gérez vos locations en toute sérénité</h2>
-      <p class="small">Baux, EDL multi-pièces + photos & compteurs, inventaire meublé, IRL, quittances, comptabilité, signature, tableau de bord. Démo 100% locale.</p>
-      <div class="chips">
-        <span class="chip">–70% de temps</span><span class="chip">ALUR • ELAN • eIDAS (démo)</span><span class="chip">PDF + CSV</span><span class="chip">Satisfaction 4,8/5</span>
-      </div>
-      <hr class="sep">
-      <div class="right">
-        <a class="btn gold" data-tabto="lease">Créer un bail</a>
-        <a class="btn ghost" data-tabto="features">Voir les fonctionnalités</a>
-      </div>
-    </section>
-    <section class="card">
-      <h3>Pourquoi MonBailZen ?</h3>
-      <ul class="small">
-        <li>Baux complets, IRL, clauses & annexes, inventaire meublé (avec photos)</li>
-        <li>EDL multi-pièces : états détaillés par élément (menus déroulants), photos & anomalies</li>
-        <li><b>Compteurs</b> (électricité/eau/gaz) avec valeur et photo</li>
-        <li>Quittances / Comptabilité / Exports CSV</li>
-        <li>Signature (démo) et <b>logo propriétaire en Pro</b></li>
-      </ul>
-      <div class="notice small">Démo : toutes les données restent en localStorage.</div>
-    </section>
+<!-- ====== Modal Login ====== -->
+<div id="login_modal" class="modal" aria-hidden="true">
+  <div class="panel">
+    <button class="btn small close" data-modal-close="login_modal">Fermer</button>
+    <h3>Connexion (démo locale)</h3>
+    <div class="row" style="margin-top:8px">
+      <div><input id="l_email" placeholder="Email"></div>
+      <div><input id="l_pwd" type="password" placeholder="Mot de passe"></div>
+    </div>
+    <div style="margin-top:10px;display:flex;gap:8px">
+      <button class="btn gold small" id="l_ok">Se connecter</button>
+      <button class="btn small" id="l_out">Se déconnecter</button>
+    </div>
+    <p class="alert" style="margin-top:10px">Démo : aucune API, statut stocké localement.</p>
   </div>
-</main>
+</div>
 
-<!-- FONCTIONNALITÉS -->
-<main class="wrap hidden" id="features" data-view>
-  <div class="grid cols-3">
-    <section class="card"><h3>Baux</h3><p class="small">Types, durée, dépôt, IRL, clauses, annexes, inventaire meublé + photos, signature (démo).</p><a class="btn" data-tabto="lease">Ouvrir</a></section>
-    <section class="card"><h3>États des lieux</h3><p class="small">Pièces illimitées, états par élément, photos/anomalies, <b>relevés de compteurs</b>, signature (démo).</p><a class="btn" data-tabto="edl">Ouvrir</a></section>
-    <section class="card"><h3>Compta & IRL</h3><p class="small">Saisie mensuelle, totaux, export CSV, calcul IRL automatique.</p><a class="btn" data-tabto="lease">Voir</a></section>
-  </div>
-</main>
+<!-- ====== Scripts ====== -->
+<script>
+/* utilitaires */
+const $=(s,r=document)=>r.querySelector(s);
+const $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const store=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
+const read=(k,def)=>{try{return JSON.parse(localStorage.getItem(k))??def}catch{return def}};
 
-<!-- BAUX + INVENTAIRE + IRL + COMPTA -->
-<main class="wrap hidden" id="lease" data-view>
-  <div class="grid cols-2">
-    <section class="card">
-      <div class="right" style="justify-content:space-between">
-        <h3>Bail — Informations</h3>
-        <div class="small">Plan : <span id="planBadge">Starter</span><span id="planProTag" class="pro-badge hidden">Pro — Logo actif</span></div>
-      </div>
-      <div class="kv">
-        <label>Type de bail</label>
-        <select id="b_type"><option>Vide</option><option>Meublé</option><option>Colocation</option><option>Mobilité</option></select>
-        <label>Adresse du bien</label><input id="b_addr" placeholder="4 rue Exemple, 75000 Paris">
-        <label>Surface (m²)</label><input id="b_area" type="number" value="45">
-        <label>Loyer HC (€)</label><input id="b_rent" type="number" value="650">
-        <label>Charges (€)</label><input id="b_chg" type="number" value="50">
-        <label>Dépôt de garantie (€)</label><input id="b_dep" type="number" value="650">
-        <label>Durée</label>
-        <select id="b_term"><option>3 ans (vide)</option><option>1 an (meublé)</option><option>9 mois (mobilité)</option><option>Autre</option></select>
-        <label>Autre durée (si “Autre”)</label><input id="b_term_custom" placeholder="ex. 24 mois">
-        <label>Locataire</label><input id="b_tenant" placeholder="Prénom NOM">
-        <label>Garant</label><input id="b_guarantor" placeholder="(facultatif)">
-        <label>Date d’effet</label><input id="b_start" type="date">
-        <label>Préavis</label><select id="b_notice"><option>3 mois</option><option>1 mois (zone tendue)</option></select>
-        <label>IRL de référence</label><input id="b_irl" type="number" step="0.01" value="143.15">
-      </div>
+/* navigation */
+function showTab(id){
+  const tab=id||location.hash.replace("#","")||"home";
+  $$("section[id^='r-']").forEach(s=>s.hidden = s.id!=="r-"+tab);
+  $$(".tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===tab));
+  if(tab==="demo") showSub(read("mbz.sub","lease"));
+}
+$$(".tab").forEach(b=>b.addEventListener("click",()=>{ location.hash=b.dataset.tab; showTab(b.dataset.tab); }));
+window.addEventListener("hashchange",()=>showTab());
+showTab();
 
-      <hr class="sep">
-      <div id="meuble_block" class="notice small hidden">
-        <b>Inventaire (meublé)</b> — Liste rapide (ajoutez les éléments que vous souhaitez) :
-        <div class="right" style="margin:8px 0"><input id="inv_new" placeholder="Élément…"><button class="btn small" id="inv_add">Ajouter</button></div>
-        <div id="inv_list" class="chips">
-          <label class="chip"><input type="checkbox" checked> Literie</label>
-          <label class="chip"><input type="checkbox" checked> Plaques cuisson</label>
-          <label class="chip"><input type="checkbox" checked> Four/Micro-ondes</label>
-          <label class="chip"><input type="checkbox" checked> Réfrigérateur</label>
-          <label class="chip"><input type="checkbox" checked> Vaisselle</label>
-          <label class="chip"><input type="checkbox" checked> Table & chaises</label>
-          <label class="chip"><input type="checkbox" checked> Rangement</label>
-          <label class="chip"><input type="checkbox" checked> Luminaire</label>
-        </div>
-        <div class="right" style="margin-top:8px">
-          <label class="small">Photos inventaire</label>
-          <input id="inv_photos" type="file" accept="image/*" multiple>
-          <div id="inv_prev" class="small"></div>
-        </div>
-      </div>
+/* sous-onglets démo */
+function showSub(name){
+  ["lease","edl","inventory","acct","settings"].forEach(n=>{
+    $("#d-"+n).hidden = (n!==name);
+  });
+  $$(".subtab").forEach(b=>b.classList.toggle("active",b.dataset.sub===name));
+  store("mbz.sub",name);
+}
+$$(".subtab").forEach(b=>b.addEventListener("click",()=>showSub(b.dataset.sub)));
 
-      <hr class="sep">
-      <div class="kv">
-        <label>Clauses</label>
-        <div>
-          <label class="chip"><input type="checkbox" id="cl_index" checked> Indexation IRL</label>
-          <label class="chip"><input type="checkbox" id="cl_entret" checked> Entretien courant</label>
-          <label class="chip"><input type="checkbox" id="cl_caution"> Caution solidaire</label>
-          <label class="chip"><input type="checkbox" id="cl_animaux"> Animaux</label>
-        </div>
-        <label>Annexes</label>
-        <div>
-          <label class="chip"><input type="checkbox" id="ax_dpe" checked> DPE</label>
-          <label class="chip"><input type="checkbox" id="ax_erp" checked> ERP</label>
-          <label class="chip"><input type="checkbox" id="ax_plomb" checked> Plomb (si avant 1949)</label>
-          <label class="chip"><input type="checkbox" id="ax_amiante"> Amiante (si applicable)</label>
-        </div>
-      </div>
+/* pricing toggle */
+function setPrices(annual){
+  $("#p-starter").textContent = annual?"0€ / an":"0€ / mois";
+  $("#p-pro").textContent     = annual?"90€ / an":"9€ / mois";
+  $("#p-biz").textContent     = annual?"190€ / an":"19€ / mois";
+  store("mbz.annual",annual);
+}
+$("#toggle-annual").checked = read("mbz.annual",false);
+setPrices($("#toggle-annual").checked);
+$("#toggle-annual").addEventListener("change",e=>setPrices(e.target.checked));
 
-      <div id="pro_logo_block" class="notice small hidden">
-        <b>Logo propriétaire (Pro)</b> — Le logo sera affiché sur les aperçus (baux, quittances, EDL).
-        <div class="right" style="margin-top:8px"><img id="pro_logo_img" class="logo-sm hidden" alt="logo propriétaire"><button class="btn small" id="pro_logo_change">Changer le logo</button></div>
-      </div>
+/* plan selection + badge */
+function setPlan(name){
+  $("#plan-name").textContent=name;
+  store("mbz.plan",name);
+  toggleProFeatures();
+}
+$$(".choose-plan").forEach(b=>b.addEventListener("click",()=>setPlan(b.dataset.plan)));
+setPlan(read("mbz.plan","Starter"));
 
-      <div class="right" style="margin-top:12px">
-        <button class="btn" id="b_gen">Aperçu bail</button>
-        <button class="btn ghost" id="b_pdf">Imprimer / PDF (démo)</button>
-        <button class="btn ghost" id="b_sign">Signature (démo)</button>
-        <button class="btn ghost" id="b_save">Sauvegarder</button>
-      </div>
-      <hr class="sep"><div id="b_preview" class="small"></div>
-    </section>
+/* login (local) */
+$("#btn-login").addEventListener("click",()=>openModal("login_modal"));
+$("#l_ok").addEventListener("click",()=>{
+  const email=$("#l_email").value.trim();
+  if(!email) return alert("Saisir un email.");
+  store("mbz.user",{email,logged:true});
+  closeModal("login_modal");
+});
+$("#l_out").addEventListener("click",()=>{
+  store("mbz.user",{logged:false});
+  closeModal("login_modal");
+});
 
-    <section class="card">
-      <h3>Comptabilité (démo)</h3>
-      <div class="kv">
-        <label>Mois</label><input id="acc_month" type="month">
-        <label>Loyer encaissé (€)</label><input id="acc_rent" type="number" value="0">
-        <label>Charges encaissées (€)</label><input id="acc_chg" type="number" value="0">
-        <label>Dépenses (€)</label><input id="acc_sp" type="number" value="0">
-      </div>
-      <div class="right" style="margin-top:10px">
-        <button class="btn" id="acc_save">Enregistrer</button>
-        <button class="btn ghost" id="acc_csv">Export CSV</button>
-      </div>
-      <hr class="sep">
-      <table id="acc_table"><thead><tr><th>Mois</th><th>Loyer</th><th>Charges</th><th>Dépenses</th><th>Solde</th></tr></thead><tbody></tbody><tfoot><tr><td>Total</td><td id="t_rent">0</td><td id="t_chg">0</td><td id="t_sp">0</td><td id="t_bal">0</td></tr></tfoot></table>
+/* contact (démo) */
+$("#c_send")?.addEventListener("click",()=>alert("Message envoyé (démo)."));
 
-      <hr class="sep">
-      <h3>IRL (révision loyer)</h3>
-      <div class="kv">
-        <label>IRL N-1</label><input id="irl_prev" type="number" step="0.01" value="138.61">
-        <label>IRL N</label><input id="irl_now" type="number" step="0.01" value="143.15">
-        <label>Loyer actuel (€)</label><input id="irl_rent" type="number" value="650">
-      </div>
-      <div class="right" style="margin-top:10px"><button class="btn" id="irl_calc">Calculer</button></div>
-      <div id="irl_out" class="notice small" style="margin-top:8px"></div>
-    </section>
-  </div>
-</main>
+/* IRL démo */
+$("#btn-irl")?.addEventListener("click",()=>{
+  const base=parseFloat($("#b_rent").value||0);
+  const irl =parseFloat($("#b_irl").value||0);
+  $("#b_irl_new").value = (base*(1+irl/100)).toFixed(2);
+});
 
-<!-- EDL AVANCÉ + COMPTEURS -->
-<main class="wrap hidden" id="edl" data-view>
-  <div class="grid cols-2">
-    <section class="card">
-      <h3>État des lieux</h3>
-      <div class="kv">
-        <label>Type</label><select id="edl_type"><option>Entrée</option><option>Sortie</option></select>
-        <label>Ajouter une pièce</label>
-        <select id="edl_add_room">
-          <option value="">— choisir —</option>
-          <option>Salon</option><option>Chambre</option><option>Cuisine</option><option>Salle de bain</option>
-          <option>WC</option><option>Entrée</option><option>Balcon</option><option>Cave</option>
+/* inventaire meublé (dans Bail) */
+function refreshInv(){
+  const items=read("mbz.inv",[]);
+  const box=$("#inv-list"); box.innerHTML="";
+  items.forEach((it,i)=>{
+    const row=document.createElement("div");
+    row.className="card";
+    row.innerHTML=`
+      <div style="display:flex;align-items:center;gap:12px">
+        ${it.photo?`<img src="${it.photo}" style="width:56px;height:56px;object-fit:cover;border-radius:10px">`:``}
+        <div style="flex:1"><b>${it.name}</b> × ${it.qty}</div>
+        <button class="btn small" data-x="${i}">Suppr.</button>
+      </div>`;
+    row.querySelector("button").onclick=()=>{
+      const arr=read("mbz.inv",[]); arr.splice(i,1); store("mbz.inv",arr); refreshInv(); refreshInvTable();
+    };
+    box.appendChild(row);
+  });
+}
+$("#inv-add")?.addEventListener("click",()=>{
+  const name=$("#inv-name").value.trim(); const qty=parseInt($("#inv-qty").value||1,10);
+  if(!name) return;
+  const f=$("#inv-photo").files?.[0];
+  if(f){
+    const rd=new FileReader();
+    rd.onload=()=>{ addInv(name,qty,rd.result); };
+    rd.readAsDataURL(f);
+  }else addInv(name,qty,null);
+});
+function addInv(name,qty,photo){
+  const items=read("mbz.inv",[]); items.push({name,qty,photo}); store("mbz.inv",items);
+  $("#inv-name").value=""; $("#inv-qty").value=1; $("#inv-photo").value="";
+  refreshInv(); refreshInvTable();
+}
+$("#inv-clear")?.addEventListener("click",()=>{ store("mbz.inv",[]); refreshInv(); refreshInvTable(); });
+refreshInv();
+
+/* inventaire — vue table */
+function refreshInvTable(){
+  const items=read("mbz.inv",[]);
+  const w=$("#inv-table-wrap");
+  w.innerHTML= items.length? `
+  <table><thead><tr><th>Élément</th><th>Qté</th></tr></thead>
+  <tbody>${items.map(it=>`<tr><td>${it.name}</td><td>${it.qty}</td></tr>`).join("")}</tbody></table>`:
+  `<div class="alert">Aucun élément. Ajoutez-en depuis l’onglet <b>Baux</b>.</div>`;
+}
+refreshInvTable();
+
+/* EDL — pièces */
+function pieceTemplate(id){
+  return `
+  <div class="card" data-piece="${id}">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+      <h4>Pièce #${id}</h4>
+      <button class="btn small piece-del">Supprimer</button>
+    </div>
+
+    <div class="row" style="margin-top:8px">
+      <div><label>Nom de la pièce</label><input class="p-name" placeholder="Ex: Salon"></div>
+      <div><label>Photos (max 5)</label><input class="p-photos" type="file" accept="image/*" multiple></div>
+    </div>
+
+    <div class="row" style="margin-top:8px">
+      <div>
+        <label>Murs</label>
+        <select class="p-murs">
+          <option>Neuf</option><option selected>Bon</option><option>Usage</option><option>À rénover</option>
         </select>
       </div>
-      <div id="rooms" class="grid" style="margin-top:10px"></div>
+      <div>
+        <label>Sols</label>
+        <select class="p-sols">
+          <option>Neuf</option><option selected>Bon</option><option>Usage</option><option>À rénover</option>
+        </select>
+      </div>
+    </div>
 
-      <hr class="sep">
-      <h3>Compteurs (avec photo)</h3>
-      <div class="grid cols-3">
-        <div class="card">
-          <b>Électricité</b>
-          <input id="m_elec" placeholder="Index kWh">
-          <input id="m_elec_photo" type="file" accept="image/*">
-          <div id="m_elec_prev" class="small"></div>
+    <div class="row" style="margin-top:8px">
+      <div>
+        <label>Plafonds</label>
+        <select class="p-plafonds">
+          <option>Neuf</option><option selected>Bon</option><option>Usage</option><option>À rénover</option>
+        </select>
+      </div>
+      <div>
+        <label>Menuiseries</label>
+        <select class="p-menuis">
+          <option>Neuf</option><option selected>Bon</option><option>Usage</option><option>À rénover</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row" style="margin-top:8px">
+      <div>
+        <label>Radiateurs</label>
+        <select class="p-rad">
+          <option>Neuf</option><option selected>Bon</option><option>Usage</option><option>À rénover</option>
+        </select>
+      </div>
+      <div>
+        <label>Appareils</label>
+        <select class="p-app">
+          <option>Neuf</option><option selected>Bon</option><option>Usage</option><option>À rénover</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row" style="margin-top:8px">
+      <div>
+        <label>Anomalies (texte libre)</label>
+        <textarea class="p-ano" rows="2"></textarea>
+      </div>
+      <div>
+        <label>Relevé compteurs (kWh/m³) + photo</label>
+        <div class="row">
+          <div><input class="p-counter" placeholder="Valeur ex: 15342"></div>
+          <div><input class="p-counter-photo" type="file" accept="image/*"></div>
         </div>
-        <div class="card">
-          <b>Eau</b>
-          <input id="m_water" placeholder="Index m³">
-          <input id="m_water_photo" type="file" accept="image/*">
-          <div id="m_water_prev" class="small"></div>
-        </div>
-        <div class="card">
-          <b>Gaz</b>
-          <input id="m_gas" placeholder="Index m³">
-          <input id="m_gas_photo" type="file" accept="image/*">
-          <div id="m_gas_prev" class="small"></div>
-        </div>
-      </div>
-
-      <div class="right" style="margin-top:12px">
-        <button class="btn" id="edl_sign">Signature (démo)</button>
-        <button class="btn ghost" id="edl_pdf">Imprimer / PDF (démo)</button>
-        <button class="btn ghost" id="edl_save">Sauvegarder</button>
-      </div>
-    </section>
-
-    <section class="card">
-      <h3>Conseils</h3>
-      <p class="small">Pour chaque pièce : choisissez l’état via les menus déroulants (murs, sols, plafond, menuiseries, électricité, appareils, chauffage, fenêtres), joignez des photos (état/anomalies), ajoutez un commentaire.</p>
-      <div class="notice small">Toutes les données de la démo sont conservées dans votre navigateur (localStorage).</div>
-    </section>
-  </div>
-</main>
-
-<!-- QUITTANCE -->
-<main class="wrap hidden" id="quittance" data-view>
-  <div class="grid cols-2">
-    <section class="card">
-      <h3>Générer une quittance</h3>
-      <div class="kv">
-        <label>Période</label><input id="q_month" type="month">
-        <label>Nom locataire</label><input id="q_tenant" placeholder="Prénom NOM">
-        <label>Adresse logement</label><input id="q_addr" placeholder="Adresse complète">
-        <label>Loyer HC (€)</label><input id="q_rent" type="number" value="650">
-        <label>Charges (€)</label><input id="q_chg" type="number" value="50">
-        <label>Ville & date</label><input id="q_city" placeholder="Paris, le …">
-      </div>
-      <div class="right" style="margin-top:10px">
-        <button class="btn" id="q_make">Aperçu</button>
-        <button class="btn ghost" id="q_print">Imprimer / PDF</button>
-        <button class="btn ghost" id="q_save">Sauvegarder</button>
-      </div>
-      <hr class="sep"><div id="q_out" class="small"></div>
-    </section>
-    <section class="card"><h3>Mentions</h3><p class="small">La quittance atteste du paiement intégral des sommes dues pour la période (loyer+charges). Impression possible via le navigateur.</p></section>
-  </div>
-</main>
-
-<!-- TARIFS (mensuel & annuel) -->
-<main class="wrap hidden" id="pricing" data-view>
-  <section class="card">
-    <h3>Tarifs</h3>
-    <div class="grid cols-3">
-      <div class="card">
-        <h3>À la carte</h3><p class="small">1 bail complet</p><p class="price ok">9,90 €</p>
-      </div>
-      <div class="card">
-        <h3>Starter</h3><p class="small">3 baux + 3 EDL • compta</p>
-        <p class="price ok">29,90 €/mois</p><p class="small">ou 299 €/an</p>
-      </div>
-      <div class="card">
-        <h3>Pro illimité</h3><p class="small">Baux & EDL illimités • logo propriétaire • clauses pro</p>
-        <p class="price ok">79,90 €/mois</p><p class="small">ou 799 €/an</p>
       </div>
     </div>
-  </section>
-</main>
-
-<!-- DASHBOARD -->
-<main class="wrap hidden" id="dashboard" data-view>
-  <section class="card">
-    <h3>Dashboard (démo locale)</h3>
-    <div class="right">
-      <button class="btn small" id="db_export">Exporter JSON</button>
-      <button class="btn small" id="db_reset">Tout effacer</button>
-    </div>
-    <hr class="sep">
-    <div class="grid cols-3">
-      <div><h3>Baux</h3><ul id="db_baux" class="small"></ul></div>
-      <div><h3>EDL</h3><ul id="db_edl" class="small"></ul></div>
-      <div><h3>Quittances</h3><ul id="db_quit" class="small"></ul></div>
-    </div>
-  </section>
-</main>
-
-<!-- FAQ -->
-<main class="wrap hidden" id="faq" data-view>
-  <section class="card">
-    <h3>FAQ</h3>
-    <p><span class="chip">Données</span> Démo 100% locale (localStorage). Pas de serveur.</p>
-    <p><span class="chip">Signature</span> Simulation eIDAS pour la démo (canvas).</p>
-    <p><span class="chip">PDF</span> Utilisez l’impression du navigateur (Ctrl/Cmd+P).</p>
-  </section>
-</main>
-
-<!-- CONTACT -->
-<main class="wrap hidden" id="contact" data-view>
-  <section class="card">
-    <h3>Contact</h3>
-    <div class="kv">
-      <label>Nom</label><input id="c_name">
-      <label>Email</label><input id="c_mail" type="email">
-      <label>Message</label><textarea id="c_msg" rows="4"></textarea>
-    </div>
-    <div class="right" style="margin-top:10px"><button class="btn" id="c_send">Envoyer (démo)</button></div>
-    <div id="c_out" class="small" style="margin-top:8px"></div>
-  </section>
-</main>
-
-<footer class="footer wrap">© 2025 MonBailZen — Démo SaaS front-end autonome. eIDAS simulée. Données locales.</footer>
-
-<script>
-/* ========= Utils ========= */
-const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s);
-const eur=n=>(Number(n)||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'});
-const SKEY='mbz_v8_all';
-const App = {user:null, plan:'starter', proLogo:null, baux:[], edl:[], quittances:[], acc:[]};
-const esc=s=>(s||'').replace(/[&<>"]/g,c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-
-/* ========= State ========= */
-function save(){ try{ localStorage.setItem(SKEY, JSON.stringify(App)); }catch{} }
-function load(){
-  try{ const raw=localStorage.getItem(SKEY); if(raw){ const o=JSON.parse(raw); Object.assign(App,o); } }catch{}
-  $('#who').textContent = App.user? ('Connecté : '+App.user) : 'Non connecté';
-  $('#btnLogin').classList.toggle('hidden', !!App.user);
-  $('#btnLogout').classList.toggle('hidden', !App.user);
-  $('#planBadge').textContent = App.plan==='pro'?'Pro':'Starter';
-  $('#planProTag').classList.toggle('hidden', App.plan!=='pro');
-  if(App.proLogo){ $('#pro_logo_img').src = App.proLogo; $('#pro_logo_img').classList.remove('hidden'); }
-  refreshAcc(); refreshDashboard();
-}
-load();
-
-/* ========= Navigation ========= */
-const views=[...$$('[data-view]')], tabs=[...$$('.tab')];
-function show(id){ views.forEach(v=>v.classList.toggle('hidden',v.id!==id)); tabs.forEach(t=>t.classList.toggle('active',t.dataset.tab===id)); location.hash='#'+id; }
-tabs.forEach(t=>t.addEventListener('click',()=>show(t.dataset.tab)));
-$$('[data-tabto]').forEach(a=>a.addEventListener('click',()=>show(a.getAttribute('data-tabto'))));
-addEventListener('load',()=>{const h=location.hash.replace('#','')||'home'; if($('#'+h)) show(h);});
-addEventListener('hashchange',()=>{const h=location.hash.replace('#',''); if($('#'+h)) show(h);});
-
-/* ========= Login ========= */
-const loginModal=$('#loginModal'), btnLogin=$('#btnLogin'), btnLogout=$('#btnLogout');
-const lgClose=$('#lg_close'), lgOk=$('#lg_ok'), lgMail=$('#lg_mail'), lgPwd=$('#lg_pwd'), lgPlan=$('#lg_plan'), proLogo=$('#proLogo'), proLogoLabel=$('#proLogoLabel');
-function openLogin(){ loginModal.classList.add('open'); loginModal.setAttribute('aria-hidden','false'); }
-function closeLogin(){ loginModal.classList.remove('open'); loginModal.setAttribute('aria-hidden','true'); }
-btnLogin.addEventListener('click',openLogin); lgClose.addEventListener('click',closeLogin);
-lgPlan.addEventListener('change',()=>{ const pro = lgPlan.value==='pro'; proLogo.classList.toggle('hidden',!pro); proLogoLabel.classList.toggle('hidden',!pro); });
-proLogo.addEventListener('change', e=>{
-  const f=e.target.files?.[0]; if(!f) return; const rd=new FileReader(); rd.onload=ev=>{ App.proLogo=ev.target.result; save(); if(App.plan==='pro'){ $('#pro_logo_img').src=App.proLogo; $('#pro_logo_img').classList.remove('hidden'); } }; rd.readAsDataURL(f);
-});
-$('#pro_logo_change').addEventListener('click',()=>proLogo.click());
-lgOk.addEventListener('click',()=>{
-  App.user = lgMail.value || 'user@demo';
-  App.plan = lgPlan.value || 'starter';
-  if(App.plan!=='pro') App.proLogo=null;
-  save(); load(); closeLogin(); alert('Connecté (démo).');
-});
-btnLogout.addEventListener('click',()=>{ App.user=null; save(); load(); });
-
-/* ========= Signature ========= */
-const sigModal=$('#sig_modal'), sigClose=$('#sig_close'), sigClear=$('#sig_clear'), sigSave=$('#sig_save');
-let pad,ctx,drawing=false,last;
-function openSig(){ sigModal.classList.add('open'); sigModal.setAttribute('aria-hidden','false'); resizePad(); }
-function closeSig(){ sigModal.classList.remove('open'); sigModal.setAttribute('aria-hidden','true'); }
-sigClose.addEventListener('click',closeSig); sigModal.addEventListener('click',e=>{ if(e.target===sigModal) closeSig(); }); document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeSig(); });
-function resizePad(){ pad=$('#sig_pad'); const dpr=Math.max(1,devicePixelRatio||1), r=pad.getBoundingClientRect(); pad.width=r.width*dpr; pad.height=r.height*dpr; ctx=pad.getContext('2d'); ctx.scale(dpr,dpr); ctx.lineWidth=2; ctx.lineCap='round'; ctx.fillStyle="#fff"; ctx.fillRect(0,0,r.width,r.height); }
-function P(e){ const r=pad.getBoundingClientRect(); const t=(e.touches?e.touches[0]:e); return {x:t.clientX-r.left,y:t.clientY-r.top}; }
-function down(e){ if(!pad.contains(e.target)) return; drawing=true; last=P(e); }
-function move(e){ if(!drawing) return; const p=P(e); ctx.beginPath(); ctx.moveTo(last.x,last.y); ctx.lineTo(p.x,p.y); ctx.stroke(); last=p; }
-function up(){ drawing=false; }
-['mousedown','touchstart'].forEach(ev=>document.addEventListener(ev,down,{passive:true}));
-['mousemove','touchmove'].forEach(ev=>document.addEventListener(ev,move,{passive:true}));
-['mouseup','mouseleave','touchend','touchcancel'].forEach(ev=>document.addEventListener(ev,up));
-sigClear.addEventListener('click',resizePad);
-sigSave.addEventListener('click',()=>{ try{ localStorage.setItem('mbz_sig', pad.toDataURL()); alert('Signature enregistrée (démo)'); closeSig(); }catch(e){ alert('Sauvegarde locale impossible'); }});
-
-/* ========= Baux ========= */
-const bType=$('#b_type'), meubleBlock=$('#meuble_block');
-bType.addEventListener('change',()=>meubleBlock.classList.toggle('hidden', bType.value!=='Meublé'));
-$('#inv_add').addEventListener('click',()=>{ const val=$('#inv_new').value.trim(); if(!val) return; const lab=document.createElement('label'); lab.className='chip'; lab.innerHTML=`<input type="checkbox" checked> ${esc(val)}`; $('#inv_list').appendChild(lab); $('#inv_new').value=''; });
-$('#inv_photos').addEventListener('change',e=>{ const box=$('#inv_prev'); box.innerHTML=''; [...e.target.files].forEach(f=>{ const t=document.createElement('span'); t.className='thumb'; t.textContent='📷 '+f.name; box.appendChild(t); }); });
-$('#b_sign').addEventListener('click',openSig);
-function getBail(){
-  const get=id=>$('#'+id).value;
-  const inv=[...$('#inv_list').querySelectorAll('input:checked')].map(i=>i.parentElement.textContent.trim());
-  return {
-    plan:App.plan, logo:App.proLogo, type:get('b_type'), addr:get('b_addr'), area:+get('b_area')||0,
-    rent:+get('b_rent')||0, chg:+get('b_chg')||0, dep:+get('b_dep')||0,
-    term:get('b_term')==='Autre'?(get('b_term_custom')||'—'):get('b_term'),
-    tenant:get('b_tenant')||'[Locataire]', guar:get('b_guarantor')||'',
-    start:get('b_start')||'[date]', notice:get('b_notice'),
-    irl:+get('b_irl')||0, inv, clauses:{index:$('#cl_index').checked,entret:$('#cl_entret').checked,caution:$('#cl_caution').checked,animaux:$('#cl_animaux').checked},
-    annexes:{dpe:$('#ax_dpe').checked,erp:$('#ax_erp').checked,plomb:$('#ax_plomb').checked,amiante:$('#ax_amiante').checked}
-  };
-}
-function previewBail(b){
-  const total=b.rent+b.chg;
-  const clauses=[b.clauses.index&&'Indexation IRL',b.clauses.entret&&'Entretien courant',b.clauses.caution&&'Caution solidaire',b.clauses.animaux&&'Animaux'].filter(Boolean).join(' • ')||'—';
-  const annexes=[b.annexes.dpe&&'DPE',b.annexes.erp&&'ERP',b.annexes.plomb&&'Plomb',b.annexes.amiante&&'Amiante'].filter(Boolean).join(' • ')||'—';
-  const inv = (b.type==='Meublé' && b.inv.length)? `<br>Inventaire : ${esc(b.inv.join(', '))}`:'';
-  const logo = (b.plan==='pro' && b.logo)? `<img src="${b.logo}" alt="logo" style="height:36px;float:right;border-radius:6px">`:'';
-  $('#b_preview').innerHTML = `<div class="notice">
-    ${logo}<b>Bail ${esc(b.type)}</b> — ${b.area} m² — ${esc(b.addr)}<br>
-    Locataire : ${esc(b.tenant)}${b.guar?` — Garant : ${esc(b.guar)}`:''}<br>
-    Loyer HC : ${eur(b.rent)} • Charges : ${eur(b.chg)} • <b>Total : ${eur(total)}</b><br>
-    Dépôt : ${eur(b.dep)} • Durée : ${esc(b.term)} • Préavis : ${esc(b.notice)}<br>
-    IRL réf. : ${b.irl}<br>
-    Clauses : ${esc(clauses)}<br>
-    Annexes : ${esc(annexes)}${inv}<br>
-    Date d’effet : ${esc(b.start)}
   </div>`;
 }
-$('#b_gen').addEventListener('click',()=>{ const b=getBail(); previewBail(b); });
-$('#b_pdf').addEventListener('click',()=>window.print());
-$('#b_save').addEventListener('click',()=>{ const b=getBail(); App.baux.push(b); save(); refreshDashboard(); alert('Bail sauvegardé (démo).'); });
+function savePieces(){
+  const data=[];
+  $$("#edl-pieces [data-piece]").forEach(card=>{
+    const photosInput = $(".p-photos",card);
+    const files = [...(photosInput?.files||[])].slice(0,5);
+    const photosPromises = files.map(f=>fileToDataURL(f));
+    const counterPhotoInput = $(".p-counter-photo",card);
+    const counterFile = (counterPhotoInput?.files||[])[0];
 
-/* ========= IRL & Comptabilité ========= */
-function refreshAcc(){
-  const T=$('#acc_table tbody'); T.innerHTML=''; let tr=0,tc=0,ts=0;
-  for(const it of (App.acc||[])){ const bal = (+it.rent)+(+it.chg)-(+it.sp);
-    tr+=+it.rent; tc+=+it.chg; ts+=+it.sp;
-    const r=document.createElement('tr'); r.innerHTML=`<td>${esc(it.month)}</td><td>${eur(it.rent)}</td><td>${eur(it.chg)}</td><td>${eur(it.sp)}</td><td>${eur(bal)}</td>`; T.appendChild(r);
-  }
-  $('#t_rent').textContent=eur(tr); $('#t_chg').textContent=eur(tc); $('#t_sp').textContent=eur(ts); $('#t_bal').textContent=eur(tr+tc-ts);
-}
-$('#acc_save').addEventListener('click',()=>{ const row={month:$('#acc_month').value||'[mois]',rent:+$('#acc_rent').value||0,chg:+$('#acc_chg').value||0,sp:+$('#acc_sp').value||0}; App.acc.push(row); save(); refreshAcc(); });
-$('#acc_csv').addEventListener('click',()=>{ const rows=[['Mois','Loyer','Charges','Dépenses','Solde'], ...App.acc.map(it=>[it.month,it.rent,it.chg,it.sp,(+it.rent+ +it.chg- +it.sp)])]; const csv=rows.map(r=>r.join(';')).join('\n'); const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'})); a.download='compta.csv'; a.click(); });
-$('#irl_calc').addEventListener('click',()=>{ const p=+$('#irl_prev').value||0,n=+$('#irl_now').value||0,r=+$('#irl_rent').value||0; if(!p||!n||!r){ $('#irl_out').textContent='Renseignez IRL N-1, IRL N et Loyer.'; return; } const coef=n/p,nv=(r*coef).toFixed(2); $('#irl_out').innerHTML=`Coefficient : <b>${coef.toFixed(4)}</b> — Loyer révisé : <b>${eur(nv)}</b>`; });
-
-/* ========= EDL ========= */
-const roomsBox=$('#rooms');
-$('#edl_add_room').addEventListener('change',e=>{
-  const name=e.target.value; if(!name) return; e.target.value='';
-  const el=document.createElement('div'); el.className='card';
-  el.innerHTML=`
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-      <b>${esc(name)}</b>
-      <button class="btn ghost" data-del>Supprimer</button>
-    </div>
-    <div class="grid cols-4">
-      ${['Murs','Sols','Plafond','Menuiseries','Électricité','Appareils','Chauffage','Fenêtres'].map(k=>`
-        <label class="small">${k}<br>
-          <select data-k="${k}">
-            <option>OK</option><option>À nettoyer</option><option>À réparer</option><option>Remplacer</option>
-          </select>
-        </label>`).join('')}
-    </div>
-    <div style="margin-top:8px" class="grid cols-2">
-      <div>
-        <label class="small">Photos (état)</label>
-        <input type="file" accept="image/*" multiple data-photos>
-        <div class="small" data-prev></div>
-      </div>
-      <div>
-        <label class="small">Anomalies (photos)</label>
-        <input type="file" accept="image/*" multiple data-issues>
-        <div class="small" data-prev-issues></div>
-      </div>
-    </div>
-    <label class="small" style="display:block;margin-top:8px">Commentaires</label>
-    <textarea rows="2" placeholder="Observations…"></textarea>
-  `;
-  roomsBox.appendChild(el);
-  el.querySelector('[data-del]').onclick=()=>el.remove();
-  const list=(input,box)=>{ box.innerHTML=''; [...input.files].forEach(f=>{ const t=document.createElement('span'); t.className='thumb'; t.textContent='📷 '+f.name; box.appendChild(t); }); };
-  el.querySelector('[data-photos]').addEventListener('change',e=>list(e.target, el.querySelector('[data-prev]')));
-  el.querySelector('[data-issues]').addEventListener('change',e=>list(e.target, el.querySelector('[data-prev-issues]')));
-});
-['m_elec_photo','m_water_photo','m_gas_photo'].forEach(id=>{
-  $('#'+id).addEventListener('change',e=>{
-    const box = $('#'+id.replace('_photo','_prev')); box.innerHTML=''; const f=e.target.files?.[0]; if(f){ const t=document.createElement('span'); t.className='thumb'; t.textContent='📷 '+f.name; box.appendChild(t); }
+    data.push({card, photosPromises, counterFile});
   });
-});
-$('#edl_sign').addEventListener('click',openSig);
-$('#edl_pdf').addEventListener('click',()=>window.print());
-$('#edl_save').addEventListener('click',()=>{
-  const rooms=[...roomsBox.querySelectorAll('.card')].map(card=>{
-    const name=card.querySelector('b').textContent.trim();
-    const states={}; card.querySelectorAll('select[data-k]').forEach(s=>states[s.dataset.k]=s.value);
-    const note=card.querySelector('textarea')?.value||'';
-    return {name,states,note};
+  // Lire fichiers puis stocker
+  Promise.all(data.map(async d=>{
+    const photos = await Promise.all(d.photosPromises);
+    const counterPhoto = d.counterFile ? await fileToDataURL(d.counterFile) : null;
+    const card=d.card;
+    return {
+      name: $(".p-name",card).value,
+      murs: $(".p-murs",card).value,
+      sols: $(".p-sols",card).value,
+      plafonds: $(".p-plafonds",card).value,
+      menuis: $(".p-menuis",card).value,
+      rad: $(".p-rad",card).value,
+      app: $(".p-app",card).value,
+      ano: $(".p-ano",card).value,
+      counter: $(".p-counter",card).value,
+      photos, counterPhoto
+    };
+  })).then(arr=>{
+    store("mbz.edl",arr);
+    alert("Pièces enregistrées (localStorage).");
   });
-  const meters={
-    elec:$('#m_elec').value, water:$('#m_water').value, gas:$('#m_gas').value,
-    elecPhoto:$('#m_elec_prev').textContent, waterPhoto:$('#m_water_prev').textContent, gasPhoto:$('#m_gas_prev').textContent
-  };
-  const edl={type:$('#edl_type').value, rooms, meters, at:new Date().toISOString()};
-  App.edl.push(edl); save(); refreshDashboard(); alert('EDL sauvegardé (démo).');
-});
-
-/* ========= Quittance ========= */
-function qData(){ return { m:$('#q_month').value, t:$('#q_tenant').value, a:$('#q_addr').value, r:+$('#q_rent').value||0, c:+$('#q_chg').value||0, city:$('#q_city').value, logo:(App.plan==='pro'?App.proLogo:null) }; }
-$('#q_make').addEventListener('click',()=>{ const q=qData(); if(!q.m||!q.t||!q.a){ $('#q_out').textContent='Renseignez Période, Locataire, Adresse.'; return; }
-  const tot=q.r+q.c, logo = q.logo? `<img src="${q.logo}" alt="logo" style="height:36px;float:right;border-radius:6px">` : '';
-  $('#q_out').innerHTML=`<div class="notice">${logo}<b>QUITTANCE DE LOYER</b><br>Période : ${esc(q.m)} — Locataire : ${esc(q.t)}<br>Logement : ${esc(q.a)}<br>Détail : Loyer HC ${eur(q.r)} + Charges ${eur(q.c)} = <b>${eur(tot)}</b><br>${esc(q.city||'')}</div>`;
-});
-$('#q_print').addEventListener('click',()=>window.print());
-$('#q_save').addEventListener('click',()=>{ const q=qData(); App.quittances.push(q); save(); refreshDashboard(); alert('Quittance sauvegardée (démo).'); });
-
-/* ========= Contact ========= */
-$('#c_send').addEventListener('click',()=>{ const n=$('#c_name').value||'[Nom]'; const m=$('#c_mail').value||'[Email]'; const t=$('#c_msg').value||'[Message]'; $('#c_out').textContent=`Merci ${n} — message enregistré (démo).`; });
-
-/* ========= Dashboard ========= */
-function refreshDashboard(){
-  const ulB=$('#db_baux'), ulE=$('#db_edl'), ulQ=$('#db_quit'); ulB.innerHTML=''; ulE.innerHTML=''; ulQ.innerHTML='';
-  (App.baux||[]).forEach((b,i)=>{ const li=document.createElement('li'); li.textContent=`#${i+1} ${b.type} — ${b.addr} — ${b.tenant}`; ulB.appendChild(li); });
-  (App.edl||[]).forEach((e,i)=>{ const li=document.createElement('li'); li.textContent=`#${i+1} ${e.type} — ${e.rooms.length} pièce(s)`; ulE.appendChild(li); });
-  (App.quittances||[]).forEach((q,i)=>{ const li=document.createElement('li'); li.textContent=`#${i+1} ${q.m} — ${q.t}`; ulQ.appendChild(li); });
 }
-$('#db_export').addEventListener('click',()=>{ const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([JSON.stringify(App,null,2)],{type:'application/json'})); a.download='monbailzen_demo.json'; a.click(); });
-$('#db_reset').addEventListener('click',()=>{ if(confirm('Tout effacer ?')){ localStorage.removeItem(SKEY); location.reload(); }});
+function renderPieces(){
+  const wrap=$("#edl-pieces"); wrap.innerHTML="";
+  const arr=read("mbz.edl",[]);
+  arr.forEach((p,i)=>{
+    const cont=document.createElement("div");
+    cont.className="col-12";
+    cont.innerHTML=pieceTemplate(i+1);
+    $(".p-name",cont).value=p.name||"";
+    $(".p-murs",cont).value=p.murs||"Bon";
+    $(".p-sols",cont).value=p.sols||"Bon";
+    $(".p-plafonds",cont).value=p.plafonds||"Bon";
+    $(".p-menuis",cont).value=p.menuis||"Bon";
+    $(".p-rad",cont).value=p.rad||"Bon";
+    $(".p-app",cont).value=p.app||"Bon";
+    $(".p-ano",cont).value=p.ano||"";
+    $(".p-counter",cont).value=p.counter||"";
+    $(".piece-del",cont).onclick=()=>{
+      const list=read("mbz.edl",[]); list.splice(i,1); store("mbz.edl",list); renderPieces();
+    };
+    wrap.appendChild(cont);
+  });
+}
+$("#edl-add")?.addEventListener("click",()=>{
+  const wrap=$("#edl-pieces");
+  const n=wrap.children.length+1;
+  const col=document.createElement("div");
+  col.className="col-12";
+  col.innerHTML=pieceTemplate(n);
+  $(".piece-del",col).onclick=()=>col.remove();
+  wrap.appendChild(col);
+});
+$("#edl-clear")?.addEventListener("click",()=>{ store("mbz.edl",[]); renderPieces(); });
+/* bouton sauvegarde auto à la sortie de la section EDL */
+document.addEventListener("visibilitychange",()=>{ if(!document.hidden && !$("#d-edl").hidden) savePieces(); });
 
+function fileToDataURL(f){ return new Promise(res=>{ const r=new FileReader(); r.onload=()=>res(r.result); r.readAsDataURL(f); }); }
+
+/* comptabilité */
+function renderTx(){
+  const tx=read("mbz.tx",[]);
+  const box=$("#tx-list"); if(!box) return;
+  const totalIn = tx.filter(t=>t.type==="in").reduce((a,b)=>a+Number(b.amt||0),0);
+  const totalOut= tx.filter(t=>t.type==="out").reduce((a,b)=>a+Number(b.amt||0),0);
+  box.innerHTML = `
+  <div class="badge">Solde: <b class="mono">${(totalIn-totalOut).toFixed(2)} €</b></div>
+  <table style="margin-top:8px"><thead><tr><th>Date</th><th>Type</th><th>Libellé</th><th>Montant</th><th></th></tr></thead>
+  <tbody>${tx.map((t,i)=>`<tr><td>${t.date||""}</td><td>${t.type==="in"?"Enc.":"Dép."}</td><td>${t.label}</td><td class="mono">${Number(t.amt).toFixed(2)} €</td><td><button class="btn small" data-del="${i}">Suppr.</button></td></tr>`).join("")}</tbody></table>`;
+  $$("[data-del]",box).forEach(b=>b.onclick=()=>{ const arr=read("mbz.tx",[]); arr.splice(Number(b.dataset.del),1); store("mbz.tx",arr); renderTx(); });
+}
+$("#tx-add")?.addEventListener("click",()=>{
+  const label=$("#tx-label").value.trim(), amt=Number($("#tx-amt").value||0);
+  if(!label || !amt) return alert("Libellé et montant requis.");
+  const t={label, amt, type:$("#tx-type").value, date:$("#tx-date").value||new Date().toISOString().slice(0,10)};
+  const arr=read("mbz.tx",[]); arr.push(t); store("mbz.tx",arr); renderTx();
+  $("#tx-label").value=""; $("#tx-amt").value="";
+});
+$("#tx-csv")?.addEventListener("click",()=>{
+  const tx=read("mbz.tx",[]);
+  const rows=[["date","type","label","montant"], ...tx.map(t=>[t.date,t.type,t.label,t.amt])];
+  const csv=rows.map(r=>r.map(x=>`"${(x??"").toString().replace(/"/g,'""')}"`).join(",")).join("\n");
+  const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"})); a.download="mbz-compta.csv"; a.click();
+});
+renderTx();
+
+/* paramètres + logo (Pro) */
+function toggleProFeatures(){
+  const plan=read("mbz.plan","Starter");
+  const pro = (plan==="Pro"||plan==="Business");
+  $("#u_logo").disabled=!pro;
+  $(".pro-only")?.classList.toggle("badge",!pro);
+}
+$("#u_logo")?.addEventListener("change", async e=>{
+  const plan=read("mbz.plan","Starter");
+  if(!(plan==="Pro"||plan==="Business")) return alert("Réservé au plan Pro ou Business.");
+  const f=e.target.files?.[0]; if(!f) return;
+  const data=await fileToDataURL(f);
+  store("mbz.logo",data);
+  renderLogo();
+});
+function renderLogo(){
+  const data=read("mbz.logo",null);
+  const img=$("#u_logo_preview");
+  if(data){ img.src=data; img.style.display="block"; } else img.style.display="none";
+}
+renderLogo();
+
+/* modal system */
+function openModal(id){ const m=$("#"+id); if(!m) return; m.classList.add("is-open"); m.setAttribute("aria-hidden","false"); }
+function closeModal(id){ const m=$("#"+id); if(!m) return; m.classList.remove("is-open"); m.setAttribute("aria-hidden","true"); }
+document.addEventListener("click",e=>{
+  const t=e.target.closest("[data-modal-open]"); if(t) openModal(t.dataset.modalOpen);
+  const c=e.target.closest("[data-modal-close]"); if(c) closeModal(c.dataset.modalClose);
+  const m=e.target.closest(".modal"); if(m && e.target===m) m.classList.remove("is-open");
+});
+window.addEventListener("keydown",e=>{ if(e.key==="Escape") $$(".modal.is-open").forEach(m=>m.classList.remove("is-open")); });
+
+/* signature */
+(function(){
+  const can=$("#sig_canvas"); if(!can) return;
+  const ctx=can.getContext("2d"); let draw=false, last=null;
+  const get=(e)=>{const r=can.getBoundingClientRect(); const i=e.touches?e.touches[0]:e; return {x:i.clientX-r.left,y:i.clientY-r.top};};
+  const start=e=>{draw=true; last=get(e);};
+  const move =e=>{ if(!draw) return; const p=get(e); ctx.lineWidth=2.5; ctx.lineCap="round"; ctx.strokeStyle="#111"; ctx.beginPath(); ctx.moveTo(last.x,last.y); ctx.lineTo(p.x,p.y); ctx.stroke(); last=p;};
+  const stop =()=> draw=false;
+  ["mousedown","touchstart"].forEach(ev=>can.addEventListener(ev,start,{passive:true}));
+  ["mousemove","touchmove"].forEach(ev=>can.addEventListener(ev,move,{passive:true}));
+  ["mouseup","mouseleave","touchend"].forEach(ev=>can.addEventListener(ev,stop,{passive:true}));
+  $("#sig_clear").addEventListener("click",()=>ctx.clearRect(0,0,can.width,can.height));
+  $("#sig_save").addEventListener("click",()=>{
+    const data=can.toDataURL("image/png"); store("mbz.sig",data); closeModal("sig_modal");
+    alert("Signature enregistrée localement.");
+  });
+})();
+
+/* initialisations */
+renderPieces();
+toggleProFeatures();
 </script>
 </body>
 </html>
