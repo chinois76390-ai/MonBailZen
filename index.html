@@ -1,415 +1,311 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>MonBailZen — v8 (finale)</title>
-  <meta name="description" content="MonBailZen : baux guidés, EDL multi-pièces avec photos/relevés, IRL (démo), exports CSV, signature (démo), démo 100% locale." />
+  <title>MonBailZen — Tarifs</title>
+  <meta name="description" content="Tarifs MonBailZen : mensuel, annuel (-2 mois) et option Pause & sauvegarde. EDL illimités, comptabilité (charges & IRL), exports, signature (démo) et logo propriétaire.">
   <style>
     :root{
-      --bg:#0e1014; --panel:#151B22; --soft:#10121a;
-      --text:#e6edf3; --muted:#9da7b1; --chip:#2a2f3a;
-      --gold:#40b04c; --acc:#86e38f; --warn:#f3d98a; --err:#ef4444;
-      --brand:#00bf15;
+      --bg:#0b0f14;
+      --bg-2:#0f1520;
+      --card:#121924;
+      --muted:#9fb3c5;
+      --text:#e7f0fb;
+      --accent:#7CFF6B;
+      --ring: 0 0 0 3px rgba(124,255,107,.30);
+      --shadow: 0 8px 25px rgba(0,0,0,.35);
+      --radius: 16px;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
       margin:0;
-      background:linear-gradient(180deg,var(--bg),#0b0f15);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+      background: radial-gradient(1200px 600px at 70% -10%, rgba(124,255,107,.08), transparent 60%),
+                  radial-gradient(900px 500px at -10% 10%, rgba(124,255,107,.05), transparent 60%),
+                  var(--bg);
       color:var(--text);
-      font:15px/1.6 Inter, system-ui, Segoe UI, Roboto, Arial;
+      line-height:1.45;
     }
-    .wrap{max-width:1200px;margin:0 auto;padding:16px}
-    .grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}
-    .col-12{grid-column:span 12}
-    .col-8{grid-column:span 8}
-    .col-4{grid-column:span 4}
-    @media (max-width:1100px){.col-8,.col-4{grid-column:span 12}}
+    a{color:inherit;text-decoration:none}
+    .container{max-width:1120px;margin:0 auto;padding:24px}
 
-    header.top{position:sticky;top:0;background:#0e1014cc;backdrop-filter:blur(8px);z-index:30;border-bottom:1px solid #182233}
-    nav{display:flex;justify-content:space-between;align-items:center;padding:10px 0;gap:10px}
-    .brand{display:flex;align-items:center;gap:10px}
-    .logo{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--gold),var(--brand));display:grid;place-content:center;color:#111;font-weight:900}
-    .title{font-weight:800}
-    .badge{display:inline-flex;gap:6px;align-items:center;font-size:12px;background:var(--chip);border:1px solid #222b35;color:var(--muted);padding:2px 8px;border-radius:999px}
+    /* NAV */
+    .nav{position:sticky;top:0;z-index:20;background:rgba(11,15,20,.78);backdrop-filter: blur(12px);border-bottom:1px solid #17202b}
+    .nav-inner{display:flex;align-items:center;gap:14px;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.2px}
+    .brand-badge{width:36px;height:28px;border-radius:8px;background:var(--accent);color:#031106;display:grid;place-items:center;font-weight:900;box-shadow:0 6px 18px rgba(124,255,107,.34)}
+    .menu{display:flex;align-items:center;gap:18px}
+    .menu a{padding:10px 12px;border-radius:10px;color:var(--muted)}
+    .menu a.active,.menu a:hover{color:#0a1a0a;background:rgba(124,255,107,.18)}
+    .cta{display:flex;align-items:center;gap:10px}
+    .btn{padding:10px 14px;border-radius:999px;border:1px solid #223143;background:#0e141c;color:var(--text);box-shadow:var(--shadow);cursor:pointer}
+    .btn.ghost{background:transparent}
+    .btn.accent{background:var(--accent);color:#041105;border-color:transparent;font-weight:800}
+    .btn:focus-visible{outline:none; box-shadow: var(--ring)}
 
-    .tabs{display:flex;flex-wrap:wrap;gap:8px}
-    .tab{cursor:pointer;border:1px solid var(--chip);padding:8px 12px;border-radius:999px;background:#0f1520;color:var(--text)}
-    .tab.active{background:linear-gradient(135deg,var(--gold),var(--acc));color:#111;border-color:transparent;font-weight:700}
-    .btn{display:inline-flex;gap:8px;align-items:center;padding:10px 14px;border:1px solid #223047;background:#0f1622;color:var(--text);border-radius:12px}
-    .btn:hover{border-color:#2b3a55}
-    .btn.gold{background:linear-gradient(135deg,var(--gold),var(--acc));color:#111;border:0;font-weight:800}
+    /* HERO */
+    .hero{padding:42px 0 16px}
+    .hero .chip{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:#0e171f;border:1px solid #1c2a38;color:var(--muted)}
+    .hero h1{margin:16px 0 10px;font-size:34px;line-height:1.15}
+    .hero p{margin:0;color:var(--muted);max-width:840px}
 
-    section{padding:18px 0}
-    .card{background:var(--panel);border:1px solid #1b2432;border-radius:18px;padding:16px}
-    .card.soft{background:var(--soft)}
-    .kpi{display:flex;gap:8px;align-items:center}
-    .kpi b{font-size:28px}
-    .muted{color:var(--muted)}
-    .center{display:grid;place-items:center}
+    /* SIGNATURE DEMO */
+    .signature-demo{margin-top:18px;padding:14px;background:linear-gradient(180deg, #0f1821, #0b1218);border:1px solid #1b2a38;border-radius:var(--radius)}
+    .signature-demo .btn{background:#0e1822;border-color:#223143}
 
-    /* ---- PRICING ---- */
-    .switch{display:flex;align-items:center;gap:10px}
-    .switch .chip{background:#0f1622;border:1px solid #1f2a3a;color:var(--muted);padding:4px 10px;border-radius:999px}
-    .switch input{accent-color:var(--brand)}
-    .plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
-    @media (max-width:900px){.plans{grid-template-columns:1fr}}
-    .plan{background:var(--panel);border:1px solid #223047;border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:12px}
-    .plan h3{margin:0}
-    .price{font-size:22px;font-weight:900}
-    .features{display:grid;gap:6px;margin:8px 0 4px}
-    .small{font-size:12px;color:var(--muted)}
-    .pro-chip{display:inline-flex;gap:6px;align-items:center;background:#16202e;border:1px dashed #2a3b55;color:#9dc2ff;padding:2px 8px;border-radius:8px;font-size:12px}
+    /* SEGMENTS */
+    .segments{margin-top:24px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+    .segments .label{color:var(--muted)}
+    .seg-group{display:flex;gap:6px;background:#0b1218;border:1px solid #1b2a38;border-radius:999px;padding:6px}
+    .seg{padding:8px 12px;border-radius:999px;cursor:pointer;color:var(--muted);user-select:none}
+    .seg[aria-checked="true"]{background:var(--accent);color:#041105;font-weight:800}
 
-    /* ---- MODALS ---- */
-    .modal{position:fixed;inset:0;display:grid;place-items:center;background:#0009;z-index:50}
-    .modal.hidden{display:none}
-    .modal .box{width:min(820px,96vw);background:#141a22;border:1px solid #223047;border-radius:18px;padding:18px}
-    .modal .row{display:flex;gap:10px;justify-content:flex-end}
-    .sig-pad{background:#fff;border-radius:10px;height:240px}
+    /* GRID */
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:18px}
+    .card{background:linear-gradient(180deg, var(--card), #0f1520);border:1px solid #1a2533;border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+    .card h3{margin:0 0 6px}
+    .price{display:flex;align-items:baseline;gap:6px;margin:6px 0 12px}
+    .price .amount{font-size:38px;font-weight:900;letter-spacing:-.5px}
+    .price small{color:var(--muted)}
+    .features{margin:0;padding:0 0 10px;list-style:none;color:var(--muted)}
+    .features li{padding:6px 0;display:flex;gap:8px;align-items:flex-start}
+    .features li:before{content:"✓";display:inline-block;margin-top:2px}
+    .choose{margin-top:10px;display:flex;gap:8px;align-items:center}
+    .note{margin-top:10px;color:var(--muted);font-size:.92rem}
+    .ribbon{display:inline-block;padding:6px 10px;border-radius:8px;background:rgba(124,255,107,.16);color:#1a2;font-weight:800;border:1px solid rgba(124,255,107,.4)}
 
-    /* forms */
-    input[type="email"], input[type="password"]{
-      width:100%;padding:10px 12px;border-radius:10px;border:1px solid #2a3b55;background:#0f1622;color:var(--text)
+    /* FOOTER */
+    footer{margin:36px 0 24px;color:var(--muted);text-align:center}
+
+    /* DROPDOWN */
+    .dropdown{position:relative}
+    .dropdown-menu{position:absolute;top:120%;left:0;min-width:260px;background:#0e161e;border:1px solid #1b2a38;border-radius:12px;padding:8px;display:none;box-shadow:var(--shadow);z-index:30}
+    .dropdown[aria-expanded="true"] .dropdown-menu{display:block}
+    .dropdown-menu a{display:block;padding:10px 10px;border-radius:8px;color:var(--muted)}
+    .dropdown-menu a:hover{background:#122333;color:var(--text)}
+
+    /* MODAL */
+    .modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;padding:20px}
+    .modal .window{background:#0f1620;border:1px solid #1b2a38;border-radius:18px;max-width:560px;width:100%;padding:16px}
+    .modal .window header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+    .modal .window header h4{margin:0}
+
+    @media (max-width: 980px){
+      .grid{grid-template-columns:1fr}
+      .menu{display:none}
+      .cta{display:none}
     }
-    label{font-size:13px;color:var(--muted)}
-    .stack{display:grid;gap:10px}
-
-    /* footer */
-    footer{border-top:1px solid #1c2736;margin-top:16px;padding:16px 0;color:var(--muted)}
   </style>
 </head>
 <body>
-  <header class="top">
-    <div class="wrap">
-      <nav>
-        <div class="brand">
-          <div class="logo">MBZ</div>
-          <div class="title">MonBailZen <span class="badge">v8</span></div>
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="#"><div class="brand-badge">MBZ</div><span>MonBailZen</span></a>
+      <div class="menu">
+        <a href="#" class="active">Accueil</a>
+        <div class="dropdown" aria-expanded="false">
+          <a href="#" class="dropdown-toggle">Fonctionnalités ▾</a>
+          <div class="dropdown-menu" role="menu">
+            <a href="#edl">EDL illimités (menus déroulants)</a>
+            <a href="#compta">Comptabilité (charges, IRL, export)</a>
+            <a href="#export">Export CSV / PDF</a>
+            <a href="#signature">Signature & logo propriétaire (Pro+)</a>
+          </div>
         </div>
-        <div class="tabs" id="site-tabs">
-          <button class="tab active" data-tab="home">Accueil</button>
-          <button class="tab" data-tab="features">Fonctionnalités</button>
-          <button class="tab" data-tab="pricing">Tarifs</button>
-          <button class="tab" data-tab="faq">FAQ</button>
-          <button class="tab" data-tab="contact">Contact</button>
-          <button class="tab btn gold" id="open-demo">Essayer la démo</button>
-          <button class="tab" id="open-login">Login</button>
-        </div>
-      </nav>
+        <a href="#tarifs">Tarifs</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="cta">
+        <a class="btn ghost" href="#demo">Essayer la démo</a>
+        <a class="btn accent" href="#login">Login</a>
+      </div>
     </div>
-  </header>
+  </nav>
 
-  <main class="wrap">
-    <!-- ACCUEIL -->
-    <section id="r-home">
-      <div class="grid">
-        <div class="col-8">
-          <div class="card soft">
-            <div class="kpi"><b>1:00</b> <span>Créez un bail légal complet (démo).</span></div>
-          </div>
-          <div class="card soft" style="margin-top:10px">
-            <div class="kpi"><b>8</b> <span>Pièces EDL illimitées avec photos / relevés.</span></div>
-          </div>
-          <div class="card soft" style="margin-top:10px">
-            <div class="kpi"><b>CSV</b> <span>Exports comptables en un clic.</span></div>
-          </div>
-        </div>
-        <div class="col-4">
-          <div class="card">
-            <h3>Pourquoi MonBailZen ?</h3>
-            <ul>
-              <li>Formulaires guidés bailleur / locataire / garant</li>
-              <li>EDL multi-pièces (murs, sols, plafonds, menuiseries, radiateurs, appareils)</li>
-              <li>Photos & anomalies par pièce</li>
-              <li>IRL automatique (démo)</li>
-            </ul>
-            <div class="pro-chip">Logo propriétaire — Pro</div>
-          </div>
+  <main class="container">
+    <section class="hero" id="tarifs">
+      <span class="chip">Tarifs clairs • Sans engagement • Annulation en 1 clic</span>
+      <h1>Choisissez votre formule</h1>
+      <p>
+        Un mix <strong>mensuel</strong> ou <strong>annuel (-2 mois)</strong>, et une option <strong>Pause & sauvegarde</strong> pour conserver vos données.
+        EDL illimités (menus détaillés, photos, anomalies), comptabilité (charges, IRL), export CSV/PDF, et <strong>signature (démo) + logo propriétaire</strong> en Pro.
+      </p>
+
+      <div class="signature-demo">
+        <strong>Signature (démo)</strong> – testez la signature locataire/propriétaire.
+        <div style="height:8px"></div>
+        <button class="btn" id="open-sign">Ouvrir la démo</button>
+      </div>
+
+      <div class="segments">
+        <span class="label">Facturation</span>
+        <div class="seg-group" role="tablist" aria-label="Facturation">
+          <button class="seg" role="tab" data-plan="mensuel" aria-checked="true">Mensuel</button>
+          <button class="seg" role="tab" data-plan="annuel">Annuel (-2 mois)</button>
+          <button class="seg" role="tab" data-plan="pause">Pause & sauvegarde</button>
         </div>
       </div>
-    </section>
 
-    <!-- FONCTIONNALITÉS -->
-    <section id="r-features" class="hidden">
-      <div class="grid">
-        <div class="col-12 card">
-          <h2>Fonctionnalités clés</h2>
-          <ul>
-            <li>Baux guidés (vide, meublé, colocation, mobilité) – clauses & annexes.</li>
-            <li>EDL illimités – états détaillés par élément (menus déroulants), photos & anomalies.</li>
-            <li>Compteurs (électricité/gaz/eau) avec valeur & photo.</li>
-            <li>Compatibilité : entrées libres, IRL (démo), export CSV.</li>
-            <li>Signature (démo) et <b>logo propriétaire en Pro</b>.</li>
+      <div class="grid" id="cards">
+        <!-- Starter -->
+        <article class="card">
+          <div class="ribbon">Gratuit</div>
+          <h3>Starter</h3>
+          <div class="price"><span class="amount" data-amount="starter">0€</span><small data-period="/mois">/ mois</small></div>
+          <ul class="features">
+            <li>1 bien</li>
+            <li>EDL illimités (détaillés)</li>
+            <li>Démo locale</li>
+            <li>Export CSV</li>
           </ul>
-          <div class="center" style="margin-top:10px">
-            <button class="btn" id="btn-signature">Signature (démo)</button>
-          </div>
-        </div>
+          <div class="choose"><a class="btn" href="#demo">Essayer</a></div>
+        </article>
+        <!-- Pro -->
+        <article class="card">
+          <h3>Pro</h3>
+          <div class="price"><span class="amount" data-amount="pro">8€</span><small data-period="/mois">/ mois</small></div>
+          <ul class="features">
+            <li>Jusqu'à 10 biens</li>
+            <li>Logo propriétaire sur documents</li>
+            <li>Comptabilité + IRL + export CSV/PDF</li>
+            <li>Signature (démo)</li>
+          </ul>
+          <div class="choose"><a class="btn accent" href="#signup">Choisir</a></div>
+          <p class="note">Idéal artisans & petites agences.</p>
+        </article>
+        <!-- Business -->
+        <article class="card">
+          <h3>Business</h3>
+          <div class="price"><span class="amount" data-amount="business">16€</span><small data-period="/mois">/ mois</small></div>
+          <ul class="features">
+            <li>Biens illimités</li>
+            <li>Support prioritaire</li>
+            <li>Équipe & espaces partagés</li>
+            <li>Exports avancés</li>
+          </ul>
+          <div class="choose"><a class="btn" href="#contact">Choisir</a></div>
+          <p class="note">Pour conciergeries & portefeuilles étendus.</p>
+        </article>
       </div>
+
+      <p class="note">
+        Les montants s’ajustent avec le sélecteur ci-dessus : <em>Mensuel</em>, <em>Annuel (-2 mois)</em> ou <em>Pause & sauvegarde</em>.
+      </p>
     </section>
 
-    <!-- TARIFS -->
-    <section id="r-pricing" class="hidden">
-      <div class="grid">
-        <div class="col-12 card">
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
-            <h2 style="margin:0">Tarifs</h2>
-            <div class="switch">
-              <span class="chip">Facturation</span>
-              <label><input type="checkbox" id="toggle-annual" /> <span>Annuel (–2 mois)</span></label>
-              <label><input type="checkbox" id="toggle-pause" /> <span>Pause & sauvegarde</span></label>
-            </div>
-          </div>
-
-          <div class="plans" style="margin-top:14px">
-            <div class="plan">
-              <h3>Starter</h3>
-              <div class="price" id="p-starter">0€ / mois</div>
-              <div class="features">
-                <div>1 bien</div>
-                <div>Démo locale</div>
-              </div>
-              <button class="btn">Essayer</button>
-            </div>
-
-            <div class="plan">
-              <h3>Pro</h3>
-              <div class="price" id="p-pro">9€ / mois</div>
-              <div class="features">
-                <div>Jusqu’à 10 biens</div>
-                <div>Logo propriétaire</div>
-              </div>
-              <button class="btn gold">Choisir</button>
-            </div>
-
-            <div class="plan">
-              <h3>Business</h3>
-              <div class="price" id="p-biz">19€ / mois</div>
-              <div class="features">
-                <div>Illimité</div>
-                <div>Support prioritaire</div>
-              </div>
-              <button class="btn">Choisir</button>
-            </div>
-          </div>
-
-          <div class="small" style="margin-top:10px">
-            Les montants sont indicatifs (démo). Bascule mensuel/annuel et option <b>Pause & sauvegarde</b> via les commutateurs.
-          </div>
-        </div>
-      </div>
+    <section id="faq" class="card" style="margin-top:20px">
+      <h3>FAQ rapide</h3>
+      <details open>
+        <summary>Que signifie "Annuel (-2 mois)" ?</summary>
+        <p>Vous payez 10 mois et profitez de 12 mois d'accès : <strong>Pro = 80€ / an</strong>, <strong>Business = 160€ / an</strong>. Starter reste gratuit.</p>
+      </details>
+      <details>
+        <summary>Qu'est-ce que l'option Pause & sauvegarde ?</summary>
+        <p>Vos données et documents sont conservés en lecture seule pour <strong>2€ / mois</strong>. Réactivation en 1 clic.</p>
+      </details>
+      <details>
+        <summary>Puis-je changer de formule quand je veux ?</summary>
+        <p>Oui, vous pouvez monter en gamme, passer à l'annuel ou activer la pause sans frais cachés.</p>
+      </details>
     </section>
 
-    <!-- FAQ -->
-    <section id="r-faq" class="hidden">
-      <div class="grid">
-        <div class="col-12 card">
-          <h2>FAQ</h2>
-          <p><b>Pause & sauvegarde</b> : pendant la pause, la facturation est réduite (données conservées, accès en lecture).</p>
-          <p><b>Démo locale</b> : toutes les données restent dans votre navigateur (localStorage).</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section id="r-contact" class="hidden">
-      <div class="grid">
-        <div class="col-12 card">
-          <h2>Contact</h2>
-          <p class="muted">Démo front-end autonome. L’envoi de message n’est pas activé sur cette version.</p>
-        </div>
-      </div>
-    </section>
+    <footer>
+      © <span id="year"></span> MonBailZen — Tous droits réservés • <a href="#cg">CGU</a> • <a href="#privacy">Confidentialité</a>
+    </footer>
   </main>
 
-  <footer>
-    <div class="wrap">
-      © 2025 MonBailZen — Démo front-end autonome. eIDAS simulée. Données locales.
-    </div>
-  </footer>
-
-  <!-- MODAL SIGNATURE (démo) -->
-  <div id="sig_modal" class="modal hidden" aria-hidden="true">
-    <div class="box">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
-        <h3 style="margin:0">Signature (démo)</h3>
-        <button class="btn" id="sig_close">Fermer</button>
+  <!-- Signature demo modal -->
+  <div class="modal" id="sign-modal" aria-hidden="true">
+    <div class="window">
+      <header>
+        <h4>Signature (démo)</h4>
+        <button class="btn" id="close-sign">Fermer</button>
+      </header>
+      <p class="note">
+        Démonstration du flux de signature propriétaire ⇄ locataire : import d’un PDF, ajout de champs, prévisualisation, clic « Signer (démo) ».
+      </p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <label class="btn"><input type="file" hidden /> Importer un PDF</label>
+        <button class="btn">Ajouter zone de signature</button>
+        <button class="btn">Prévisualiser</button>
+        <button class="btn accent">Signer (démo)</button>
       </div>
-      <div style="margin-top:10px" class="sig-pad" id="sig_pad"></div>
-      <div class="row" style="margin-top:10px;justify-content:space-between">
-        <button class="btn" id="sig_clear">Effacer</button>
-        <button class="btn gold" id="sig_save">Enregistrer</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL LOGIN -->
-  <div id="login_modal" class="modal hidden" aria-hidden="true">
-    <div class="box">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
-        <h3 style="margin:0">Connexion</h3>
-        <button class="btn" id="login_close">Fermer</button>
-      </div>
-      <div class="stack" style="margin-top:12px">
-        <label>Email</label>
-        <input type="email" id="login_email" placeholder="vous@exemple.com" />
-        <label>Mot de passe</label>
-        <input type="password" id="login_pass" placeholder="••••••••" />
-        <div class="row" style="justify-content:flex-end;margin-top:6px">
-          <button class="btn gold" id="login_ok">Se connecter</button>
-        </div>
-      </div>
-      <div class="small" id="login_info" style="margin-top:8px;color:var(--muted)"></div>
     </div>
   </div>
 
   <script>
-    /* ============ PRIX CENTRALISÉS ============ 
-       Ajuste ici, tout le site suit automatiquement */
-    const PRICES = {
-      monthly:  { Starter: 0,  Pro: 9,  Business: 19 },  // €/mois
-      annual:   { Starter: 0,  Pro: 90, Business: 190 }  // €/an (–2 mois)
-    };
-    // Prix pendant la pause & sauvegarde (€/mois équivalent)
-    const PAUSE_PRICES = { Starter: 0, Pro: 1, Business: 1 };
-
-    // --- état UI persistant ---
-    const ui = {
-      annual: JSON.parse(localStorage.getItem("mbz.annual") ?? "false"),
-      paused: JSON.parse(localStorage.getItem("mbz.paused") ?? "false"),
+    // =========================
+    // CONFIG TARIFS (modifie ici si besoin)
+    // =========================
+    const PRICING = {
+      starter:  { monthly: 0,  annual: 0,   pause: 0 },
+      pro:      { monthly: 8,  annual: 80,  pause: 2 },
+      business: { monthly: 16, annual: 160, pause: 2 }
     };
 
-    // --- helpers DOM ---
-    const $ = (s, r=document) => r.querySelector(s);
-    const $$ = (s, r=document) => [...r.querySelectorAll(s)];
-
-    // --- tabs ---
-    const sections = {
-      home: $("#r-home"),
-      features: $("#r-features"),
-      pricing: $("#r-pricing"),
-      faq: $("#r-faq"),
-      contact: $("#r-contact"),
-    };
-    function showTab(name){
-      Object.values(sections).forEach(el=>el.classList.add("hidden"));
-      sections[name].classList.remove("hidden");
-      $$("#site-tabs .tab").forEach(b=>b.classList.toggle("active", b.dataset.tab===name));
-      location.hash = "#"+name;
-    }
-    $$("#site-tabs .tab[data-tab]").forEach(b=>{
-      b.addEventListener("click", ()=>showTab(b.dataset.tab));
-    });
-    // hash route
-    addEventListener("hashchange", ()=>{
-      const h = (location.hash||"#home").slice(1);
-      if(sections[h]) showTab(h);
-    });
-    showTab((location.hash||"#home").slice(1) in sections ? (location.hash||"#home").slice(1) : "home");
-
-    // --- pricing ---
-    const elAnnual = $("#toggle-annual");
-    const elPause  = $("#toggle-pause");
-    elAnnual.checked = ui.annual;
-    elPause.checked  = ui.paused;
-
-    function formatPrice(v, annual){
-      return v + "€ / " + (annual ? "an" : "mois");
-    }
-    function setPrices(){
-      const annual = elAnnual.checked;
-      const paused = elPause.checked;
-      let p = annual ? PRICES.annual : PRICES.monthly;
-
-      if(paused){
-        // pendant la pause, on affiche un équivalent mensuel réduit (info)
-        $("#p-starter").textContent = formatPrice(PAUSE_PRICES.Starter, false) + " (pause)";
-        $("#p-pro").textContent     = formatPrice(PAUSE_PRICES.Pro, false)     + " (pause)";
-        $("#p-biz").textContent     = formatPrice(PAUSE_PRICES.Business, false)+ " (pause)";
-      }else{
-        $("#p-starter").textContent = formatPrice(p.Starter, annual);
-        $("#p-pro").textContent     = formatPrice(p.Pro, annual);
-        $("#p-biz").textContent     = formatPrice(p.Business, annual);
-      }
-      localStorage.setItem("mbz.annual", JSON.stringify(annual));
-      localStorage.setItem("mbz.paused", JSON.stringify(paused));
-    }
-    elAnnual.addEventListener("change", setPrices);
-    elPause.addEventListener("change", setPrices);
-    setPrices();
-
-    // --- demo buttons ---
-    $("#open-demo").addEventListener("click", ()=>showTab("features"));
-    $("#btn-signature").addEventListener("click", ()=>openSig());
-
-    // --- signature (démo) ---
-    const sigModal = $("#sig_modal");
-    const sigPad = $("#sig_pad");
-    let drawing=false, ctx, last=[0,0];
-
-    function openSig(){
-      sigModal.classList.remove("hidden");
-      sigModal.setAttribute("aria-hidden","false");
-      // init canvas
-      if(!sigPad.querySelector("canvas")){
-        const c=document.createElement("canvas");
-        c.width=sigPad.clientWidth; c.height=sigPad.clientHeight;
-        sigPad.appendChild(c);
-        ctx=c.getContext("2d");
-        ctx.lineWidth=2; ctx.lineCap="round"; ctx.strokeStyle="#111";
-        const pos = e => {
-          const r=c.getBoundingClientRect();
-          return [(e.touches?e.touches[0].clientX:e.clientX)-r.left,(e.touches?e.touches[0].clientY:e.clientY)-r.top];
-        };
-        const down = e=>{drawing=true; last=pos(e)};
-        const move = e=>{
-          if(!drawing) return;
-          const p=pos(e);
-          ctx.beginPath(); ctx.moveTo(last[0],last[1]); ctx.lineTo(p[0],p[1]); ctx.stroke();
-          last=p;
-        };
-        const up = ()=>drawing=false;
-        c.addEventListener("mousedown",down); c.addEventListener("mousemove",move); addEventListener("mouseup",up);
-        c.addEventListener("touchstart",down,{passive:true}); c.addEventListener("touchmove",move,{passive:true}); addEventListener("touchend",up);
+    // ----------- UI Logic -----------
+    function setPlan(type){
+      const periodEls = document.querySelectorAll('[data-period]');
+      const amt = {
+        starter:  document.querySelector('[data-amount="starter"]'),
+        pro:      document.querySelector('[data-amount="pro"]'),
+        business: document.querySelector('[data-amount="business"]')
+      };
+      if(type === "mensuel"){
+        amt.starter.textContent  = PRICING.starter.monthly  + "€";
+        amt.pro.textContent      = PRICING.pro.monthly      + "€";
+        amt.business.textContent = PRICING.business.monthly + "€";
+        periodEls.forEach(p => p.textContent = "/ mois");
+      } else if(type === "annuel"){
+        amt.starter.textContent  = PRICING.starter.annual  + "€";
+        amt.pro.textContent      = PRICING.pro.annual      + "€";
+        amt.business.textContent = PRICING.business.annual + "€";
+        periodEls.forEach(p => p.textContent = "/ an");
+      } else {
+        amt.starter.textContent  = PRICING.starter.pause  + "€";
+        amt.pro.textContent      = PRICING.pro.pause      + "€";
+        amt.business.textContent = PRICING.business.pause + "€";
+        periodEls.forEach(p => p.textContent = "/ mois (lecture seule)");
       }
     }
-    $("#sig_close").addEventListener("click", ()=>{
-      sigModal.classList.add("hidden");
-      sigModal.setAttribute("aria-hidden","true");
-    });
-    $("#sig_clear").addEventListener("click", ()=>{
-      const c=sigPad.querySelector("canvas"); if(c){const x=c.getContext("2d"); x.clearRect(0,0,c.width,c.height);}
-    });
-    $("#sig_save").addEventListener("click", ()=>{
-      const c=sigPad.querySelector("canvas"); if(!c) return;
-      const data=c.toDataURL("image/png");
-      localStorage.setItem("mbz.signature", data);
-      alert("Signature enregistrée (localStorage).");
+
+    // Dropdowns
+    document.addEventListener("click",(e)=>{
+      const toggle = e.target.closest(".dropdown-toggle");
+      if(toggle){
+        e.preventDefault();
+        const parent = toggle.closest(".dropdown");
+        const open = parent.getAttribute("aria-expanded")==="true";
+        document.querySelectorAll(".dropdown").forEach(d=>d.setAttribute("aria-expanded","false"));
+        parent.setAttribute("aria-expanded", open ? "false" : "true");
+      } else if(!e.target.closest(".dropdown")){
+        document.querySelectorAll(".dropdown").forEach(d=>d.setAttribute("aria-expanded","false"));
+      }
     });
 
-    // --- login (démo locale) ---
-    const loginModal=$("#login_modal");
-    $("#open-login").addEventListener("click", ()=>{
-      loginModal.classList.remove("hidden");
-      loginModal.setAttribute("aria-hidden","false");
-      $("#login_info").textContent="";
-    });
-    $("#login_close").addEventListener("click", ()=>{
-      loginModal.classList.add("hidden");
-      loginModal.setAttribute("aria-hidden","true");
-    });
-    $("#login_ok").addEventListener("click", ()=>{
-      const email=$("#login_email").value.trim();
-      const pass=$("#login_pass").value;
-      if(!email || !pass){ $("#login_info").textContent="Renseignez email et mot de passe."; return; }
-      // démo : on simule un succès
-      localStorage.setItem("mbz.user", JSON.stringify({email, ts:Date.now()}));
-      $("#login_info").textContent="Connecté (démo).";
-      setTimeout(()=>{$("#login_close").click();},700);
-    });
+    // Segments (mensuel/annuel/pause)
+    document.addEventListener("DOMContentLoaded", ()=>{
+      document.getElementById("year").textContent = new Date().getFullYear();
+      setPlan("mensuel");
+      document.querySelectorAll(".seg").forEach(b=>{
+        b.addEventListener("click", ()=>{
+          document.querySelectorAll(".seg").forEach(s=>s.setAttribute("aria-checked","false"));
+          b.setAttribute("aria-checked","true");
+          setPlan(b.dataset.plan);
+        });
+      });
 
+      // Modal Signature
+      const openSign = document.getElementById("open-sign");
+      const closeSign = document.getElementById("close-sign");
+      const modal = document.getElementById("sign-modal");
+      openSign.addEventListener("click", ()=>{ modal.style.display="flex"; modal.setAttribute("aria-hidden","false"); });
+      closeSign.addEventListener("click", ()=>{ modal.style.display="none"; modal.setAttribute("aria-hidden","true"); });
+      modal.addEventListener("click", (e)=>{ if(e.target===modal) closeSign.click(); });
+    });
   </script>
 </body>
 </html>
