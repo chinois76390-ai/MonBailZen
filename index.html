@@ -1,311 +1,454 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>MonBailZen — Tarifs</title>
-  <meta name="description" content="Tarifs MonBailZen : mensuel, annuel (-2 mois) et option Pause & sauvegarde. EDL illimités, comptabilité (charges & IRL), exports, signature (démo) et logo propriétaire.">
-  <style>
-    :root{
-      --bg:#0b0f14;
-      --bg-2:#0f1520;
-      --card:#121924;
-      --muted:#9fb3c5;
-      --text:#e7f0fb;
-      --accent:#7CFF6B;
-      --ring: 0 0 0 3px rgba(124,255,107,.30);
-      --shadow: 0 8px 25px rgba(0,0,0,.35);
-      --radius: 16px;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
-      background: radial-gradient(1200px 600px at 70% -10%, rgba(124,255,107,.08), transparent 60%),
-                  radial-gradient(900px 500px at -10% 10%, rgba(124,255,107,.05), transparent 60%),
-                  var(--bg);
-      color:var(--text);
-      line-height:1.45;
-    }
-    a{color:inherit;text-decoration:none}
-    .container{max-width:1120px;margin:0 auto;padding:24px}
-
-    /* NAV */
-    .nav{position:sticky;top:0;z-index:20;background:rgba(11,15,20,.78);backdrop-filter: blur(12px);border-bottom:1px solid #17202b}
-    .nav-inner{display:flex;align-items:center;gap:14px;justify-content:space-between}
-    .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.2px}
-    .brand-badge{width:36px;height:28px;border-radius:8px;background:var(--accent);color:#031106;display:grid;place-items:center;font-weight:900;box-shadow:0 6px 18px rgba(124,255,107,.34)}
-    .menu{display:flex;align-items:center;gap:18px}
-    .menu a{padding:10px 12px;border-radius:10px;color:var(--muted)}
-    .menu a.active,.menu a:hover{color:#0a1a0a;background:rgba(124,255,107,.18)}
-    .cta{display:flex;align-items:center;gap:10px}
-    .btn{padding:10px 14px;border-radius:999px;border:1px solid #223143;background:#0e141c;color:var(--text);box-shadow:var(--shadow);cursor:pointer}
-    .btn.ghost{background:transparent}
-    .btn.accent{background:var(--accent);color:#041105;border-color:transparent;font-weight:800}
-    .btn:focus-visible{outline:none; box-shadow: var(--ring)}
-
-    /* HERO */
-    .hero{padding:42px 0 16px}
-    .hero .chip{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:#0e171f;border:1px solid #1c2a38;color:var(--muted)}
-    .hero h1{margin:16px 0 10px;font-size:34px;line-height:1.15}
-    .hero p{margin:0;color:var(--muted);max-width:840px}
-
-    /* SIGNATURE DEMO */
-    .signature-demo{margin-top:18px;padding:14px;background:linear-gradient(180deg, #0f1821, #0b1218);border:1px solid #1b2a38;border-radius:var(--radius)}
-    .signature-demo .btn{background:#0e1822;border-color:#223143}
-
-    /* SEGMENTS */
-    .segments{margin-top:24px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-    .segments .label{color:var(--muted)}
-    .seg-group{display:flex;gap:6px;background:#0b1218;border:1px solid #1b2a38;border-radius:999px;padding:6px}
-    .seg{padding:8px 12px;border-radius:999px;cursor:pointer;color:var(--muted);user-select:none}
-    .seg[aria-checked="true"]{background:var(--accent);color:#041105;font-weight:800}
-
-    /* GRID */
-    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:18px}
-    .card{background:linear-gradient(180deg, var(--card), #0f1520);border:1px solid #1a2533;border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
-    .card h3{margin:0 0 6px}
-    .price{display:flex;align-items:baseline;gap:6px;margin:6px 0 12px}
-    .price .amount{font-size:38px;font-weight:900;letter-spacing:-.5px}
-    .price small{color:var(--muted)}
-    .features{margin:0;padding:0 0 10px;list-style:none;color:var(--muted)}
-    .features li{padding:6px 0;display:flex;gap:8px;align-items:flex-start}
-    .features li:before{content:"✓";display:inline-block;margin-top:2px}
-    .choose{margin-top:10px;display:flex;gap:8px;align-items:center}
-    .note{margin-top:10px;color:var(--muted);font-size:.92rem}
-    .ribbon{display:inline-block;padding:6px 10px;border-radius:8px;background:rgba(124,255,107,.16);color:#1a2;font-weight:800;border:1px solid rgba(124,255,107,.4)}
-
-    /* FOOTER */
-    footer{margin:36px 0 24px;color:var(--muted);text-align:center}
-
-    /* DROPDOWN */
-    .dropdown{position:relative}
-    .dropdown-menu{position:absolute;top:120%;left:0;min-width:260px;background:#0e161e;border:1px solid #1b2a38;border-radius:12px;padding:8px;display:none;box-shadow:var(--shadow);z-index:30}
-    .dropdown[aria-expanded="true"] .dropdown-menu{display:block}
-    .dropdown-menu a{display:block;padding:10px 10px;border-radius:8px;color:var(--muted)}
-    .dropdown-menu a:hover{background:#122333;color:var(--text)}
-
-    /* MODAL */
-    .modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;padding:20px}
-    .modal .window{background:#0f1620;border:1px solid #1b2a38;border-radius:18px;max-width:560px;width:100%;padding:16px}
-    .modal .window header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-    .modal .window header h4{margin:0}
-
-    @media (max-width: 980px){
-      .grid{grid-template-columns:1fr}
-      .menu{display:none}
-      .cta{display:none}
-    }
-  </style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>MonBailZen — Suite bail, EDL, IRL, Exports & Tarifs</title>
+<meta name="description" content="MonBailZen : baux, EDL illimités, comptabilité (charges, IRL), export CSV/PDF, signature (démo) et tarifs."/>
+<style>
+:root{
+  --bg:#0b0f14; --bg2:#0f1520; --card:#121924; --muted:#9fb3c5; --text:#e7f0fb;
+  --accent:#7CFF6B; --ring:0 0 0 3px rgba(124,255,107,.3); --shadow:0 8px 25px rgba(0,0,0,.35);
+  --radius:16px
+}
+*{box-sizing:border-box} html,body{height:100%}
+body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--text);
+  background:radial-gradient(1200px 600px at 70% -10%,rgba(124,255,107,.08),transparent 60%),var(--bg);line-height:1.45}
+a{color:inherit;text-decoration:none}
+.container{max-width:1180px;margin:0 auto;padding:24px}
+.nav{position:sticky;top:0;z-index:50;background:rgba(11,15,20,.8);backdrop-filter:blur(12px);border-bottom:1px solid #182533}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800}
+.badge{width:36px;height:28px;border-radius:8px;background:var(--accent);color:#041105;display:grid;place-items:center;font-weight:900}
+.menu{display:flex;flex-wrap:wrap;gap:10px}
+.tabbtn,.btn{padding:10px 14px;border-radius:999px;border:1px solid #223143;background:#0e141c;color:var(--text);cursor:pointer}
+.menu .tabbtn{border-radius:10px}
+.tabbtn.active,.tabbtn:hover{background:rgba(124,255,107,.18);color:#0c1c0c}
+.btn.accent{background:var(--accent);color:#041105;border-color:transparent;font-weight:800}
+.btn.ghost{background:transparent}
+.btn:focus-visible{outline:none;box-shadow:var(--ring)}
+.grid{display:grid;gap:18px}
+.card{background:linear-gradient(180deg,var(--card),#0f1520);border:1px solid #1a2533;border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+h2{margin:4px 0 8px}
+label{display:block;margin:10px 0 6px;color:var(--muted)}
+input,select,textarea{width:100%;padding:10px 12px;border-radius:12px;border:1px solid #223143;background:#0e141c;color:var(--text)}
+.row{display:grid;grid-template-columns:repeat(12,1fr);gap:12px}
+.col-6{grid-column:span 6} .col-4{grid-column:span 4} .col-3{grid-column:span 3} .col-12{grid-column:span 12}
+.table{width:100%;border-collapse:collapse;margin-top:8px}
+.table th,.table td{border:1px solid #223143;padding:8px;text-align:left}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{padding:6px 10px;border:1px solid #223143;border-radius:999px;background:#0e1720;color:var(--muted);font-size:.9rem}
+.note{color:var(--muted);font-size:.92rem}
+.hidden{display:none}
+footer{text-align:center;color:var(--muted);margin:32px 0}
+.ribbon{display:inline-block;padding:6px 10px;border-radius:8px;background:rgba(124,255,107,.16);color:#1a2;border:1px solid rgba(124,255,107,.35);font-weight:800}
+.price{display:flex;align-items:baseline;gap:6px;margin:6px 0 12px}
+.price .amt{font-size:38px;font-weight:900}
+.segwrap{display:flex;gap:6px;background:#0b1218;border:1px solid #1b2a38;border-radius:999px;padding:6px;flex-wrap:wrap}
+.seg{padding:8px 12px;border-radius:999px;cursor:pointer;color:var(--muted)} .seg[aria-checked="true"]{background:var(--accent);color:#041105;font-weight:800}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;padding:20px}
+.win{background:#0f1620;border:1px solid #1b2a38;border-radius:18px;max-width:720px;width:100%;padding:16px}
+@media (max-width:980px){.row{grid-template-columns:repeat(1,1fr)}}
+@media print{
+  body{background:#fff;color:#000}
+  .nav,.no-print{display:none!important}
+  .print-block{display:block}
+}
+</style>
 </head>
 <body>
-  <nav class="nav">
-    <div class="container nav-inner">
-      <a class="brand" href="#"><div class="brand-badge">MBZ</div><span>MonBailZen</span></a>
-      <div class="menu">
-        <a href="#" class="active">Accueil</a>
-        <div class="dropdown" aria-expanded="false">
-          <a href="#" class="dropdown-toggle">Fonctionnalités ▾</a>
-          <div class="dropdown-menu" role="menu">
-            <a href="#edl">EDL illimités (menus déroulants)</a>
-            <a href="#compta">Comptabilité (charges, IRL, export)</a>
-            <a href="#export">Export CSV / PDF</a>
-            <a href="#signature">Signature & logo propriétaire (Pro+)</a>
-          </div>
-        </div>
-        <a href="#tarifs">Tarifs</a>
-        <a href="#faq">FAQ</a>
-        <a href="#contact">Contact</a>
+<nav class="nav">
+  <div class="container nav-inner">
+    <div class="brand"><div class="badge">MBZ</div>MonBailZen</div>
+    <div class="menu no-print" id="menu">
+      <button class="tabbtn active" data-tab="baux">Baux</button>
+      <button class="tabbtn" data-tab="edl">EDL</button>
+      <button class="tabbtn" data-tab="compta">Comptabilité</button>
+      <button class="tabbtn" data-tab="export">Exports</button>
+      <button class="tabbtn" data-tab="tarifs">Tarifs</button>
+      <a class="btn ghost" href="#demo">Essayer la démo</a>
+      <a class="btn accent" href="#login">Login</a>
+    </div>
+  </div>
+</nav>
+
+<main class="container grid">
+  <!-- ======================= BAUX ======================= -->
+  <section id="baux" class="card">
+    <h2>📄 Générateur de Bail (démo locale)</h2>
+    <p class="note">Remplis le formulaire et clique <em>Prévisualiser</em> pour obtenir un bail imprimable (PDF via impression système) ou téléchargeable (.doc).</p>
+    <div class="row">
+      <div class="col-6">
+        <label>Bailleur</label><input id="b_bailleur" placeholder="Nom Prénom / Société"/>
       </div>
-      <div class="cta">
-        <a class="btn ghost" href="#demo">Essayer la démo</a>
-        <a class="btn accent" href="#login">Login</a>
+      <div class="col-6">
+        <label>Locataire</label><input id="b_locataire" placeholder="Nom Prénom"/>
+      </div>
+      <div class="col-12">
+        <label>Logement / Adresse</label><input id="b_adresse" placeholder="Adresse complète"/>
+      </div>
+      <div class="col-3"><label>Loyer mensuel (€)</label><input type="number" id="b_loyer" value="650"/></div>
+      <div class="col-3"><label>Charges mensuelles (€)</label><input type="number" id="b_charges" value="40"/></div>
+      <div class="col-3"><label>Dépôt de garantie (€)</label><input type="number" id="b_depot" value="650"/></div>
+      <div class="col-3"><label>Échéance (jour du mois)</label><input type="number" id="b_echeance" value="5"/></div>
+      <div class="col-4"><label>Type</label>
+        <select id="b_type">
+          <option>Location vide</option><option>Meublée</option><option>Saisonnière</option>
+        </select>
+      </div>
+      <div class="col-4"><label>Début de bail</label><input id="b_debut" type="date"/></div>
+      <div class="col-4"><label>Durée (mois)</label><input id="b_duree" type="number" value="12"/></div>
+      <div class="col-12 chips"><span class="chip">Clauses: animaux, sous-location, assurance, entretien</span></div>
+      <div class="col-12">
+        <button class="btn accent" id="b_preview">Prévisualiser (PDF)</button>
+        <button class="btn" id="b_doc">Télécharger (.doc)</button>
       </div>
     </div>
-  </nav>
+    <!-- zone imprimable -->
+    <div id="bail_print" class="print-block hidden" style="background:#fff;color:#000;padding:16px">
+      <h2 style="margin:0 0 8px">Bail d'habitation — MonBailZen</h2>
+      <div id="bail_content" style="white-space:pre-wrap"></div>
+      <p style="margin-top:24px">Fait le <span id="bail_date"></span> — Signatures :</p>
+      <div style="display:flex;gap:40px;margin-top:30px"><div>Le Bailleur</div><div>Le Locataire</div></div>
+    </div>
+  </section>
 
-  <main class="container">
-    <section class="hero" id="tarifs">
-      <span class="chip">Tarifs clairs • Sans engagement • Annulation en 1 clic</span>
-      <h1>Choisissez votre formule</h1>
-      <p>
-        Un mix <strong>mensuel</strong> ou <strong>annuel (-2 mois)</strong>, et une option <strong>Pause & sauvegarde</strong> pour conserver vos données.
-        EDL illimités (menus détaillés, photos, anomalies), comptabilité (charges, IRL), export CSV/PDF, et <strong>signature (démo) + logo propriétaire</strong> en Pro.
-      </p>
-
-      <div class="signature-demo">
-        <strong>Signature (démo)</strong> – testez la signature locataire/propriétaire.
-        <div style="height:8px"></div>
-        <button class="btn" id="open-sign">Ouvrir la démo</button>
-      </div>
-
-      <div class="segments">
-        <span class="label">Facturation</span>
-        <div class="seg-group" role="tablist" aria-label="Facturation">
-          <button class="seg" role="tab" data-plan="mensuel" aria-checked="true">Mensuel</button>
-          <button class="seg" role="tab" data-plan="annuel">Annuel (-2 mois)</button>
-          <button class="seg" role="tab" data-plan="pause">Pause & sauvegarde</button>
+  <!-- ======================= EDL ======================= -->
+  <section id="edl" class="card hidden">
+    <h2>🛠️ EDL illimités (menus déroulants, photos & anomalies)</h2>
+    <div class="row">
+      <div class="col-6"><label>Bien</label><input id="e_bien" placeholder="Ex: 4 rue Quiquerue, Ault"/></div>
+      <div class="col-6"><label>Pièce à ajouter</label>
+        <div class="row">
+          <div class="col-6"><input id="e_piece" placeholder="Salon, Chambre 1, SDB…"/></div>
+          <div class="col-6"><button class="btn accent" id="e_add_piece">Ajouter la pièce</button></div>
         </div>
       </div>
-
-      <div class="grid" id="cards">
-        <!-- Starter -->
-        <article class="card">
-          <div class="ribbon">Gratuit</div>
-          <h3>Starter</h3>
-          <div class="price"><span class="amount" data-amount="starter">0€</span><small data-period="/mois">/ mois</small></div>
-          <ul class="features">
-            <li>1 bien</li>
-            <li>EDL illimités (détaillés)</li>
-            <li>Démo locale</li>
-            <li>Export CSV</li>
-          </ul>
-          <div class="choose"><a class="btn" href="#demo">Essayer</a></div>
-        </article>
-        <!-- Pro -->
-        <article class="card">
-          <h3>Pro</h3>
-          <div class="price"><span class="amount" data-amount="pro">8€</span><small data-period="/mois">/ mois</small></div>
-          <ul class="features">
-            <li>Jusqu'à 10 biens</li>
-            <li>Logo propriétaire sur documents</li>
-            <li>Comptabilité + IRL + export CSV/PDF</li>
-            <li>Signature (démo)</li>
-          </ul>
-          <div class="choose"><a class="btn accent" href="#signup">Choisir</a></div>
-          <p class="note">Idéal artisans & petites agences.</p>
-        </article>
-        <!-- Business -->
-        <article class="card">
-          <h3>Business</h3>
-          <div class="price"><span class="amount" data-amount="business">16€</span><small data-period="/mois">/ mois</small></div>
-          <ul class="features">
-            <li>Biens illimités</li>
-            <li>Support prioritaire</li>
-            <li>Équipe & espaces partagés</li>
-            <li>Exports avancés</li>
-          </ul>
-          <div class="choose"><a class="btn" href="#contact">Choisir</a></div>
-          <p class="note">Pour conciergeries & portefeuilles étendus.</p>
-        </article>
+      <div class="col-12">
+        <table class="table" id="e_table">
+          <thead><tr><th>Pièce</th><th>Élément</th><th>État</th><th>Photo (URL)</th><th>Anomalie</th><th></th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <button class="btn" id="e_add_ligne">Ajouter ligne</button>
+        <button class="btn" id="e_csv">Exporter CSV</button>
       </div>
+    </div>
+  </section>
 
-      <p class="note">
-        Les montants s’ajustent avec le sélecteur ci-dessus : <em>Mensuel</em>, <em>Annuel (-2 mois)</em> ou <em>Pause & sauvegarde</em>.
-      </p>
-    </section>
+  <!-- ======================= COMPTA / IRL ======================= -->
+  <section id="compta" class="card hidden">
+    <h2>📈 Comptabilité (charges) & Indexation IRL</h2>
+    <div class="row">
+      <div class="col-4"><label>Loyer hors charges (€)</label><input id="c_loyer" type="number" value="650"/></div>
+      <div class="col-4"><label>IRL ancien (ex: 140.97)</label><input id="c_irl_ancien" type="number" step="0.01" value="140.97"/></div>
+      <div class="col-4"><label>IRL nouveau (ex: 146.21)</label><input id="c_irl_nouveau" type="number" step="0.01" value="146.21"/></div>
+      <div class="col-4"><label>Élec/mois (€)</label><input id="c_elec" type="number" value="60"/></div>
+      <div class="col-4"><label>Eau/mois (€)</label><input id="c_eau" type="number" value="25"/></div>
+      <div class="col-4"><label>Internet/mois (€)</label><input id="c_net" type="number" value="30"/></div>
+      <div class="col-12">
+        <button class="btn accent" id="c_calc">Calculer</button>
+      </div>
+      <div class="col-12">
+        <table class="table" id="c_table"><thead><tr><th>Base</th><th>IRL ancien</th><th>IRL nouveau</th><th>Loyer indexé</th><th>Charges</th><th>Total mensuel</th></tr></thead><tbody></tbody></table>
+      </div>
+    </div>
+    <p class="note">Formule IRL : loyer indexé = loyer de base × (IRL_nouveau / IRL_ancien).</p>
+  </section>
 
-    <section id="faq" class="card" style="margin-top:20px">
-      <h3>FAQ rapide</h3>
-      <details open>
-        <summary>Que signifie "Annuel (-2 mois)" ?</summary>
-        <p>Vous payez 10 mois et profitez de 12 mois d'accès : <strong>Pro = 80€ / an</strong>, <strong>Business = 160€ / an</strong>. Starter reste gratuit.</p>
-      </details>
-      <details>
-        <summary>Qu'est-ce que l'option Pause & sauvegarde ?</summary>
-        <p>Vos données et documents sont conservés en lecture seule pour <strong>2€ / mois</strong>. Réactivation en 1 clic.</p>
-      </details>
-      <details>
-        <summary>Puis-je changer de formule quand je veux ?</summary>
-        <p>Oui, vous pouvez monter en gamme, passer à l'annuel ou activer la pause sans frais cachés.</p>
-      </details>
-    </section>
+  <!-- ======================= EXPORTS ======================= -->
+  <section id="export" class="card hidden">
+    <h2>📤 Exports</h2>
+    <p class="note">Exporte les données saisies (bail & EDL) en CSV ou JSON.</p>
+    <div class="chips">
+      <button class="btn" id="x_csv">Exporter tout en CSV</button>
+      <button class="btn" id="x_json">Exporter tout en JSON</button>
+      <button class="btn" id="openSign">Signature (démo)</button>
+    </div>
+    <pre id="x_preview" style="white-space:pre-wrap;background:#0b1218;border:1px solid #223143;padding:12px;border-radius:12px;margin-top:12px;color:#cfe7ff"></pre>
+  </section>
 
-    <footer>
-      © <span id="year"></span> MonBailZen — Tous droits réservés • <a href="#cg">CGU</a> • <a href="#privacy">Confidentialité</a>
-    </footer>
-  </main>
+  <!-- ======================= TARIFS ======================= -->
+  <section id="tarifs" class="card hidden">
+    <h2>💶 Tarifs</h2>
+    <div class="chips"><span class="chip">Sans engagement</span><span class="chip">Annulation en 1 clic</span><span class="chip">Pause & sauvegarde</span></div>
+    <div style="height:10px"></div>
+    <div class="segwrap no-print">
+      <button class="seg" aria-checked="true" data-plan="mensuel">Mensuel</button>
+      <button class="seg" data-plan="annuel">Annuel (-2 mois)</button>
+      <button class="seg" data-plan="pause">Pause & sauvegarde</button>
+    </div>
+    <div class="row" style="margin-top:12px">
+      <div class="col-4 card">
+        <div class="ribbon">Gratuit</div>
+        <h3>Starter</h3>
+        <div class="price"><span class="amt" data-amt="starter">0€</span><small data-period>/ mois</small></div>
+        <ul class="note">
+          <li>1 bien</li><li>EDL illimités (détaillés)</li><li>Démo locale</li><li>Export CSV</li>
+        </ul>
+        <button class="btn">Essayer</button>
+      </div>
+      <div class="col-4 card">
+        <h3>Pro</h3>
+        <div class="price"><span class="amt" data-amt="pro">8€</span><small data-period>/ mois</small></div>
+        <ul class="note">
+          <li>Jusqu'à 10 biens</li><li>Logo propriétaire</li><li>Compta + IRL + exports</li><li>Signature (démo)</li>
+        </ul>
+        <button class="btn accent">Choisir</button>
+      </div>
+      <div class="col-4 card">
+        <h3>Business</h3>
+        <div class="price"><span class="amt" data-amt="business">16€</span><small data-period>/ mois</small></div>
+        <ul class="note">
+          <li>Biens illimités</li><li>Support prioritaire</li><li>Équipe & espaces</li><li>Exports avancés</li>
+        </ul>
+        <button class="btn">Choisir</button>
+      </div>
+    </div>
+    <p class="note">Annuel = 10 mois payés pour 12 d’accès. Pause & sauvegarde = données en lecture seule (2€/mois) réactivables en 1 clic.</p>
+  </section>
+</main>
 
-  <!-- Signature demo modal -->
-  <div class="modal" id="sign-modal" aria-hidden="true">
-    <div class="window">
-      <header>
-        <h4>Signature (démo)</h4>
-        <button class="btn" id="close-sign">Fermer</button>
-      </header>
-      <p class="note">
-        Démonstration du flux de signature propriétaire ⇄ locataire : import d’un PDF, ajout de champs, prévisualisation, clic « Signer (démo) ».
-      </p>
-      <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <label class="btn"><input type="file" hidden /> Importer un PDF</label>
-        <button class="btn">Ajouter zone de signature</button>
-        <button class="btn">Prévisualiser</button>
-        <button class="btn accent">Signer (démo)</button>
+<footer>© <span id="year"></span> MonBailZen — Tous droits réservés</footer>
+
+<!-- ======================= MODAL SIGNATURE ======================= -->
+<div class="modal" id="signModal" aria-hidden="true">
+  <div class="win">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <h3 style="margin:0">Signature (démo)</h3>
+      <button class="btn" id="closeSign">Fermer</button>
+    </div>
+    <p class="note">Démo locale : import PDF (non stocké), ajout d’une image de signature simulée et export impression.</p>
+    <div class="row">
+      <div class="col-6"><label>Nom signataire</label><input id="s_nom" placeholder="Nom Prénom"/></div>
+      <div class="col-6"><label>Charger une image de signature (PNG)</label><input type="file" id="s_file" accept="image/*"/></div>
+      <div class="col-12"><canvas id="s_canvas" width="600" height="240" style="background:#fff;border-radius:12px"></canvas></div>
+      <div class="col-12">
+        <button class="btn accent" id="s_draw">Insérer signature</button>
+        <button class="btn" id="s_clear">Effacer</button>
+        <button class="btn" id="s_print">Imprimer</button>
       </div>
     </div>
   </div>
+</div>
 
-  <script>
-    // =========================
-    // CONFIG TARIFS (modifie ici si besoin)
-    // =========================
-    const PRICING = {
-      starter:  { monthly: 0,  annual: 0,   pause: 0 },
-      pro:      { monthly: 8,  annual: 80,  pause: 2 },
-      business: { monthly: 16, annual: 160, pause: 2 }
+<script>
+// =============== CONFIG TARIFS ===============
+const PRICING = {
+  mensuel : { starter:"0€", pro:"8€",  business:"16€", period:"/ mois"},
+  annuel  : { starter:"0€", pro:"80€", business:"160€", period:"/ an"},
+  pause   : { starter:"0€", pro:"2€",  business:"2€",  period:"/ mois (lecture seule)"}
+};
+
+// =============== NAV TABS ===============
+const tabs = ["baux","edl","compta","export","tarifs"];
+document.querySelectorAll(".tabbtn").forEach(b=>{
+  b.addEventListener("click", ()=>{
+    document.querySelectorAll(".tabbtn").forEach(x=>x.classList.remove("active"));
+    b.classList.add("active");
+    tabs.forEach(id=> document.getElementById(id).classList.add("hidden"));
+    document.getElementById(b.dataset.tab).classList.remove("hidden");
+    window.scrollTo({top:0,behavior:"smooth"});
+  });
+});
+document.getElementById("year").textContent = new Date().getFullYear();
+
+// =============== BAUX (preview & .doc) ===============
+function bailData(){
+  return {
+    bailleur:  document.getElementById("b_bailleur").value || "—",
+    locataire: document.getElementById("b_locataire").value || "—",
+    adresse:   document.getElementById("b_adresse").value || "—",
+    loyer:     parseFloat(document.getElementById("b_loyer").value||0),
+    charges:   parseFloat(document.getElementById("b_charges").value||0),
+    depot:     parseFloat(document.getElementById("b_depot").value||0),
+    echeance:  parseInt(document.getElementById("b_echeance").value||5),
+    type:      document.getElementById("b_type").value,
+    debut:     document.getElementById("b_debut").value || "—",
+    duree:     parseInt(document.getElementById("b_duree").value||12)
+  };
+}
+function bailTexte(d){
+  const total = (d.loyer+d.charges).toFixed(2);
+  return (
+`BAIL D'HABITATION — MonBailZen
+
+Entre les soussignés :
+- Bailleur : ${d.bailleur}
+- Locataire : ${d.locataire}
+
+Objet : ${d.type}
+Logement : ${d.adresse}
+
+Conditions financières :
+- Loyer mensuel hors charges : ${d.loyer.toFixed(2)} €
+- Provision sur charges : ${d.charges.toFixed(2)} €
+- Loyer mensuel total : ${total} €
+- Dépôt de garantie : ${d.depot.toFixed(2)} €
+- Échéance : le ${d.echeance} de chaque mois
+
+Durée : ${d.duree} mois à compter du ${d.debut}
+
+Clauses et conditions :
+- Assurance obligatoire du locataire
+- Entretien courant à la charge du locataire
+- Sous-location interdite sans accord écrit
+- Animaux de compagnie selon règlement de copropriété
+`
+  );
+}
+document.getElementById("b_preview").addEventListener("click",()=>{
+  const t = bailTexte(bailData());
+  document.getElementById("bail_content").textContent = t;
+  document.getElementById("bail_date").textContent = new Date().toLocaleDateString("fr-FR");
+  const printBlock = document.getElementById("bail_print");
+  printBlock.classList.remove("hidden");
+  // petit délai pour permettre l'affichage avant impression
+  setTimeout(()=>window.print(), 50);
+});
+document.getElementById("b_doc").addEventListener("click",()=>{
+  const t = bailTexte(bailData());
+  const blob = new Blob([t], {type:"application/msword"});
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
+  a.download = "bail_monbailzen.doc"; a.click(); URL.revokeObjectURL(a.href);
+});
+
+// =============== EDL (table dynamique + CSV) ===============
+const etBody = document.querySelector("#e_table tbody");
+const ETATS = ["Neuf","Très bon","Bon","Moyen","À rénover"];
+const ELS = ["Murs","Plafond","Sol","Porte","Fenêtre","Prises","Éclairage","Radiateurs","Électroménager","Divers"];
+function addEdlRow(piece="Salon"){
+  const tr = document.createElement("tr");
+  tr.innerHTML = `
+    <td><input value="${piece}"/></td>
+    <td><select>${ELS.map(x=>`<option>${x}</option>`).join("")}</select></td>
+    <td><select>${ETATS.map(x=>`<option>${x}</option>`).join("")}</select></td>
+    <td><input placeholder="https://..."/></td>
+    <td><input placeholder="Anomalie/Commentaire"/></td>
+    <td><button class="btn" data-del>Ligne -</button></td>
+  `;
+  etBody.appendChild(tr);
+}
+document.getElementById("e_add_ligne").addEventListener("click",()=> addEdlRow(document.getElementById("e_piece").value || "Pièce"));
+document.getElementById("e_add_piece").addEventListener("click",()=>{
+  const p = document.getElementById("e_piece").value || "Pièce";
+  for(let i=0;i<3;i++) addEdlRow(p);
+});
+etBody.addEventListener("click",(e)=>{ if(e.target.dataset.del){ e.target.closest("tr").remove(); }});
+
+function edlAsArray(){
+  const rows = [...etBody.querySelectorAll("tr")];
+  return rows.map(r=>{
+    const tds = r.querySelectorAll("td");
+    return {
+      piece: tds[0].querySelector("input").value,
+      element: tds[1].querySelector("select").value,
+      etat: tds[2].querySelector("select").value,
+      photo: tds[3].querySelector("input").value,
+      anomalie: tds[4].querySelector("input").value
     };
+  });
+}
+document.getElementById("e_csv").addEventListener("click",()=>{
+  const bien = document.getElementById("e_bien").value || "Bien";
+  const arr = edlAsArray();
+  const header = "Bien;Pièce;Élément;État;Photo;Anomalie\n";
+  const body = arr.map(x=>[bien,x.piece,x.element,x.etat,x.photo,x.anomalie].map(v=>`"${(v||"").replace(/"/g,'""')}"`).join(";")).join("\n");
+  const blob = new Blob([header+body],{type:"text/csv;charset=utf-8"});
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
+  a.download = "edl_monbailzen.csv"; a.click(); URL.revokeObjectURL(a.href);
+});
 
-    // ----------- UI Logic -----------
-    function setPlan(type){
-      const periodEls = document.querySelectorAll('[data-period]');
-      const amt = {
-        starter:  document.querySelector('[data-amount="starter"]'),
-        pro:      document.querySelector('[data-amount="pro"]'),
-        business: document.querySelector('[data-amount="business"]')
-      };
-      if(type === "mensuel"){
-        amt.starter.textContent  = PRICING.starter.monthly  + "€";
-        amt.pro.textContent      = PRICING.pro.monthly      + "€";
-        amt.business.textContent = PRICING.business.monthly + "€";
-        periodEls.forEach(p => p.textContent = "/ mois");
-      } else if(type === "annuel"){
-        amt.starter.textContent  = PRICING.starter.annual  + "€";
-        amt.pro.textContent      = PRICING.pro.annual      + "€";
-        amt.business.textContent = PRICING.business.annual + "€";
-        periodEls.forEach(p => p.textContent = "/ an");
-      } else {
-        amt.starter.textContent  = PRICING.starter.pause  + "€";
-        amt.pro.textContent      = PRICING.pro.pause      + "€";
-        amt.business.textContent = PRICING.business.pause + "€";
-        periodEls.forEach(p => p.textContent = "/ mois (lecture seule)");
-      }
-    }
+// =============== COMPTA / IRL ===============
+document.getElementById("c_calc").addEventListener("click",()=>{
+  const base = parseFloat(document.getElementById("c_loyer").value||0);
+  const irlA = parseFloat(document.getElementById("c_irl_ancien").value||1);
+  const irlN = parseFloat(document.getElementById("c_irl_nouveau").value||1);
+  const elec = parseFloat(document.getElementById("c_elec").value||0);
+  const eau  = parseFloat(document.getElementById("c_eau").value||0);
+  const net  = parseFloat(document.getElementById("c_net").value||0);
+  const indexe = (base * (irlN/irlA));
+  const charges = elec+eau+net;
+  const total = indexe + charges;
+  const tbody = document.querySelector("#c_table tbody");
+  tbody.innerHTML = `<tr>
+    <td>${base.toFixed(2)} €</td><td>${irlA}</td><td>${irlN}</td>
+    <td><strong>${indexe.toFixed(2)} €</strong></td><td>${charges.toFixed(2)} €</td>
+    <td><strong>${total.toFixed(2)} €</strong></td>
+  </tr>`;
+});
 
-    // Dropdowns
-    document.addEventListener("click",(e)=>{
-      const toggle = e.target.closest(".dropdown-toggle");
-      if(toggle){
-        e.preventDefault();
-        const parent = toggle.closest(".dropdown");
-        const open = parent.getAttribute("aria-expanded")==="true";
-        document.querySelectorAll(".dropdown").forEach(d=>d.setAttribute("aria-expanded","false"));
-        parent.setAttribute("aria-expanded", open ? "false" : "true");
-      } else if(!e.target.closest(".dropdown")){
-        document.querySelectorAll(".dropdown").forEach(d=>d.setAttribute("aria-expanded","false"));
-      }
-    });
+// =============== EXPORT GLOBAL CSV / JSON ===============
+function bailObj(){
+  const d = bailData();
+  return {type:"bail", ...d, total_mensuel: (d.loyer+d.charges)};
+}
+document.getElementById("x_csv").addEventListener("click",()=>{
+  const edl = edlAsArray();
+  const bail = bailObj();
+  let csv = "section;champ;valeur\n";
+  Object.entries(bail).forEach(([k,v])=> csv += `bail;${k};${v}\n`);
+  edl.forEach((x,i)=> Object.entries(x).forEach(([k,v])=> csv += `edl_${i+1};${k};${v}\n`));
+  const blob = new Blob([csv],{type:"text/csv;charset=utf-8"});
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
+  a.download = "monbailzen_export.csv"; a.click(); URL.revokeObjectURL(a.href);
+});
+document.getElementById("x_json").addEventListener("click",()=>{
+  const data = { bail: bailObj(), edl: edlAsArray() };
+  const s = JSON.stringify(data,null,2);
+  document.getElementById("x_preview").textContent = s;
+  const blob = new Blob([s],{type:"application/json"});
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
+  a.download = "monbailzen_export.json"; a.click(); URL.revokeObjectURL(a.href);
+});
 
-    // Segments (mensuel/annuel/pause)
-    document.addEventListener("DOMContentLoaded", ()=>{
-      document.getElementById("year").textContent = new Date().getFullYear();
-      setPlan("mensuel");
-      document.querySelectorAll(".seg").forEach(b=>{
-        b.addEventListener("click", ()=>{
-          document.querySelectorAll(".seg").forEach(s=>s.setAttribute("aria-checked","false"));
-          b.setAttribute("aria-checked","true");
-          setPlan(b.dataset.plan);
-        });
-      });
+// =============== TARIFS (toggle) ===============
+const segs = document.querySelectorAll(".seg");
+const pEls = document.querySelectorAll("[data-period]");
+const amt = {
+  starter: document.querySelector('[data-amt="starter"]'),
+  pro: document.querySelector('[data-amt="pro"]'),
+  business: document.querySelector('[data-amt="business"]')
+};
+function applyPlan(plan){
+  const p = PRICING[plan];
+  amt.starter.textContent = p.starter; amt.pro.textContent = p.pro; amt.business.textContent = p.business;
+  pEls.forEach(el=> el.textContent = " " + p.period);
+}
+segs.forEach(b=> b.addEventListener("click",()=>{
+  segs.forEach(s=> s.setAttribute("aria-checked","false"));
+  b.setAttribute("aria-checked","true");
+  applyPlan(b.dataset.plan);
+}));
+applyPlan("mensuel");
 
-      // Modal Signature
-      const openSign = document.getElementById("open-sign");
-      const closeSign = document.getElementById("close-sign");
-      const modal = document.getElementById("sign-modal");
-      openSign.addEventListener("click", ()=>{ modal.style.display="flex"; modal.setAttribute("aria-hidden","false"); });
-      closeSign.addEventListener("click", ()=>{ modal.style.display="none"; modal.setAttribute("aria-hidden","true"); });
-      modal.addEventListener("click", (e)=>{ if(e.target===modal) closeSign.click(); });
-    });
-  </script>
+// =============== SIGNATURE (démo canvas) ===============
+const signModal = document.getElementById("signModal");
+document.getElementById("openSign").addEventListener("click",()=>{ signModal.style.display="flex"; signModal.setAttribute("aria-hidden","false"); });
+document.getElementById("closeSign").addEventListener("click",()=>{ signModal.style.display="none"; signModal.setAttribute("aria-hidden","true"); });
+signModal.addEventListener("click",(e)=>{ if(e.target===signModal) document.getElementById("closeSign").click(); });
+
+const sCanvas = document.getElementById("s_canvas");
+const ctx = sCanvas.getContext("2d");
+function drawBoard(){
+  ctx.fillStyle="#fff"; ctx.fillRect(0,0,sCanvas.width,sCanvas.height);
+  ctx.fillStyle="#000"; ctx.font="16px sans-serif";
+  ctx.fillText("Signature de :", 20, 32);
+}
+drawBoard();
+document.getElementById("s_draw").addEventListener("click",()=>{
+  const nom = document.getElementById("s_nom").value || "Nom";
+  drawBoard();
+  ctx.fillStyle="#000"; ctx.fillText(nom, 140, 32);
+  if(document.getElementById("s_file").files[0]){
+    const r = new FileReader();
+    r.onload = e => { const img = new Image(); img.onload=()=>{ ctx.drawImage(img, 40, 60, 520, 150); }; img.src=e.target.result; };
+    r.readAsDataURL(document.getElementById("s_file").files[0]);
+  }else{
+    ctx.font="48px cursive"; ctx.fillText("~ signature ~", 140, 140);
+  }
+});
+document.getElementById("s_clear").addEventListener("click",drawBoard);
+document.getElementById("s_print").addEventListener("click",()=> window.print);
+</script>
 </body>
 </html>
