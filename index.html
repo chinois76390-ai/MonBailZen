@@ -4,590 +4,1077 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MonBailZen – Baux • EDL • IRL • Signatures • Biens & Renta</title>
+<title>MonBailZen – Gestion Locative & Baux</title>
 <style>
 /* ---------- Thème Gold & Dark ---------- */
 :root{
-  --bg:#0a0b0f; --bg2:#0f1117; --card:#11141b; --muted:#c7c9d1; --text:#f4f5f7;
-  --accent:#d4af37; --accent-weak:rgba(212,175,55,.16); --ring:0 0 0 3px rgba(212,175,55,.35);
-  --shadow:0 8px 25px rgba(0,0,0,.45); --radius:14px;
+  --bg:#0a0b0f;
+  --bg2:#0f1117;
+  --card:#11141b;
+  --muted:#c7c9d1;
+  --text:#f4f5f7;
+  --accent:#d4af37;
+  --accent-weak:rgba(212,175,55,.16);
+  --ring:0 0 0 3px rgba(212,175,55,.35);
+  --shadow:0 8px 25px rgba(0,0,0,.45);
+  --radius:14px;
 }
-*{box-sizing:border-box}
-html,body{height:100%}
-body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
-header{position:sticky;top:0;z-index:20;background:linear-gradient(90deg,#0a0b0f,#14161c);border-bottom:1px solid #232937;padding:10px 14px}
-.container{max-width:1180px;margin:0 auto}
-.head{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.brand{display:flex;align-items:center;gap:10px;font-weight:900}
-.badge{width:36px;height:28px;border-radius:8px;background:var(--accent);color:#211b05;display:grid;place-items:center;font-weight:900}
-nav{display:flex;flex-wrap:wrap;gap:8px}
-.tabbtn,.btn{padding:8px 12px;border-radius:10px;border:1px solid #2a2c33;background:#0e1219;color:var(--text);cursor:pointer}
-.tabbtn.active,.tabbtn:hover{background:var(--accent-weak);color:#1c1a11;border-color:var(--accent)}
-.btn.accent{background:var(--accent);color:#1d1604;border-color:transparent;font-weight:800}
-.btn.ghost{background:transparent}
-.btn:focus-visible{outline:none;box-shadow:var(--ring)}
-main{padding:16px}
-.grid{display:grid;gap:16px}
-.card{background:linear-gradient(180deg,var(--card),#0e1219);border:1px solid #232937;border-radius:var(--radius);padding:16px;box-shadow:var(--shadow)}
-h2{margin:6px 0 10px;color:var(--accent)}
-label{display:block;margin:8px 0 4px;color:var(--muted)}
-input,select,textarea{width:100%;padding:9px 10px;border-radius:12px;border:1px solid #30343e;background:#0d1117;color:#f2f4f7}
+body{
+  margin:0;font-family:"Inter",sans-serif;background:var(--bg);
+  color:var(--text);line-height:1.5;
+}
+header{
+  background:linear-gradient(90deg,#0a0b0f,#14161c);
+  border-bottom:1px solid #22242b;
+  padding:10px 14px;display:flex;justify-content:space-between;align-items:center;
+}
+header h1{color:var(--accent);font-size:1.4rem;margin:0}
+nav{display:flex;gap:8px;flex-wrap:wrap}
+.tabbtn{
+  background:none;border:1px solid #2a2c33;color:var(--text);
+  border-radius:8px;padding:6px 10px;cursor:pointer;
+}
+.tabbtn.active,.tabbtn:hover{
+  background:var(--accent-weak);color:var(--accent);border-color:var(--accent);
+}
+main{padding:14px}
+.card{
+  background:linear-gradient(180deg,var(--card),#0e1219);
+  border:1px solid #232937;border-radius:var(--radius);
+  box-shadow:var(--shadow);padding:14px;margin-bottom:14px;
+}
+h2{color:var(--accent);margin-top:0}
+label{display:block;font-size:.9rem;margin-bottom:3px;color:var(--muted)}
+input,select,textarea{
+  width:100%;padding:6px 8px;border-radius:6px;border:1px solid #30343e;
+  background:#0d1016;color:#eee;box-sizing:border-box;
+}
 input:focus,select:focus,textarea:focus{outline:none;box-shadow:var(--ring);border-color:var(--accent)}
-.row{display:grid;grid-template-columns:repeat(12,1fr);gap:12px}
-.col-12{grid-column:span 12}.col-6{grid-column:span 6}.col-5{grid-column:span 5}.col-4{grid-column:span 4}.col-3{grid-column:span 3}.col-2{grid-column:span 2}
-.note{color:var(--muted);font-size:.92rem}
-.table{width:100%;border-collapse:separate;border-spacing:0;margin-top:8px;background:#0d1117;border:1px solid #262c3a;border-radius:12px;overflow:hidden}
-.table th{background:linear-gradient(180deg,#141926,#101521);color:#f6f6f6;text-align:left;padding:10px 12px;position:sticky;top:0}
+.btn{
+  background:#1a1c23;border:1px solid #343744;color:var(--text);
+  border-radius:8px;padding:6px 12px;cursor:pointer;
+}
+.btn:hover{background:#22252c}
+.btn.accent{background:var(--accent);color:#1d1604;border-color:transparent}
+.btn.accent:hover{background:#e0be52}
+.note{font-size:.85rem;color:#aaa;margin-top:4px}
+.table{
+  width:100%;border-collapse:separate;border-spacing:0;margin-top:8px;
+  background:#0d1117;border:1px solid #262c3a;border-radius:12px;overflow:hidden;
+}
+.table th{
+  background:linear-gradient(180deg,#141926,#101521);
+  color:#f6f6f6;text-align:left;padding:10px 12px;position:sticky;top:0;
+}
 .table td{padding:10px 12px;border-top:1px solid #1f2532}
 .table tbody tr:nth-child(even){background:#0f1420}
 .table tfoot td{font-weight:800;border-top:2px solid #31394b}
-.badge-total{display:inline-block;padding:4px 8px;border-radius:999px;background:var(--accent-weak);border:1px solid rgba(212,175,55,.4);color:#e9d79a}
-.hidden{display:none}
-.print-block{display:none}
-@media print{header,.no-print{display:none!important}body{background:#fff;color:#000}.print-block{display:block}}
+.badge-total{
+  display:inline-block;padding:4px 8px;border-radius:999px;
+  background:var(--accent-weak);border:1px solid rgba(212,175,55,.4);color:#e9d79a;
+}
+.row{display:flex;flex-wrap:wrap;gap:10px}
+.col-2{flex:0 0 calc(16.66% - 10px)}.col-3{flex:0 0 calc(25% - 10px)}.col-4{flex:0 0 calc(33.33% - 10px)}
+.col-5{flex:0 0 calc(41.66% - 10px)}.col-6{flex:0 0 calc(50% - 10px)}.col-12{flex:0 0 100%}
+.hidden{display:none!important}
 </style>
 </head>
 <body>
 <header>
-  <div class="container head">
-    <div class="brand"><div class="badge">MBZ</div>MonBailZen</div>
-    <nav class="no-print">
-      <button class="tabbtn active" data-tab="home">Accueil</button>
-      <button class="tabbtn" data-tab="baux">Baux</button>
-      <button class="tabbtn" data-tab="edl">EDL</button>
-      <button class="tabbtn" data-tab="biens">Biens & Renta</button>
-      <button class="tabbtn" data-tab="sign">Signatures</button>
-      <button class="btn ghost" id="resetAll">Réinitialiser</button>
-    </nav>
-  </div>
+  <h1>MonBailZen</h1>
+  <nav>
+    <button class="tabbtn active" data-tab="home">Accueil</button>
+    <button class="tabbtn" data-tab="baux">Baux</button>
+    <button class="tabbtn" data-tab="edl">EDL</button>
+    <button class="tabbtn" data-tab="biens">Biens & Renta</button>
+    <button class="tabbtn" data-tab="sign">Signatures</button>
+  </nav>
 </header>
+<main>
+<section id="home" class="card">
+  <h2>Bienvenue sur MonBailZen</h2>
+  <p>Créez vos baux, états des lieux, suivez vos logements et calculez vos rentabilités. Tout fonctionne en local, sans serveur, et adopte votre thème sombre & doré préféré ✨.</p>
+  <h3>💰 Tarifs officiels</h3>
+  <table class="table">
+    <thead><tr><th>Offre</th><th>Mensuel</th><th>Annuel</th><th>Inclus</th></tr></thead>
+    <tbody>
+      <tr><td>Essai 7 j</td><td>0 €</td><td>—</td><td>1 bail + 1 EDL entrée</td></tr>
+      <tr><td>Unitaire</td><td>7,90 €</td><td>—</td><td>1 bail + 1 EDL entrée + crédit sortie 0,5</td></tr>
+      <tr><td>Starter</td><td>24 €/mois</td><td>240 €/an</td><td>3 baux + 3 EDL + IRL auto + export PDF/Word</td></tr>
+      <tr><td>Pro</td><td>59 €/mois</td><td>590 €/an</td><td>Illimité + logo perso + export compta / Excel</td></tr>
+      <tr><td>Pause & sauvegarde</td><td>2 €/mois</td><td>20 €/an</td><td>Lecture seule + sauvegarde + réactivation simple</td></tr>
+    </tbody>
+  </table>
+  <!-- ===== SECTION BAUX ===== -->
+<section id="baux" class="card hidden">
+  <h2>📑 Création de bail</h2>
 
-<main class="container grid">
-  <!-- ACCUEIL + Tarifs -->
-  <section id="home" class="card">
-    <h2>Bienvenue 👋</h2>
-    <p>Créez vos <strong>baux complets</strong>, réalisez des <strong>EDL avancés</strong>, suivez vos <strong>biens & rentabilités</strong>, gérez <strong>IRL/assurance</strong> avec courriers automatiques, et signez <strong>manuscrit ou import</strong>. Thème <em>gold & dark</em> ✨.</p>
+  <div class="row">
+    <div class="col-4">
+      <label>Type de bail</label>
+      <select id="b_type">
+        <option>Location vide</option>
+        <option>Meublée</option>
+        <option>Saisonnier</option>
+        <option>Mobilité</option>
+      </select>
+    </div>
+    <div class="col-4">
+      <label>Durée (mois)</label>
+      <input id="b_duree" type="number" value="36">
+    </div>
+    <div class="col-4">
+      <label>Préavis locataire (mois)</label>
+      <input id="b_preavis" type="number" value="3">
+    </div>
 
-    <h3>💰 Tarifs</h3>
-    <table class="table">
-      <thead><tr><th>Offre</th><th>Mensuel</th><th>Annuel</th><th>Inclus</th></tr></thead>
-      <tbody>
-        <tr><td>Essai 7 j</td><td>0 €</td><td>—</td><td>1 bail + 1 EDL entrée</td></tr>
-        <tr><td>Unitaire</td><td>7,90 €</td><td>—</td><td>1 bail + 1 EDL entrée + crédit sortie 0,5</td></tr>
-        <tr><td>Starter</td><td>24 €/mois</td><td>240 €/an</td><td>3 baux + 3 EDL + IRL automatique + emails</td></tr>
-        <tr><td>Pro</td><td>59 €/mois</td><td>590 €/an</td><td>Illimité + logo + exports compta</td></tr>
-        <tr><td>Pause & sauvegarde</td><td>2 €/mois</td><td>20 €/an</td><td>Lecture seule + conservation</td></tr>
-      </tbody>
-    </table>
-      <!-- BAUX -->
-  <section id="baux" class="card hidden">
-    <h2>📄 Générateur de Bail (vide • meublé • saisonnier • mobilité)</h2>
+    <div class="col-6">
+      <label>Bailleur</label>
+      <input id="b_bailleur" placeholder="Nom, prénom, adresse…">
+    </div>
+    <div class="col-6">
+      <label>Locataire</label>
+      <input id="b_locataire" placeholder="Nom, prénom, adresse…">
+    </div>
 
+    <div class="col-4">
+      <label>Loyer HC (€)</label>
+      <input id="b_loyer" type="number">
+    </div>
+    <div class="col-4">
+      <label>Charges (€)</label>
+      <input id="b_charge" type="number">
+    </div>
+    <div class="col-4">
+      <label>Date de début</label>
+      <input id="b_date_debut" type="date">
+    </div>
+
+    <div class="col-6">
+      <label>Garants (nom, adresse…)</label>
+      <input id="b_garant" placeholder="Laisser vide si aucun">
+    </div>
+    <div class="col-6">
+      <label>Clause solidaire (auto)</label>
+      <textarea id="b_clause" rows="3" readonly></textarea>
+    </div>
+  </div>
+
+  <div class="card" id="b_annexes">
+    <h3>📎 Annexes et remarques</h3>
+    <textarea id="b_annexe_txt" rows="5" placeholder="Ajoutez ici des annexes ou mentions particulières (travaux, équipements, etc.)"></textarea>
+  </div>
+
+  <div class="row">
+    <div class="col-6 card">
+      <h3>📈 Indexation IRL automatique</h3>
+      <label>Trimestre de référence</label>
+      <select id="b_irl_trim">
+        <option>T1</option><option>T2</option><option>T3</option><option>T4</option>
+      </select>
+      <label>Année de référence</label>
+      <input id="b_irl_year" type="number" value="2025">
+      <label>Date d’anniversaire du bail</label>
+      <input id="b_irl_date" type="date">
+      <div class="note">L’indexation IRL est calculée automatiquement selon le trimestre choisi.</div>
+      <button class="btn accent" id="b_calc_irl">📩 Générer courrier IRL</button>
+      <div id="b_irl_result" class="note"></div>
+    </div>
+
+    <div class="col-6 card">
+      <h3>🏠 Assurance habitation</h3>
+      <label>Date de présentation de l’attestation</label>
+      <input id="b_assu_date" type="date">
+      <label>Statut</label>
+      <select id="b_assu_statut">
+        <option>En attente</option><option>Reçue</option><option>Relance à faire</option>
+      </select>
+      <button class="btn accent" id="b_assu_courrier">📩 Générer courrier assurance</button>
+      <div id="b_assu_note" class="note"></div>
+    </div>
+  </div>
+
+  <div style="margin-top:12px">
+    <button class="btn accent" id="b_save">💾 Enregistrer le bail</button>
+    <button class="btn" id="b_preview">👁️ Aperçu bail</button>
+  </div>
+
+  <div id="b_preview_zone" class="card hidden">
+    <h3>🖨️ Aperçu du bail</h3>
+    <div id="bail_print"></div>
+  </div>
+</section>
+
+<script>
+// ==== LOGIQUE BAUX ====
+const BAIL_RULES={
+  "Location vide":{duree_mois:36,preavis_mois:3},
+  "Meublée":{duree_mois:12,preavis_mois:1},
+  "Saisonnier":{duree_mois:3,preavis_mois:0},
+  "Mobilité":{duree_mois:6,preavis_mois:1}
+};
+function applyBailRules(){
+  const t=b_type.value, r=BAIL_RULES[t]; if(!r)return;
+  if(t==="Saisonnier"||t==="Mobilité"){
+    if(!b_duree.value)b_duree.value=r.duree_mois;
+  } else { b_duree.value=r.duree_mois; }
+  b_preavis.value=r.preavis_mois;
+  b_clause.value = b_garant.value.trim() ?
+    `Le garant, ${b_garant.value}, s’engage solidairement avec le locataire pour la durée du bail de ${b_duree.value} mois, renouvelable selon la loi applicable au bail ${t.toLowerCase()}.` :
+    "Aucun garant déclaré.";
+}
+b_type.onchange=applyBailRules; b_garant.oninput=applyBailRules;
+
+// === IRL automatique ===
+async function fetchIRL(trim,year){
+  const ref={T1:138.61,T2:140.59,T3:142.69,T4:144.25}; // base provisoire
+  return ref[trim]||140;
+}
+b_calc_irl.onclick=async()=>{
+  const trim=b_irl_trim.value,year=+b_irl_year.value;
+  const ref=await fetchIRL(trim,year-1), newv=await fetchIRL(trim,year);
+  const pct=((newv-ref)/ref)*100;
+  const nvLoyer=(+b_loyer.value)*(1+pct/100);
+  b_irl_result.innerHTML=`IRL ${trim} ${year} : ${ref} → ${newv} soit +${pct.toFixed(2)}%.<br>Nouveau loyer HC : <strong>${nvLoyer.toFixed(2)} €</strong>`;
+};
+
+// === Courrier IRL / Assurance ===
+b_assu_courrier.onclick=()=>{
+  const date=b_assu_date.value||"____";
+  const msg=`<h4>Courrier de relance assurance habitation</h4>
+  <p>Conformément au bail, nous vous rappelons de transmettre une attestation d’assurance habitation à jour. Date limite : ${date}.</p>`;
+  b_assu_note.innerHTML=msg;
+};
+
+// === Sauvegarde locale simple ===
+function bailData(){
+  return {
+    type:b_type.value,duree:b_duree.value,preavis:b_preavis.value,bailleur:b_bailleur.value,locataire:b_locataire.value,
+    loyer:b_loyer.value,charge:b_charge.value,date:b_date_debut.value,garant:b_garant.value,annexe:b_annexe_txt.value
+  };
+}
+b_save.onclick=()=>{ localStorage.setItem("mbz.bail",JSON.stringify(bailData())); alert("Bail enregistré localement."); };
+
+// === Aperçu (simplifié, insertion signature faite plus tard) ===
+b_preview.onclick=()=>{
+  const d=JSON.parse(localStorage.getItem("mbz.bail")||"{}");
+  const html=`
+    <h4>Bail ${d.type||""}</h4>
+    <p><strong>Bailleur :</strong> ${d.bailleur||""}<br>
+    <strong>Locataire :</strong> ${d.locataire||""}<br>
+    <strong>Loyer HC :</strong> ${d.loyer||""} € + charges ${d.charge||""} €</p>
+    <p><strong>Durée :</strong> ${d.duree||""} mois, préavis ${d.preavis||""} mois</p>
+    <p><strong>Garant :</strong> ${d.garant||"Aucun"}</p>
+    <p><em>Clause solidaire :</em> ${b_clause.value}</p>
+    <p><strong>Annexes :</strong><br>${d.annexe||"—"}</p>`;
+  b_preview_zone.classList.remove("hidden");
+  bail_print.innerHTML=html;
+};
+</script>
+<!-- ===== SECTION EDL (États des lieux) ===== -->
+<section id="edl" class="card hidden">
+  <h2>🛠️ EDL avancé — pièces, éléments, photos, relevés & inventaire</h2>
+
+  <!-- En-tête EDL -->
+  <div class="row">
+    <div class="col-6">
+      <label>Bien (adresse)</label>
+      <input id="e_bien" placeholder="Ex: 4 rue Quiquerue, Ault">
+    </div>
+
+    <div class="col-3">
+      <label>Ajouter une pièce (liste)</label>
+      <select id="e_piece_select"></select>
+    </div>
+    <div class="col-3" style="display:flex;align-items:end">
+      <button class="btn accent" id="e_add_piece">Ajouter la pièce</button>
+    </div>
+
+    <div class="col-6">
+      <label>Nouvelle pièce personnalisée</label>
+      <input id="e_piece_custom" placeholder="Ex: Chambre 2, Cellier, Terrasse…">
+    </div>
+    <div class="col-6" style="display:flex;align-items:end">
+      <button class="btn" id="e_add_piece_custom">Ajouter pièce personnalisée</button>
+    </div>
+  </div>
+
+  <!-- Liste de pièces -->
+  <div id="e_pieces_container" class="row" style="margin-top:10px"></div>
+
+  <!-- Relevés compteurs -->
+  <div class="card" style="margin-top:16px">
+    <h3>🔌 Relevés compteurs</h3>
     <div class="row">
-      <div class="col-6"><label>Bailleur</label><input id="b_bailleur"></div>
-      <div class="col-6"><label>Locataire</label><input id="b_locataire"></div>
-      <div class="col-12"><label>Adresse du logement</label><input id="b_adresse"></div>
+      <div class="col-3">
+        <label>Type</label>
+        <select id="m_type"><option>Eau</option><option>Électricité</option><option>Gaz</option></select>
+      </div>
+      <div class="col-3">
+        <label>N° compteur</label>
+        <input id="m_numero" placeholder="N°">
+      </div>
+      <div class="col-3">
+        <label>Valeur relevée</label>
+        <input id="m_valeur" type="number" step="0.01" placeholder="ex: 12345.6">
+      </div>
+      <div class="col-3">
+        <label>Date du relevé</label>
+        <input id="m_date" type="date">
+      </div>
+      <div class="col-6">
+        <label>Photo du compteur</label>
+        <input id="m_photo" type="file" accept="image/*" capture="environment">
+      </div>
+      <div class="col-6" style="display:flex;align-items:end">
+        <button class="btn" id="m_add">Ajouter le relevé</button>
+      </div>
+    </div>
+    <div id="m_list" class="row" style="margin-top:10px"></div>
+  </div>
 
-      <div class="col-3"><label>Loyer HC (€)</label><input id="b_loyer" type="number" value="650"></div>
-      <div class="col-3"><label>Charges (€)</label><input id="b_charges" type="number" value="40"></div>
-      <div class="col-3"><label>Dépôt (€)</label><input id="b_depot" type="number" value="650"></div>
-      <div class="col-3"><label>Échéance (jour)</label><input id="b_echeance" type="number" value="5"></div>
-
+  <!-- Inventaire mobilier -->
+  <div class="card" style="margin-top:16px">
+    <h3>🧾 Inventaire (meublé / mobilité / saisonnier / colocation)</h3>
+    <p class="note">Affiché si le type de bail est Meublée, Mobilité, Saisonnier ou Colocation.</p>
+    <div class="row">
       <div class="col-4">
-        <label>Type de bail</label>
-        <select id="b_type">
-          <option>Location vide</option>
-          <option>Meublée</option>
-          <option>Saisonnier</option>
-          <option>Mobilité</option>
-        </select>
+        <label>Ajouter un item (liste)</label>
+        <select id="inv_select"></select>
       </div>
-      <div class="col-4"><label>Début de bail</label><input id="b_debut" type="date"></div>
-      <div class="col-2"><label>Durée (mois)</label><input id="b_duree" type="number" value="12"></div>
-      <div class="col-2"><label>Préavis (mois)</label><input id="b_preavis" type="number" value="1"></div>
-      <div class="col-12"><p id="b_rule_note" class="note">Règles auto selon le type (durée/préavis).</p></div>
-    </div>
-
-    <h3>Clauses & options</h3>
-    <div class="row">
-      <div class="col-12"><label><input type="checkbox" class="clause" data-key="caution" checked> Caution solidaire</label></div>
-      <div class="col-6"><label>Nom de la caution</label><input id="cl_caution_nom" placeholder="Nom Prénom"></div>
-      <div class="col-3"><label>Montant garanti (€)</label><input id="cl_caution_montant" type="number" value="1000"></div>
-      <div class="col-3"><label>Durée caution (mois)</label><input id="cl_caution_duree" type="number" value="12"></div>
-
-      <div class="col-12"><label><input type="checkbox" class="clause" data-key="irl" checked> Révision IRL</label></div>
-      <div class="col-4"><label>IRL ancien</label><input id="cl_irl_a" type="number" step="0.01" value="140.97"></div>
-      <div class="col-4"><label>IRL nouveau</label><input id="cl_irl_n" type="number" step="0.01" value="146.21"></div>
-      <div class="col-4"><label>Date anniversaire</label><input id="cl_irl_date" type="date"></div>
-
-      <div class="col-12"><label><input type="checkbox" class="clause" data-key="assurance" checked> Assurance habitation</label></div>
-      <div class="col-12"><label><input type="checkbox" class="clause" data-key="entretien" checked> Entretien & réparations locatives</label></div>
-      <div class="col-12"><label><input type="checkbox" class="clause" data-key="resolutoire" checked> Clause résolutoire</label></div>
-      <div class="col-12"><label><input type="checkbox" class="clause" data-key="sousloc" checked> Sous-location interdite</label></div>
-      <div class="col-12"><label><input type="checkbox" class="clause" data-key="preavis" checked> Préavis & remise des clés</label></div>
-    </div>
-
-    <h3>Annexes</h3>
-    <div class="row">
-      <div class="col-8"><input id="annexe_nom" placeholder="DPE, ERP, EDL, Inventaire, ..."></div>
-      <div class="col-4"><button class="btn" id="annexe_add">Ajouter annexe</button></div>
-      <div class="col-12"><ul id="annexe_list" class="note" style="padding-left:18px;margin:8px 0"></ul></div>
-      <div class="col-12"><label>Annexe libre (texte)</label><textarea id="annexe_libre" rows="6" placeholder="Contenu libre à joindre au bail"></textarea></div>
-    </div>
-
-    <div class="row">
-      <div class="col-12">
-        <button class="btn accent" id="b_preview">Aperçu / Imprimer</button>
-        <button class="btn" id="b_doc">Télécharger .doc</button>
-        <button class="btn" id="b_json">Exporter JSON</button>
-        <button class="btn" id="b_full">Bail complet (légal)</button>
+      <div class="col-2">
+        <label>Quantité</label>
+        <input id="inv_qty" type="number" value="1" min="1">
       </div>
-    </div>
-
-    <h3>Prévisualisation — Clause Caution (auto)</h3>
-    <pre id="clause_caution_preview" class="note" style="white-space:pre-wrap;background:#0b0e15;border:1px solid #232937;padding:10px;border-radius:10px"></pre>
-
-    <!-- Impression bail "simple" -->
-    <div id="bail_print" class="print-block" style="background:#fff;color:#000;padding:16px">
-      <h2 style="margin:0 0 8px">Bail d'habitation — MonBailZen</h2>
-      <div id="bail_content" style="white-space:pre-wrap"></div>
-      <p style="margin-top:24px">Fait le <span id="bail_date"></span> — Signatures :</p>
-      <div style="display:flex;gap:40px;margin-top:6px"><div>Le Bailleur</div><div>Le Locataire</div></div>
-      <div id="sign_imgs_simple" style="display:flex;gap:60px;margin-top:18px">
-        <div style="text-align:center"><img id="sig_b_simple" style="max-width:280px;max-height:120px;object-fit:contain"></div>
-        <div style="text-align:center"><img id="sig_l_simple" style="max-width:280px;max-height:120px;object-fit:contain"></div>
+      <div class="col-3">
+        <label>État</label>
+        <select id="inv_state"></select>
       </div>
-    </div>
-
-    <!-- Impression bail "complet" -->
-    <div id="bail_full_print" class="print-block" style="background:#fff;color:#000;padding:20px">
-      <div id="bail_full_content" style="white-space:pre-wrap"></div>
-      <div id="sign_imgs_full" style="display:flex;gap:60px;margin-top:18px">
-        <div style="text-align:center"><div style="margin-bottom:6px">Signature du Bailleur</div><img id="sig_b_full" style="max-width:280px;max-height:120px;object-fit:contain"></div>
-        <div style="text-align:center"><div style="margin-bottom:6px">Signature du Locataire</div><img id="sig_l_full" style="max-width:280px;max-height:120px;object-fit:contain"></div>
-      </div>
-    </div>
-
-    <!-- IRL & Assurance (calculs + courriers) -->
-    <div class="card" style="margin-top:16px">
-      <h3>IRL — Indexation automatique</h3>
-      <div class="row">
-        <div class="col-4"><label>Date anniversaire</label><input id="irl_anniv" type="date"></div>
-        <div class="col-4"><label>Trimestre (auto)</label><input id="irl_trim" readonly></div>
-        <div class="col-4"><label>IRL ancien</label><input id="irl_ref" type="number" step="0.01"></div>
-        <div class="col-4"><label>IRL nouveau</label><input id="irl_new" type="number" step="0.01"></div>
-        <div class="col-4"><label>Loyer de base (€)</label><input id="irl_base" type="number" step="0.01"></div>
-        <div class="col-12">
-          <button class="btn" id="irl_detect">Calculer</button>
-          <button class="btn" id="irl_letter">📩 Courrier IRL</button>
-        </div>
-        <div class="col-12"><pre id="irl_calc_out" class="note" style="white-space:pre-wrap;background:#0b0e15;border:1px solid #232937;padding:10px;border-radius:10px"></pre></div>
-      </div>
-    </div>
-
-    <div class="card" style="margin-top:16px">
-      <h3>Assurance habitation — rappel + courrier</h3>
-      <div class="row">
-        <div class="col-4"><label>Date attestation</label><input id="assu_date" type="date"></div>
-        <div class="col-4"><label>Rappel (jours avant)</label><input id="assu_rappel_j" type="number" value="15"></div>
-        <div class="col-4" style="display:flex;align-items:end"><button class="btn" id="assu_letter">📩 Courrier attestation</button></div>
-      </div>
-    </div>
-  </section>
-  <!-- EDL AVANCÉ -->
-  <section id="edl" class="card hidden">
-    <h2>🛠️ EDL avancé — pièces, éléments, photos, relevés & inventaire</h2>
-
-    <div class="row">
-      <div class="col-6"><label>Bien (adresse)</label><input id="e_bien" placeholder="Ex: 4 rue Quiquerue, Ault"></div>
-      <div class="col-3"><label>Ajouter une pièce (sélection)</label><select id="e_piece_select"></select></div>
-      <div class="col-3" style="display:flex;align-items:end;gap:8px"><button class="btn accent" id="e_add_piece">Ajouter la pièce</button></div>
-      <div class="col-6"><label>Nouvelle pièce (personnalisée)</label><input id="e_piece_custom" placeholder="Ex: Chambre 2, Cellier, Terrasse…"></div>
-      <div class="col-6" style="display:flex;align-items:end;gap:8px"><button class="btn" id="e_add_piece_custom">Ajouter pièce personnalisée</button></div>
-    </div>
-
-    <div id="e_pieces_container" class="grid" style="margin-top:10px"></div>
-
-    <div class="card" style="margin-top:16px">
-      <h3>🔌 Relevés compteurs</h3>
-      <div class="row">
-        <div class="col-3"><label>Type</label><select id="m_type"><option>Eau</option><option>Électricité</option><option>Gaz</option></select></div>
-        <div class="col-3"><label>N° Compteur</label><input id="m_numero"></div>
-        <div class="col-3"><label>Valeur</label><input id="m_valeur" type="number" step="0.01"></div>
-        <div class="col-3"><label>Date</label><input id="m_date" type="date"></div>
-        <div class="col-6"><label>Photo</label><input id="m_photo" type="file" accept="image/*" capture="environment"></div>
-        <div class="col-6" style="display:flex;align-items:end"><button class="btn" id="m_add">Ajouter le relevé</button></div>
-      </div>
-      <div id="m_list" class="grid" style="margin-top:10px"></div>
-    </div>
-
-    <div class="card" style="margin-top:16px">
-      <h3>🧾 Inventaire mobilier & vaisselle</h3>
-      <p class="note">Affiché pour baux meublés, mobilité, saisonniers, colocations.</p>
-      <div class="row">
-        <div class="col-4"><label>Item (sélection)</label><select id="inv_select"></select></div>
-        <div class="col-2"><label>Qté</label><input id="inv_qty" type="number" value="1" min="1"></div>
-        <div class="col-3"><label>État</label><select id="inv_state"></select></div>
-        <div class="col-3" style="display:flex;align-items:end"><button class="btn" id="inv_add">Ajouter</button></div>
-        <div class="col-6"><label>Item personnalisé</label><input id="inv_custom" placeholder="Ex: Cafetière, Grille-pain…"></div>
-        <div class="col-6" style="display:flex;align-items:end"><button class="btn" id="inv_add_custom">Ajouter item personnalisé</button></div>
-      </div>
-      <div id="inv_list" class="grid" style="margin-top:10px"></div>
-    </div>
-  </section>
-
-  <!-- SIGNATURES -->
-  <section id="sign" class="card hidden">
-    <h2>✍️ Signatures</h2>
-    <p class="note">Dessinez votre signature ou importez une image, enregistrez-la, puis définissez la signature par défaut Bailleur/Locataire. Elle sera insérée automatiquement dans les baux imprimés.</p>
-
-    <div class="row">
-      <div class="col-12"><label>Nom de la signature</label><input id="s_label" placeholder="Ex: Bailleur – DUPONT"></div>
-      <div class="col-12">
-        <canvas id="s_canvas" width="720" height="260" style="background:#fff;border-radius:12px;border:1px solid #c7c7c7;touch-action:none"></canvas>
-        <div class="note">Astuce : maintenez clic / touchez pour dessiner.</div>
+      <div class="col-3" style="display:flex;align-items:end">
+        <button class="btn" id="inv_add">Ajouter</button>
       </div>
 
       <div class="col-6">
-        <label>Importer une image (PNG/JPG)</label>
-        <input type="file" id="s_file" accept="image/*">
+        <label>Nouvel item personnalisé</label>
+        <input id="inv_custom" placeholder="Ex: Cafetière, Grille-pain…">
       </div>
-      <div class="col-6" style="display:flex;align-items:end;gap:8px;flex-wrap:wrap">
-        <button class="btn" id="s_load_img">Placer l’image</button>
-        <button class="btn" id="s_clear">Effacer</button>
-      </div>
-
-      <div class="col-12" style="display:flex;gap:8px;flex-wrap:wrap">
-        <button class="btn accent" id="s_save">Enregistrer</button>
-        <button class="btn" id="s_export_png">Exporter PNG</button>
-        <button class="btn" id="s_set_default_b">Définir Bailleur (défaut)</button>
-        <button class="btn" id="s_set_default_l">Définir Locataire (défaut)</button>
-      </div>
-
-      <div class="col-12">
-        <h3>Bibliothèque de signatures</h3>
-        <div id="s_gallery" class="row" style="gap:12px"></div>
-        <p class="note">Cliquez une vignette pour la charger. 🗑 pour supprimer. “Défaut” = insérer automatiquement dans les baux.</p>
+      <div class="col-6" style="display:flex;align-items:end">
+        <button class="btn" id="inv_add_custom">Ajouter item personnalisé</button>
       </div>
     </div>
-  </section>
-
-  <!-- Modales Courriers -->
-  <div class="modal" id="irlModal" aria-hidden="true">
-    <div class="win">
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <h3 style="margin:0">Courrier révision de loyer (IRL)</h3>
-        <button class="btn" id="closeIrlModal">Fermer</button>
-      </div>
-      <textarea id="irl_letter_text" rows="14" style="width:100%;margin-top:10px"></textarea>
-      <div style="margin-top:12px"><button class="btn accent" id="irl_letter_doc">Télécharger (.doc)</button></div>
-    </div>
+    <div id="inv_list" class="row" style="margin-top:10px"></div>
   </div>
 
-  <div class="modal" id="assuModal" aria-hidden="true">
-    <div class="win">
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <h3 style="margin:0">Courrier — Attestation d’assurance</h3>
-        <button class="btn" id="closeAssuModal">Fermer</button>
-      </div>
-      <textarea id="assu_letter_text" rows="12" style="width:100%;margin-top:10px"></textarea>
-      <div style="margin-top:12px"><button class="btn accent" id="assu_letter_doc">Télécharger (.doc)</button></div>
+  <!-- Exports EDL -->
+  <div style="margin-top:16px">
+    <button class="btn" id="e_export_csv">Exporter CSV</button>
+    <button class="btn" id="e_export_json">Exporter JSON</button>
+  </div>
+</section>
+
+<!-- ===== SECTION SIGNATURES ===== -->
+<section id="sign" class="card hidden">
+  <h2>✍️ Signatures (dessin ou import)</h2>
+  <p class="note">Enregistrez vos signatures, définissez celles du Bailleur/Locataire par défaut et insérez-les automatiquement dans l’aperçu du bail.</p>
+
+  <div class="row">
+    <div class="col-12">
+      <label>Nom de la signature</label>
+      <input id="s_label" placeholder="Ex: Bailleur – DUPONT">
+    </div>
+    <div class="col-12">
+      <canvas id="s_canvas" width="720" height="260" style="background:#fff;border-radius:12px;border:1px solid #c7c7c7;touch-action:none"></canvas>
+      <div class="note">Maintenez clic / doigt pour dessiner. Effacez si besoin et recommencez.</div>
+    </div>
+    <div class="col-6">
+      <label>Importer une image (PNG/JPG)</label>
+      <input type="file" id="s_file" accept="image/*">
+    </div>
+    <div class="col-6" style="display:flex;align-items:end;gap:8px;flex-wrap:wrap">
+      <button class="btn" id="s_load_img">Placer l’image</button>
+      <button class="btn" id="s_clear">Effacer</button>
+    </div>
+    <div class="col-12" style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn accent" id="s_save">Enregistrer</button>
+      <button class="btn" id="s_export_png">Exporter PNG</button>
+      <button class="btn" id="s_set_default_b">Défaut Bailleur</button>
+      <button class="btn" id="s_set_default_l">Défaut Locataire</button>
+    </div>
+
+    <div class="col-12">
+      <h3>Bibliothèque</h3>
+      <div id="s_gallery" class="row" style="gap:12px"></div>
     </div>
   </div>
-  <!-- BIENS & RENTA -->
-  <section id="biens" class="card hidden">
-    <h2>🏠 Biens & Rentabilité</h2>
-    <p class="note">Tableau + graphiques (cashflow / répartition). Sauvegarde locale, exports CSV/JSON.</p>
+</section>
 
-    <div class="row">
-      <div class="col-3"><label>Type</label><select id="p_type"><option>Location vide</option><option>Meublée</option><option>Saisonnier</option><option>Mobilité</option><option>Colocation</option></select></div>
-      <div class="col-5"><label>Adresse</label><input id="p_adresse" placeholder="N° rue, ville"></div>
-      <div class="col-2"><label>Loyer HC (€/mois)</label><input id="p_loyer" type="number" step="0.01" value="650"></div>
-      <div class="col-2"><label>Charges (€/mois)</label><input id="p_charges" type="number" step="0.01" value="40"></div>
+<script>
+/* ===== EDL — Données par défaut & store ===== */
+const EDL_DEFAULT_ROOMS=["Entrée","Salon / Séjour","Cuisine","Chambre 1","Chambre 2","Salle de bain","WC","Couloir","Balcon / Terrasse","Cave / Cellier"];
+const EDL_DEFAULT_ELEMENTS=["Murs","Plafond","Sol","Plinthes","Portes","Fenêtres","Volets/Stores","Électricité","Prises","Éclairage","Chauffage/Radiateurs","EAU/Robinetterie","Sanitaires","Électroménager","Rangements/Placards","Divers"];
+const EDL_STATES=["Neuf","Très bon","Bon","Moyen","À rénover","HS / Non fonctionnel"];
+const INV_DEFAULT_ITEMS=["Lit 140","Lit 160","Table","Chaises x4","Canapé","Armoire","Bureau","Plaques cuisson","Four","Micro-ondes","Réfrigérateur","Lave-linge","Assiettes x6","Verres x6","Couverts x6","Casseroles x3","Poêle","Ustensiles divers"];
 
-      <div class="col-2"><label>TF (€/an)</label><input id="p_tf" type="number" step="0.01" value="800"></div>
-      <div class="col-2"><label>Assurance (€/an)</label><input id="p_assu" type="number" step="0.01" value="120"></div>
-      <div class="col-2"><label>Autres (€/an)</label><input id="p_autres" type="number" step="0.01" value="0"></div>
-      <div class="col-2"><label>Vacance (mois/an)</label><input id="p_vac" type="number" step="0.1" value="1"></div>
-      <div class="col-2"><label>Prix (€)</label><input id="p_prix" type="number" step="1" value="120000"></div>
-      <div class="col-2"><label>Notaire (€)</label><input id="p_notaire" type="number" step="1" value="9000"></div>
-      <div class="col-2" style="display:flex;align-items:end"><button class="btn accent" id="p_add">Ajouter / Mettre à jour</button></div>
-    </div>
+function edlLoad(){return JSON.parse(localStorage.getItem("mbz.edl_v2")||"null")||{bien:"",rooms:[],meters:[],inventory:[]}}
+function edlSave(data){localStorage.setItem("mbz.edl_v2",JSON.stringify(data))}
+let EDL = edlLoad();
 
-    <div style="margin-top:12px;overflow:auto">
-      <table class="table" id="p_table">
-        <thead>
-          <tr>
-            <th>#</th><th>Type</th><th>Adresse</th>
-            <th>Loyer HC</th><th>Charges</th><th>TF</th><th>Assurance</th><th>Autres/an</th><th>Vacance (mois)</th>
-            <th>Invest</th><th>Revenus/an</th><th>Charges/an</th><th>Cashflow/an</th><th>Rdt brut</th><th>Rdt net</th><th></th>
-          </tr>
-        </thead>
-        <tbody></tbody><tfoot></tfoot>
+/* Helpers */
+const ePieceSel=document.getElementById("e_piece_select");
+const invSel=document.getElementById("inv_select");
+const invStateSel=document.getElementById("inv_state");
+function fillSelectOptions(sel,arr){sel.innerHTML=arr.map(v=>`<option>${v}</option>`).join("")}
+fillSelectOptions(ePieceSel,EDL_DEFAULT_ROOMS);
+fillSelectOptions(invSel,INV_DEFAULT_ITEMS);
+fillSelectOptions(invStateSel,EDL_STATES);
+
+/* Bien */
+const eBien=document.getElementById("e_bien");
+if(EDL.bien) eBien.value=EDL.bien;
+eBien?.addEventListener("input",()=>{EDL.bien=eBien.value;edlSave(EDL)});
+
+/* Pièces & éléments */
+const piecesContainer=document.getElementById("e_pieces_container");
+function fileToDataURL(file){return new Promise((resolve,reject)=>{const r=new FileReader();r.onload=e=>resolve(e.target.result);r.onerror=reject;r.readAsDataURL(file)})}
+
+function renderRooms(){
+  piecesContainer.innerHTML="";
+  EDL.rooms.forEach((room,idx)=>{
+    const card=document.createElement("div");
+    card.className="card col-12";
+    card.innerHTML=`
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
+        <h3 style="margin:0">${room.name}</h3>
+        <div style="display:flex;gap:8px">
+          <button class="btn" data-room-add-el="${idx}">+ Élément</button>
+          <button class="btn" data-room-photo="${idx}">+ Photos pièce</button>
+          <button class="btn" data-room-del="${idx}" title="Supprimer">🗑</button>
+        </div>
+      </div>
+
+      <div class="row" style="margin-top:8px" id="room_photos_${idx}">
+        ${room.roomPhotos?.length? room.roomPhotos.map(src=>`
+          <div class="col-3"><img src="${src}" style="width:100%;height:150px;object-fit:cover;border-radius:8px;border:1px solid #232937"/></div>
+        `).join(""):`<div class="col-12 note">Aucune photo de la pièce.</div>`}
+      </div>
+
+      <table class="table" style="margin-top:10px">
+        <thead><tr><th>Élément</th><th>État</th><th>Anomalie</th><th>Photos anomalie</th><th></th></tr></thead>
+        <tbody id="room_tbl_${idx}">
+          ${room.elements.map((el,i)=>`
+            <tr>
+              <td><input value="${el.name}" data-el-name="${idx}:${i}"></td>
+              <td>
+                <select data-el-state="${idx}:${i}">
+                  ${EDL_STATES.map(s=>`<option ${s===el.state?'selected':''}>${s}</option>`).join("")}
+                </select>
+              </td>
+              <td><input placeholder="Ex: rayures, fuite, prise HS…" value="${el.anomalies?.[0]?.desc||''}" data-el-anom-desc="${idx}:${i}"></td>
+              <td>
+                <div style="display:flex;gap:6px;flex-wrap:wrap" id="anom_ph_${idx}_${i}">
+                  ${(el.anomalies?.[0]?.photos||[]).map(src=>`<img src="${src}" style="width:72px;height:72px;object-fit:cover;border-radius:6px;border:1px solid #232937">`).join("")}
+                </div>
+                <input type="file" accept="image/*" capture="environment" data-el-anom-photo="${idx}:${i}" multiple>
+              </td>
+              <td><button class="btn" data-el-del="${idx}:${i}">–</button></td>
+            </tr>
+          `).join("")}
+        </tbody>
       </table>
+    `;
+    piecesContainer.appendChild(card);
+  });
+}
+
+function addRoom(name){
+  if(!name||!name.trim()) return;
+  EDL.rooms.push({
+    name:name.trim(),
+    elements:EDL_DEFAULT_ELEMENTS.map(n=>({name:n,state:"Bon",photos:[],anomalies:[{desc:"",photos:[]}]})),
+    roomPhotos:[]
+  });
+  edlSave(EDL); renderRooms();
+}
+
+document.getElementById("e_add_piece").addEventListener("click",()=> addRoom(ePieceSel.value));
+document.getElementById("e_add_piece_custom").addEventListener("click",()=>{
+  const v=document.getElementById("e_piece_custom").value;
+  addRoom(v); if(v) document.getElementById("e_piece_custom").value="";
+});
+
+piecesContainer.addEventListener("click",async(e)=>{
+  const t=e.target;
+  if(t.dataset.roomDel){
+    const idx=parseInt(t.dataset.roomDel,10);
+    if(confirm("Supprimer cette pièce ?")){
+      EDL.rooms.splice(idx,1); edlSave(EDL); renderRooms();
+    }
+    return;
+  }
+  if(t.dataset.roomAddEl){
+    const idx=parseInt(t.dataset.roomAddEl,10);
+    const name=prompt("Nom de l'élément ?");
+    if(name){
+      EDL.rooms[idx].elements.push({name,state:"Bon",photos:[],anomalies:[{desc:"",photos:[]}]} );
+      edlSave(EDL); renderRooms();
+    }
+    return;
+  }
+  if(t.dataset.roomPhoto){
+    const idx=parseInt(t.dataset.roomPhoto,10);
+    const inp=document.createElement("input");
+    inp.type="file"; inp.accept="image/*"; inp.multiple=true; inp.capture="environment";
+    inp.onchange=async()=>{
+      const files=[...inp.files];
+      for(const f of files){ const data=await fileToDataURL(f); EDL.rooms[idx].roomPhotos.push(data); }
+      edlSave(EDL); renderRooms();
+    };
+    inp.click();
+    return;
+  }
+});
+
+piecesContainer.addEventListener("input",async(e)=>{
+  const t=e.target;
+  if(t.dataset.elName){ const [ri,ei]=t.dataset.elName.split(":").map(Number); EDL.rooms[ri].elements[ei].name=t.value; edlSave(EDL); }
+  if(t.dataset.elState){ const [ri,ei]=t.dataset.elState.split(":").map(Number); EDL.rooms[ri].elements[ei].state=t.value; edlSave(EDL); }
+  if(t.dataset.elAnomDesc){ const [ri,ei]=t.dataset.elAnomDesc.split(":").map(Number); EDL.rooms[ri].elements[ei].anomalies[0].desc=t.value; edlSave(EDL); }
+  if(t.dataset.elAnomPhoto){
+    const [ri,ei]=t.dataset.elAnomPhoto.split(":").map(Number);
+    const files=[...t.files];
+    for(const f of files){ const data=await fileToDataURL(f); EDL.rooms[ri].elements[ei].anomalies[0].photos.push(data); }
+    edlSave(EDL); renderRooms();
+  }
+});
+piecesContainer.addEventListener("click",(e)=>{
+  const t=e.target;
+  if(t.dataset.elDel){
+    const [ri,ei]=t.dataset.elDel.split(":").map(Number);
+    EDL.rooms[ri].elements.splice(ei,1); edlSave(EDL); renderRooms();
+  }
+});
+
+/* Relevés compteurs */
+const mList=document.getElementById("m_list");
+function renderMeters(){
+  mList.innerHTML = (EDL.meters||[]).map((m,i)=>`
+    <div class="card col-4">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <strong>${m.type}</strong>
+        <button class="btn" data-m-del="${i}">🗑</button>
+      </div>
+      <div class="note">N° ${m.numero} — Valeur ${m.valeur} — Date ${m.date||"—"}</div>
+      ${m.photo? `<img src="${m.photo}" style="width:100%;max-height:180px;object-fit:contain;border:1px solid #232937;border-radius:8px;margin-top:6px;background:#fff">` : ""}
+    </div>
+  `).join("");
+}
+document.getElementById("m_add").addEventListener("click",async()=>{
+  const type=m_type.value, numero=m_numero.value, valeur=m_valeur.value, date=m_date.value;
+  const file=m_photo.files[0]; let photo=""; if(file) photo=await fileToDataURL(file);
+  EDL.meters.push({type,numero,valeur,date,photo}); edlSave(EDL); renderMeters();
+  ["m_numero","m_valeur","m_date","m_photo"].forEach(id=>{const el=document.getElementById(id); if(el) el.value="";});
+});
+mList.addEventListener("click",(e)=>{
+  const t=e.target; if(t.dataset.mDel){ const i=+t.dataset.mDel; EDL.meters.splice(i,1); edlSave(EDL); renderMeters(); }
+});
+
+/* Inventaire */
+const invList=document.getElementById("inv_list");
+function renderInventory(){
+  invList.innerHTML = (EDL.inventory||[]).map((it,i)=>`
+    <div class="card col-6">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
+        <strong>${it.name}</strong>
+        <div style="display:flex;gap:8px">
+          <span class="badge-total">Qté ${it.qty}</span>
+          <span class="badge-total">${it.state}</span>
+          <button class="btn" data-inv-photo="${i}">+ Photo</button>
+          <button class="btn" data-inv-del="${i}">🗑</button>
+        </div>
+      </div>
+      ${it.photos?.length? `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">${it.photos.map(p=>`<img src="${p}" style="width:80px;height:80px;object-fit:cover;border-radius:6px;border:1px solid #232937">`).join("")}</div>`:""}
+    </div>
+  `).join("");
+}
+function invAdd(name,qty,state){ if(!name) return; EDL.inventory.push({name,qty:+qty||1,state:state||"Bon",photos:[]}); edlSave(EDL); renderInventory(); }
+document.getElementById("inv_add").addEventListener("click",()=> invAdd(invSel.value, inv_qty.value, invStateSel.value));
+document.getElementById("inv_add_custom").addEventListener("click",()=>{
+  const name=inv_custom.value; invAdd(name,inv_qty.value,invStateSel.value); if(name) inv_custom.value="";
+});
+invList.addEventListener("click",(e)=>{
+  const t=e.target;
+  if(t.dataset.invDel){ const i=+t.dataset.invDel; EDL.inventory.splice(i,1); edlSave(EDL); renderInventory(); return; }
+  if(t.dataset.invPhoto){
+    const i=+t.dataset.invPhoto;
+    const inp=document.createElement("input");
+    inp.type="file"; inp.accept="image/*"; inp.capture="environment";
+    inp.onchange=async()=>{ const f=inp.files[0]; if(!f) return; const data=await fileToDataURL(f); EDL.inventory[i].photos=EDL.inventory[i].photos||[]; EDL.inventory[i].photos.push(data); edlSave(EDL); renderInventory(); };
+    inp.click();
+  }
+});
+
+/* Visibilité inventaire selon type de bail */
+function updateInventoryVisibility(){
+  const type=(document.getElementById("b_type")||{}).value||"Location vide";
+  const card=invList.closest(".card"); if(!card) return;
+  const show=["Meublée","Mobilité","Saisonnier","Colocation"].includes(type);
+  card.style.display = show ? "block" : "none";
+}
+document.getElementById("b_type")?.addEventListener("change",updateInventoryVisibility);
+
+/* Exports EDL */
+function edlToCSV(){
+  let csv="section;champ;valeur\n";
+  csv += `bien;adresse;${EDL.bien||""}\n`;
+  (EDL.rooms||[]).forEach((r,ri)=>{
+    csv += `piece_${ri+1};nom;${r.name}\n`;
+    csv += `piece_${ri+1};photos_piece;${(r.roomPhotos||[]).length}\n`;
+    (r.elements||[]).forEach((el,ei)=>{
+      csv += `piece_${ri+1}_el_${ei+1};element;${el.name}\n`;
+      csv += `piece_${ri+1}_el_${ei+1};etat;${el.state}\n`;
+      const an = el.anomalies?.[0] || {desc:"",photos:[]};
+      csv += `piece_${ri+1}_el_${ei+1};anomalie;${an.desc||""}\n`;
+      csv += `piece_${ri+1}_el_${ei+1};photos_anomalie;${(an.photos||[]).length}\n`;
+    });
+  });
+  (EDL.meters||[]).forEach((m,mi)=>{
+    csv += `compteur_${mi+1};type;${m.type}\n`;
+    csv += `compteur_${mi+1};numero;${m.numero}\n`;
+    csv += `compteur_${mi+1};valeur;${m.valeur}\n`;
+    csv += `compteur_${mi+1};date;${m.date}\n`;
+  });
+  (EDL.inventory||[]).forEach((it,ii)=>{
+    csv += `inventaire_${ii+1};item;${it.name}\n`;
+    csv += `inventaire_${ii+1};quantite;${it.qty}\n`;
+    csv += `inventaire_${ii+1};etat;${it.state}\n`;
+    csv += `inventaire_${ii+1};photos;${(it.photos||[]).length}\n`;
+  });
+  return csv;
+}
+document.getElementById("e_export_csv").addEventListener("click",()=>{
+  const blob=new Blob([edlToCSV()],{type:"text/csv;charset=utf-8"});
+  const a=document.createElement("a"); a.href=URL.createObjectURL(blob);
+  a.download="edl_avance.csv"; a.click(); URL.revokeObjectURL(a.href);
+});
+document.getElementById("e_export_json").addEventListener("click",()=>{
+  const s=JSON.stringify(EDL,null,2);
+  const blob=new Blob([s],{type:"application/json"});
+  const a=document.createElement("a"); a.href=URL.createObjectURL(blob);
+  a.download="edl_avance.json"; a.click(); URL.revokeObjectURL(a.href);
+});
+
+/* Rendu initial */
+renderRooms(); renderMeters(); renderInventory(); updateInventoryVisibility();
+
+/* ===== Signatures — dessin / import / défauts ===== */
+const sCanvas=document.getElementById("s_canvas");
+const sCtx=sCanvas.getContext("2d");
+function clearCanvas(){ sCtx.fillStyle="#fff"; sCtx.fillRect(0,0,sCanvas.width,sCanvas.height); }
+clearCanvas();
+// dessin souris/tactile
+let drawing=false,lastX=0,lastY=0;
+function posFromEvent(e){const r=sCanvas.getBoundingClientRect();const x=(e.touches?e.touches[0].clientX:e.clientX)-r.left;const y=(e.touches?e.touches[0].clientY:e.clientY)-r.top;return{x,y}}
+function startDraw(e){drawing=true;const p=posFromEvent(e);lastX=p.x;lastY=p.y}
+function stopDraw(){drawing=false}
+function draw(e){if(!drawing)return;e.preventDefault();const p=posFromEvent(e);sCtx.lineWidth=2.6;sCtx.lineJoin="round";sCtx.lineCap="round";sCtx.strokeStyle="#000";sCtx.beginPath();sCtx.moveTo(lastX,lastY);sCtx.lineTo(p.x,p.y);sCtx.stroke();lastX=p.x;lastY=p.y}
+sCanvas.addEventListener("mousedown",startDraw); sCanvas.addEventListener("mousemove",draw); window.addEventListener("mouseup",stopDraw);
+sCanvas.addEventListener("touchstart",startDraw,{passive:false}); sCanvas.addEventListener("touchmove",draw,{passive:false}); sCanvas.addEventListener("touchend",stopDraw);
+
+// Fichier > canvas
+document.getElementById("s_load_img").addEventListener("click",()=>{
+  const f=document.getElementById("s_file").files[0];
+  if(!f){ alert("Choisissez une image de signature."); return; }
+  const r=new FileReader();
+  r.onload=e=>{ const img=new Image(); img.onload=()=>{ clearCanvas(); const s=Math.min(sCanvas.width/img.width,sCanvas.height/img.height); const w=img.width*s,h=img.height*s,x=(sCanvas.width-w)/2,y=(sCanvas.height-h)/2; sCtx.drawImage(img,x,y,w,h) }; img.src=e.target.result; };
+  r.readAsDataURL(f);
+});
+document.getElementById("s_clear").addEventListener("click",clearCanvas);
+document.getElementById("s_export_png").addEventListener("click",()=>{
+  const a=document.createElement("a"); a.href=sCanvas.toDataURL("image/png"); a.download=(s_label.value||"signature")+".png"; a.click();
+});
+
+// Store signatures
+function loadSignStore(){return JSON.parse(localStorage.getItem("mbz.signatures")||"[]")}
+function saveSignStore(arr){localStorage.setItem("mbz.signatures",JSON.stringify(arr))}
+function loadSignDefaults(){return JSON.parse(localStorage.getItem("mbz.sig.defaults")||"{}")}
+function saveSignDefaults(o){localStorage.setItem("mbz.sig.defaults",JSON.stringify(o))}
+
+// enregistrer
+document.getElementById("s_save").addEventListener("click",()=>{
+  const label=(s_label.value||"Signature").trim();
+  const data=sCanvas.toDataURL("image/png");
+  const list=loadSignStore(); list.unshift({label,data,ts:Date.now()}); saveSignStore(list);
+  refreshGallery(); alert("Signature enregistrée.");
+});
+// défauts
+document.getElementById("s_set_default_b").addEventListener("click",()=>{
+  const defs=loadSignDefaults(); defs.bailleur=sCanvas.toDataURL("image/png"); saveSignDefaults(defs);
+  renderSignaturesInPreview(); alert("Définie comme signature par défaut du Bailleur.");
+});
+document.getElementById("s_set_default_l").addEventListener("click",()=>{
+  const defs=loadSignDefaults(); defs.locataire=sCanvas.toDataURL("image/png"); saveSignDefaults(defs);
+  renderSignaturesInPreview(); alert("Définie comme signature par défaut du Locataire.");
+});
+
+// galerie
+function refreshGallery(){
+  const wrap=document.getElementById("s_gallery"); if(!wrap) return;
+  const list=loadSignStore();
+  wrap.innerHTML="";
+  list.forEach((it,idx)=>{
+    const c=document.createElement("div");
+    c.className="card col-3";
+    c.innerHTML=`
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <strong>${it.label||"Signature"}</strong>
+        <button class="btn" data-del="${idx}" title="Supprimer">🗑</button>
+      </div>
+      <div style="display:grid;place-items:center;margin-top:8px">
+        <img src="${it.data}" style="max-width:100%;max-height:120px;object-fit:contain;border:1px solid #232937;border-radius:8px;background:#fff">
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">
+        <button class="btn" data-load="${idx}">Charger</button>
+        <button class="btn" data-defb="${idx}">Défaut Bailleur</button>
+        <button class="btn" data-defl="${idx}">Défaut Locataire</button>
+      </div>
+    `;
+    wrap.appendChild(c);
+  });
+}
+document.getElementById("s_gallery").addEventListener("click",(e)=>{
+  const t=e.target; const list=loadSignStore();
+  if(t.dataset.load){
+    const it=list[+t.dataset.load]; if(!it) return;
+    const img=new Image(); img.onload=()=>{ clearCanvas(); const s=Math.min(sCanvas.width/img.width,sCanvas.height/img.height); const w=img.width*s,h=img.height*s,x=(sCanvas.width-w)/2,y=(sCanvas.height-h)/2; sCtx.drawImage(img,x,y,w,h); s_label.value=it.label||""; }; img.src=it.data;
+  }
+  if(t.dataset.del){
+    const i=+t.dataset.del; if(confirm("Supprimer cette signature ?")){ list.splice(i,1); saveSignStore(list); refreshGallery(); }
+  }
+  if(t.dataset.defb||t.dataset.defl){
+    const i=+ (t.dataset.defb||t.dataset.defl); const it=list[i]; if(!it) return;
+    const defs=loadSignDefaults();
+    if(t.dataset.defb){ defs.bailleur=it.data; alert("Définie comme défaut Bailleur."); }
+    if(t.dataset.defl){ defs.locataire=it.data; alert("Définie comme défaut Locataire."); }
+    saveSignDefaults(defs); renderSignaturesInPreview();
+  }
+});
+refreshGallery();
+
+/* Insertion auto des signatures dans l'aperçu du bail */
+function renderSignaturesInPreview(){
+  const defs=loadSignDefaults();
+  const zone=document.getElementById("bail_print"); if(!zone) return;
+  // si les conteneurs n'existent pas encore → les créer
+  let signBlock=zone.querySelector(".sign-block");
+  if(!signBlock){
+    signBlock=document.createElement("div");
+    signBlock.className="sign-block";
+    signBlock.innerHTML=`
+      <hr style="border:none;border-top:1px solid #ddd;margin:14px 0">
+      <div style="display:flex;gap:40px;align-items:center">
+        <div style="text-align:center"><div>Signature Bailleur</div><img id="sig_b_img" style="max-width:260px;max-height:110px;object-fit:contain"></div>
+        <div style="text-align:center"><div>Signature Locataire</div><img id="sig_l_img" style="max-width:260px;max-height:110px;object-fit:contain"></div>
+      </div>`;
+    zone.appendChild(signBlock);
+  }
+  const sb=zone.querySelector("#sig_b_img"), sl=zone.querySelector("#sig_l_img");
+  if(sb) sb.src = defs?.bailleur || "";
+  if(sl) sl.src = defs?.locataire || "";
+}
+// appeler après chaque aperçu bail
+(function hookPreview(){
+  const btn=document.getElementById("b_preview");
+  if(!btn) return;
+  const old=btn.onclick;
+  btn.onclick=(ev)=>{
+    if(typeof old==="function") old(ev);
+    setTimeout(renderSignaturesInPreview, 20);
+  };
+})();
+
+// Fin EDL & Signatures
+</script>
+<!-- ===== SECTION BIENS & RENTABILITÉ ===== -->
+<section id="biens" class="card hidden">
+  <h2>🏠 Biens & Rentabilité</h2>
+  <p class="note">Saisis tes logements (type, adresse, loyer HC, charges, TF…) et suis ta rentabilité. Exports CSV/JSON & graphiques intégrés.</p>
+
+  <!-- Formulaire d'ajout / édition -->
+  <div class="row">
+    <div class="col-3">
+      <label>Type de location</label>
+      <select id="p_type">
+        <option>Location vide</option>
+        <option>Meublée</option>
+        <option>Saisonnier</option>
+        <option>Mobilité</option>
+        <option>Colocation</option>
+      </select>
+    </div>
+    <div class="col-5">
+      <label>Adresse</label>
+      <input id="p_adresse" placeholder="N° rue, ville">
+    </div>
+    <div class="col-2">
+      <label>Loyer HC (€/mois)</label>
+      <input id="p_loyer" type="number" step="0.01" value="650">
+    </div>
+    <div class="col-2">
+      <label>Charges (€/mois)</label>
+      <input id="p_charges" type="number" step="0.01" value="40">
     </div>
 
-    <div class="row" style="margin-top:14px">
-      <div class="col-6 card"><h3>💶 Cashflow par bien</h3><canvas id="chart_cash" height="200"></canvas></div>
-      <div class="col-6 card"><h3>📊 Répartition globale</h3><canvas id="chart_pie" height="200"></canvas></div>
+    <div class="col-2">
+      <label>TF (€/an)</label>
+      <input id="p_tf" type="number" step="0.01" value="800">
     </div>
+    <div class="col-2">
+      <label>Assurance (€/an)</label>
+      <input id="p_assu" type="number" step="0.01" value="120">
+    </div>
+    <div class="col-2">
+      <label>Autres (€/an)</label>
+      <input id="p_autres" type="number" step="0.01" value="0">
+    </div>
+    <div class="col-2">
+      <label>Vacance (mois/an)</label>
+      <input id="p_vac" type="number" step="0.1" value="1">
+    </div>
+    <div class="col-2">
+      <label>Prix d’achat (€)</label>
+      <input id="p_prix" type="number" step="1" value="120000">
+    </div>
+    <div class="col-2">
+      <label>Frais notaire (€)</label>
+      <input id="p_notaire" type="number" step="1" value="9000">
+    </div>
+    <div class="col-2" style="display:flex;align-items:end">
+      <button class="btn accent" id="p_add">Ajouter / Mettre à jour</button>
+    </div>
+  </div>
 
-    <div style="margin-top:12px">
-      <button class="btn" id="p_export_csv">Exporter CSV</button>
-      <button class="btn" id="p_export_json">Exporter JSON</button>
+  <!-- Tableau -->
+  <div style="margin-top:12px;overflow:auto">
+    <table class="table" id="p_table">
+      <thead>
+        <tr>
+          <th>#</th><th>Type</th><th>Adresse</th>
+          <th>Loyer HC</th><th>Charges</th><th>TF</th><th>Assurance</th><th>Autres/an</th><th>Vacance (mois)</th>
+          <th>Prix + Notaire</th><th>Revenus/an</th><th>Charges/an</th><th>Cashflow/an</th>
+          <th>Rdt brut</th><th>Rdt net</th><th></th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+      <tfoot></tfoot>
+    </table>
+  </div>
+
+  <!-- Graphiques -->
+  <div class="row" style="margin-top:14px">
+    <div class="col-6 card">
+      <h3>💶 Cashflow annuel par bien</h3>
+      <canvas id="chart_cash" height="200"></canvas>
     </div>
-  </section>
+    <div class="col-6 card">
+      <h3>📊 Répartition globale</h3>
+      <canvas id="chart_pie" height="200"></canvas>
+    </div>
+  </div>
+
+  <!-- Exports -->
+  <div style="margin-top:12px">
+    <button class="btn" id="p_export_csv">Exporter CSV</button>
+    <button class="btn" id="p_export_json">Exporter JSON</button>
+  </div>
+</section>
+
+<!-- ===== FERMETURE DE LA PAGE ===== -->
 </main>
+<footer style="text-align:center;color:#8e95a3;margin:20px 0">© <span id="year"></span> MonBailZen — Tous droits réservés</footer>
 
-<footer class="container" style="text-align:center;color:#9aa3b2;margin:20px 0">© <span id="year"></span> MonBailZen</footer>
-
-<!-- Chart.js -->
+<!-- Chart.js CDN -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-/* ========= Utils & Store ========= */
-const store={set:(k,v)=>localStorage.setItem(k,JSON.stringify(v)),get:(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}},reset:()=>{localStorage.clear();location.reload()}};
-resetAll.onclick=()=>confirm("Réinitialiser toutes les données locales ?")&&store.reset();
-year.textContent=new Date().getFullYear();
+/* ====== NAVIGATION GLOBALE ====== */
+document.querySelectorAll("header .tabbtn").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    document.querySelectorAll("header .tabbtn").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+    const tab=btn.dataset.tab;
+    document.querySelectorAll("main > section").forEach(sec=>sec.classList.add("hidden"));
+    document.getElementById(tab).classList.remove("hidden");
+    window.scrollTo({top:0,behavior:"smooth"});
+  });
+});
+document.getElementById("year").textContent = new Date().getFullYear();
 
-/* ========= Navigation onglets ========= */
-document.querySelectorAll(".tabbtn").forEach(b=>b.addEventListener("click",()=>{
-  document.querySelectorAll(".tabbtn").forEach(x=>x.classList.remove("active"));
-  b.classList.add("active");
-  document.querySelectorAll("main>section").forEach(s=>s.classList.add("hidden"));
-  document.getElementById(b.dataset.tab).classList.remove("hidden");
-  window.scrollTo({top:0,behavior:"smooth"});
-}));
+/* ====== BIENS & RENTA LOGIQUE ====== */
+const PKEY="mbz.biens";
+function pLoad(){ return JSON.parse(localStorage.getItem(PKEY)||"[]"); }
+function pSave(arr){ localStorage.setItem(PKEY, JSON.stringify(arr)); }
+let BIENS = pLoad();
 
-/* ========= BAUX — chargement/sauvegarde ========= */
-const B_KEYS=["b_bailleur","b_locataire","b_adresse","b_loyer","b_charges","b_depot","b_echeance","b_type","b_debut","b_duree","b_preavis","cl_caution_nom","cl_caution_montant","cl_caution_duree","cl_irl_a","cl_irl_n","cl_irl_date"];
-const C_KEYS=["caution","irl","assurance","entretien","resolutoire","sousloc","preavis"];
+function euro(n){ return new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR'}).format(+n||0); }
+function fmt(n){ return (+n||0); }
+function percent(n){ return (+(n||0)).toFixed(2)+" %"; }
 
-function loadBail(){
-  const b=store.get("mbz.bail",{}); B_KEYS.forEach(id=>{const el=document.getElementById(id); if(el&&b[id]!=null) el.value=b[id]});
-  const c=store.get("mbz.clauses",{}); C_KEYS.forEach(k=>{const el=document.querySelector('.clause[data-key="'+k+'"]'); if(el&&c[k]!=null) el.checked=c[k]});
-  (store.get("mbz.annexes",[])||[]).forEach(addAnnexeLi);
-  const al=store.get("mbz.annexe_libre",""); if(annexe_libre && al) annexe_libre.value=al;
+function pCompute(b){
+  const loyerM=fmt(b.loyer), chargesM=fmt(b.charges);
+  const revenusAn = loyerM*12;
+  const vacCost   = loyerM * Math.max(fmt(b.vac),0);
+  const chargesAn = (chargesM*12) + fmt(b.tf) + fmt(b.assu) + fmt(b.autres) + vacCost;
+  const cashflow  = revenusAn - chargesAn;
+  const invest    = fmt(b.prix) + fmt(b.notaire);
+  const rdtBrut   = invest>0 ? (revenusAn/invest)*100 : 0;
+  const rdtNet    = invest>0 ? ((revenusAn-chargesAn)/invest)*100 : 0;
+  return { revenusAn, chargesAn, cashflow, invest, rdtBrut, rdtNet, vacCost };
 }
-function saveBail(){
-  const b={}; B_KEYS.forEach(id=>{const el=document.getElementById(id); if(el) b[id]=el.value}); store.set("mbz.bail",b);
-  const c={}; C_KEYS.forEach(k=>{const el=document.querySelector('.clause[data-key="'+k+'"]'); if(el) c[k]=el.checked}); store.set("mbz.clauses",c);
-  store.set("mbz.annexes",[...document.querySelectorAll("#annexe_list li")].map(li=>li.textContent));
-  store.set("mbz.annexe_libre", annexe_libre?.value||"");
-}
-document.addEventListener("input",(e)=>{ if(e.target.closest("#baux")) saveBail(); });
-document.addEventListener("DOMContentLoaded",()=>{ loadBail(); applyBailRules(false); refreshCautionPreview(); });
 
-/* ========= BAUX — règles automatiques ========= */
-const BAIL_RULES={
-  "Location vide":{duree_mois:36,preavis_mois:3,note:"Bail vide : 3 ans, préavis 3 mois (1 mois possible selon cas)."},
-  "Meublée":{duree_mois:12,preavis_mois:1,note:"Meublé : 1 an (9 mois étudiant), préavis 1 mois."},
-  "Saisonnier":{duree_mois:3,preavis_mois:0,note:"Saisonnier : court (≤3 mois), pas de reconduction."},
-  "Mobilité":{duree_mois:6,preavis_mois:1,note:"Mobilité : 1 à 10 mois, non renouvelable, préavis 1 mois."}
-};
-function hasCustomDuration(){
-  const el=b_duree; const typeSel=b_type?.value||"Location vide"; const v=parseInt(el?.value||0,10);
-  if(!el||!v) return false;
-  if(typeSel==="Saisonnier"||typeSel==="Mobilité"){const def=BAIL_RULES[typeSel].duree_mois; return v!==def;}
-  return false;
+function pRenderTable(){
+  const tb=document.querySelector("#p_table tbody");
+  tb.innerHTML="";
+  let sumRev=0,sumChg=0,sumCF=0,sumInv=0;
+  BIENS.forEach((b,i)=>{
+    const c=pCompute(b);
+    sumRev+=c.revenusAn; sumChg+=c.chargesAn; sumCF+=c.cashflow; sumInv+=c.invest;
+    const tr=document.createElement("tr");
+    tr.innerHTML = `
+      <td>${i+1}</td>
+      <td>${b.type}</td>
+      <td>${b.adresse}</td>
+      <td>${euro(b.loyer)}</td>
+      <td>${euro(b.charges)}</td>
+      <td>${euro(b.tf)}</td>
+      <td>${euro(b.assu)}</td>
+      <td>${euro(b.autres)}</td>
+      <td>${b.vac||0}</td>
+      <td>${euro(c.invest)}</td>
+      <td><strong>${euro(c.revenusAn)}</strong></td>
+      <td>${euro(c.chargesAn)}</td>
+      <td><strong>${euro(c.cashflow)}</strong></td>
+      <td>${percent(c.rdtBrut)}</td>
+      <td>${percent(c.rdtNet)}</td>
+      <td>
+        <button class="btn" data-edit="${i}">✎</button>
+        <button class="btn" data-del="${i}">🗑</button>
+      </td>`;
+    tb.appendChild(tr);
+  });
+  const tf=document.querySelector("#p_table tfoot");
+  const rdtBrutG = sumInv>0 ? (sumRev/sumInv*100) : 0;
+  const rdtNetG  = sumInv>0 ? ((sumRev-sumChg)/sumInv*100) : 0;
+  tf.innerHTML = `
+    <tr>
+      <td colspan="10" style="text-align:right;font-weight:800">Totaux / Global</td>
+      <td><span class="badge-total">${euro(sumRev)}</span></td>
+      <td><span class="badge-total">${euro(sumChg)}</span></td>
+      <td><span class="badge-total">${euro(sumCF)}</span></td>
+      <td><span class="badge-total">${percent(rdtBrutG)}</span></td>
+      <td><span class="badge-total">${percent(rdtNetG)}</span></td>
+      <td></td>
+    </tr>`;
 }
-function applyBailRules(fromUser=false){
-  const typeSel=b_type?.value||"Location vide"; const rules=BAIL_RULES[typeSel]; if(!rules) return;
-  if(b_duree){
-    const shouldSetDefault = (typeSel==="Location vide"||typeSel==="Meublée") ? (fromUser && document.activeElement===b_type) : !hasCustomDuration();
-    if(shouldSetDefault && (!b_duree.value||fromUser)) b_duree.value=rules.duree_mois;
-  }
-  if(b_preavis && (!fromUser || document.activeElement===b_type)) b_preavis.value=rules.preavis_mois;
-  if(b_rule_note) b_rule_note.textContent=rules.note;
-  saveBail(); refreshCautionPreview();
-}
-b_type?.addEventListener("change",()=>applyBailRules(true));
 
-/* ========= Annexes ========= */
-function addAnnexeLi(name){
-  const li=document.createElement("li"); li.textContent=name; li.style.cursor="pointer"; li.title="Cliquer pour supprimer";
-  li.addEventListener("click",()=>{ li.remove(); saveBail(); });
-  annexe_list.appendChild(li);
+function pBindActions(){
+  const tb=document.querySelector("#p_table tbody");
+  tb.addEventListener("click",(e)=>{
+    const t=e.target;
+    if(t.dataset.del){
+      const i=+t.dataset.del;
+      if(confirm("Supprimer ce bien ?")){
+        BIENS.splice(i,1); pSave(BIENS); pRenderTable(); pRenderCharts();
+      }
+    }
+    if(t.dataset.edit){
+      const i=+t.dataset.edit; const b=BIENS[i]; if(!b) return;
+      p_type.value=b.type; p_adresse.value=b.adresse; p_loyer.value=b.loyer; p_charges.value=b.charges;
+      p_tf.value=b.tf; p_assu.value=b.assu; p_autres.value=b.autres; p_vac.value=b.vac; p_prix.value=b.prix; p_notaire.value=b.notaire;
+      p_add.dataset.editing=i; p_add.textContent="Mettre à jour";
+      window.scrollTo({top:document.getElementById("biens").offsetTop-20,behavior:"smooth"});
+    }
+  });
 }
-annexe_add.onclick=()=>{ if(annexe_nom.value.trim()){ addAnnexeLi(annexe_nom.value.trim()); annexe_nom.value=""; saveBail(); } };
 
-/* ========= Baux — génération de texte ========= */
-function bailData(){
-  const b=store.get("mbz.bail",{})||{};
-  return {
-    bailleur:b.b_bailleur||"—", locataire:b.b_locataire||"—", adresse:b.b_adresse||"—",
-    loyer:parseFloat(b.b_loyer||0), charges:parseFloat(b.b_charges||0), depot:parseFloat(b.b_depot||0),
-    echeance:parseInt(b.b_echeance||5,10),
-    type:b.b_type||"Location vide", debut:b.b_debut||"—",
-    duree:parseInt(b.b_duree||12,10), preavis:parseInt(b.b_preavis||1,10)
+function pAddOrUpdate(){
+  const payload={
+    type:p_type.value,
+    adresse:p_adresse.value.trim(),
+    loyer:+p_loyer.value||0,
+    charges:+p_charges.value||0,
+    tf:+p_tf.value||0,
+    assu:+p_assu.value||0,
+    autres:+p_autres.value||0,
+    vac:+p_vac.value||0,
+    prix:+p_prix.value||0,
+    notaire:+p_notaire.value||0
   };
-}
-function clauseText(){
-  const c=store.get("mbz.clauses",{}); let out="";
-  if(c.caution) out+="\n"+cautionClauseAuto();
-  if(c.irl) out+="\nRévision IRL : base × (IRL_nouveau / IRL_ancien).";
-  if(c.assurance) out+="\nAssurance : attestation annuelle obligatoire.";
-  if(c.entretien) out+="\nRéparations locatives (Décret 87-712).";
-  if(c.resolutoire) out+="\nClause résolutoire (impayés, défaut d’assurance…).";
-  if(c.sousloc) out+="\nSous-location interdite sans accord écrit.";
-  if(c.preavis) out+="\nPréavis & remise des clés selon régime.";
-  const anns=store.get("mbz.annexes",[]); if(anns.length) out+=`\nAnnexes : ${anns.join(", ")}.`;
-  const annLibre=store.get("mbz.annexe_libre",""); if(annLibre && annLibre.trim()) out+=`\n\nAnnexe libre :\n${annLibre.trim()}`;
-  return out;
-}
-function bailTexte(d){
-  const total=(d.loyer+d.charges).toFixed(2);
-  return `BAIL D'HABITATION — MonBailZen
-
-Entre les soussignés :
-- Bailleur : ${d.bailleur}
-- Locataire : ${d.locataire}
-
-Objet : ${d.type}
-Logement : ${d.adresse}
-
-Conditions financières :
-- Loyer mensuel hors charges : ${d.loyer.toFixed(2)} €
-- Provision sur charges : ${d.charges.toFixed(2)} €
-- Loyer mensuel total : ${total} €
-- Dépôt de garantie : ${d.depot.toFixed(2)} €
-- Échéance : le ${d.echeance} de chaque mois
-
-Durée : ${d.duree} mois à compter du ${d.debut}
-Préavis locataire : ${d.preavis} mois
-
-${clauseText()}
-`;
-}
-
-/* ========= Caution solidaire (auto) ========= */
-function reconductionTextByType(type){
-  switch(type){
-    case"Location vide":return"Durée légale 3 ans (pers. physique), reconduction tacite.";
-    case"Meublée":return"Durée 1 an (9 mois étudiant), reconduction tacite.";
-    case"Saisonnier":return"Durée déterminée, pas de reconduction tacite.";
-    case"Mobilité":return"1 à 10 mois, non renouvelable."; default:return"Selon régime."
+  if(!payload.adresse){ alert("Adresse requise"); return; }
+  if(p_add.dataset.editing){
+    BIENS[+p_add.dataset.editing]=payload;
+    delete p_add.dataset.editing;
+    p_add.textContent="Ajouter / Mettre à jour";
+  } else {
+    BIENS.push(payload);
   }
+  pSave(BIENS);
+  pRenderTable(); pRenderCharts();
+  p_adresse.value="";
 }
-function cautionClauseAuto(){
-  const b=store.get("mbz.bail",{})||{}; const type=b.b_type||"Location vide";
-  const duree=parseInt(b.b_duree||12,10); const preavis=parseInt(b.b_preavis||1,10);
-  const garant=cl_caution_nom?.value||"—"; const montant=cl_caution_montant?.value||"—";
-  const dureeGarantie=cl_caution_duree?.value||duree||12; const reconduction=reconductionTextByType(type);
-  return `Caution solidaire :
-${garant} s'engage en qualité de caution solidaire du locataire, à garantir le paiement de toutes sommes dues
-(loyers, charges, intérêts, frais) dans la limite de ${montant} €.
+document.getElementById("p_add").addEventListener("click", pAddOrUpdate);
 
-Durée de l'engagement : ${dureeGarantie} mois (alignée par défaut sur la durée du bail de ${duree} mois).
-Reconduction / renouvellement : ${reconduction}
-Préavis locataire : ${preavis} mois.`;
+/* Graphiques Chart.js */
+let chartCash=null, chartPie=null;
+function pRenderCharts(){
+  const labels = BIENS.map((b,i)=> (i+1)+". "+(b.adresse||"").split(",")[0]);
+  const cash = BIENS.map(b=> pCompute(b).cashflow);
+  const totalRev = BIENS.reduce((a,b)=> a + pCompute(b).revenusAn, 0);
+  const totalChg = BIENS.reduce((a,b)=> a + pCompute(b).chargesAn, 0);
+
+  const ctx1=document.getElementById("chart_cash").getContext("2d");
+  if(chartCash) chartCash.destroy();
+  chartCash = new Chart(ctx1,{
+    type:"bar",
+    data:{ labels, datasets:[{ label:"Cashflow annuel (€)", data:cash }] },
+    options:{ responsive:true, scales:{ y:{ beginAtZero:true } } }
+  });
+
+  const ctx2=document.getElementById("chart_pie").getContext("2d");
+  if(chartPie) chartPie.destroy();
+  chartPie = new Chart(ctx2,{
+    type:"pie",
+    data:{ labels:["Revenus/an","Charges/an"], datasets:[{ data:[totalRev,totalChg] }] },
+    options:{ responsive:true }
+  });
 }
-function refreshCautionPreview(){ const el=document.getElementById("clause_caution_preview"); if(el) el.textContent=cautionClauseAuto(); }
-["b_type","b_duree","b_preavis","cl_caution_nom","cl_caution_montant","cl_caution_duree"].forEach(id=>document.getElementById(id)?.addEventListener("input",refreshCautionPreview));
 
-/* ========= Actions bail (aperçu / doc / json / complet) ========= */
-b_preview.onclick=()=>{ const t=bailTexte(bailData()); bail_content.textContent=t; bail_date.textContent=new Date().toLocaleDateString("fr-FR"); bail_print.classList.remove("hidden"); setTimeout(()=>{renderSignaturesInBail(); window.print();},40); };
-b_doc.onclick=()=>{ const t=bailTexte(bailData()); const blob=new Blob([t],{type:"application/msword"}); const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="bail_monbailzen.doc"; a.click(); URL.revokeObjectURL(a.href); };
-b_json.onclick=()=>{ const data={...bailData(),clauses:store.get("mbz.clauses",{}),annexes:store.get("mbz.annexes",[]),annexe_libre:store.get("mbz.annexe_libre","")}; const s=JSON.stringify(data,null,2); const blob=new Blob([s],{type:"application/json"}); const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="bail_monbailzen.json"; a.click(); URL.revokeObjectURL(a.href); };
+/* Exports */
+document.getElementById("p_export_csv").addEventListener("click", ()=>{
+  let csv="type;adresse;loyer_m;charges_m;tf_a;assu_a;autres_a;vac_mois;prix;notaire;revenus_a;charges_a;cashflow_a;rdt_brut;rdt_net\n";
+  BIENS.forEach(b=>{
+    const c=pCompute(b);
+    csv += [
+      b.type,b.adresse,b.loyer,b.charges,b.tf,b.assu,b.autres,b.vac,b.prix,b.notaire,
+      c.revenusAn,c.chargesAn,c.cashflow,c.rdtBrut.toFixed(2),c.rdtNet.toFixed(2)
+    ].map(v=>`"${String(v).replace(/"/g,'""')}"`).join(";") + "\n";
+  });
+  const blob=new Blob([csv],{type:"text/csv;charset=utf-8"});
+  const a=document.createElement("a"); a.href=URL.createObjectURL(blob);
+  a.download="biens_renta.csv"; a.click(); URL.revokeObjectURL(a.href);
+});
 
-/* ========= Bail complet (légal) ========= */
-function legalDurPreavisByType(type){
-  switch(type){
-    case"Location vide":return{dureeMois:36,preavisMois:3,renouvellement:"reconduction tacite triennale (pers. physique)"};
-    case"Meublée":return{dureeMois:12,preavisMois:1,renouvellement:"reconduction tacite annuelle (9 mois étudiant)"};
-    case"Saisonnier":return{dureeMois:3,preavisMois:0,renouvellement:"pas de reconduction (contrat à terme)"};
-    case"Mobilité":return{dureeMois:6,preavisMois:1,renouvellement:"non renouvelable (1 à 10 mois)"};
-    default:return{dureeMois:12,preavisMois:1,renouvellement:"selon régime"}
-  }
-}
-function diagnosticsBloc(){return`Diagnostics : DPE, ERP, Plomb/Amiante si applicables, Surface habitable (loi Boutin), autres selon réglementation.`}
-function clauseResolutoireBloc(){return`Clause résolutoire : résiliation de plein droit pour impayés/défaut d’assurance après commandement demeuré infructueux (délais légaux).`}
-function reparationsBloc(){return`Réparations locatives — Décret 87-712 : entretien courant et petites réparations à la charge du locataire.`}
-function edlBloc(){return`État des lieux — Décret 2016-382 : EDL d’entrée et de sortie contradictoires selon mentions obligatoires.`}
-function assuranceBloc(){const assuDate=assu_date?.value||"—";return`Assurance habitation : attestation annuelle. Date de référence (rappel) : ${assuDate}.`}
-function revisionIRLBbloc(){
-  const ref=parseFloat(irl_ref?.value||0), neu=parseFloat(irl_new?.value||0), anniv=irl_anniv?.value||"date anniversaire";
-  if(!ref||!neu) return`Révision IRL : révision annuelle à ${anniv} — formule base × (IRL_nouveau / IRL_ancien).`;
-  return`Révision IRL : ${anniv} ; IRL ${ref} → ${neu}. Formule base × (IRL_nouveau / IRL_ancien).`;
-}
-function generateFullLeaseText(){
-  const d=bailData(); const rules=legalDurPreavisByType(d.type); const total=(d.loyer+d.charges).toFixed(2);
-  const annexes=(store.get("mbz.annexes",[])||[]); const annLibre=(store.get("mbz.annexe_libre","")||"").trim();
-  const today=new Date().toLocaleDateString("fr-FR");
-  const ENTETE=`BAIL D'HABITATION — ${d.type}\nFait le ${today}\n\nEntre :\n- BAILLEUR : ${d.bailleur}\n- LOCATAIRE : ${d.locataire}`;
-  const DESIGNATION=`Désignation des locaux\nLogement : ${d.adresse}\nDestination : usage d’habitation (sauf régime spécifique).`;
-  const DUREE=`Durée / renouvellement / préavis\nDurée : ${d.duree} mois (réf. : ${rules.dureeMois} mois)\nRenouvellement/reconduction : ${rules.renouvellement}\nPréavis locataire : ${d.preavis||rules.preavisMois} mois`;
-  const LOYER=`Loyer / charges / dépôt\n- Loyer HC : ${d.loyer.toFixed(2)} €\n- Provision charges : ${d.charges.toFixed(2)} €\n- Total mensuel : ${total} €\n- Dépôt de garantie : ${d.depot.toFixed(2)} €\n- Échéance : le ${d.echeance} de chaque mois`;
-  const REVISION=revisionIRLBbloc(); const CAUTION=cautionClauseAuto(); const ASSU=assuranceBloc();
-  const REPAR=reparationsBloc(); const EDL=edlBloc(); const CR=clauseResolutoireBloc(); const DIAG=diagnosticsBloc();
-  const DIVERS=`Cession/sous-location : interdites sans accord écrit.\nTravaux & accès : selon textes.\nRestitution des clés & DG : selon loi.\nRGPD & médiation : informations communiquées.`;
-  const ANNEXES=`Annexes :\n- Notice d’information\n- Diagnostics (cf. supra)\n- EDL d’entrée (+ sortie)\n${annexes.length? "- "+annexes.join("\n- "):""}\n${annLibre? "\nAnnexe libre :\n"+annLibre:""}`;
-  const PIED=`Signatures\nLe Bailleur                               Le Locataire\n`;
-  return [ENTETE,DESIGNATION,DUREE,LOYER,REVISION,CAUTION,ASSU,REPAR,EDL,CR,DIAG,DIVERS,ANNEXES,PIED].join("\n\n");
-}
-b_full.onclick=()=>{ const txt=generateFullLeaseText(); bail_full_content.textContent=txt; bail_full_print.classList.remove("hidden"); setTimeout(()=>{renderSignaturesInBail(); window.print();},40); };
+document.getElementById("p_export_json").addEventListener("click", ()=>{
+  const s = JSON.stringify({biens:BIENS, calc:BIENS.map(b=>({adresse:b.adresse,...pCompute(b)}))}, null, 2);
+  const blob=new Blob([s],{type:"application/json"});
+  const a=document.createElement("a"); a.href=URL.createObjectURL(blob);
+  a.download="biens_renta.json"; a.click(); URL.revokeObjectURL(a.href);
+});
 
-/* ========= IRL — calcul + rappel + courrier ========= */
-function trimestreFromDate(dateStr){ try{const d=dateStr?new Date(dateStr):new Date(); const m=d.getMonth()+1; if(m<=3)return"T1"; if(m<=6)return"T2"; if(m<=9)return"T3"; return"T4";}catch(e){return"T1"} }
-["irl_anniv","irl_ref","irl_new","irl_base"].forEach(id=>{ const el=document.getElementById(id); if(!el) return; const v=store.get("mbz."+id,""); if(v!==""&&v!=null) el.value=v; el.addEventListener("input",()=>store.set("mbz."+id,el.value)); });
-function irlCompute(){
-  const anniv=irl_anniv.value || (store.get("mbz.bail",{}).b_b_debut||"");
-  const trim=trimestreFromDate(anniv); irl_trim.value=trim;
-  const ref=parseFloat(irl_ref.value||0), neu=parseFloat(irl_new.value||0), base=parseFloat(irl_base.value||0);
-  if(!ref||!neu||!base){ irl_calc_out.textContent="Renseignez IRL ancien, IRL nouveau et le loyer de base."; return null; }
-  const indexe=base*(neu/ref), delta=indexe-base;
-  irl_calc_out.textContent=`Trimestre : ${trim}\nAncien IRL : ${ref} | Nouvel IRL : ${neu}\nBase : ${base.toFixed(2)} € → Nouveau loyer : ${indexe.toFixed(2)} € (Δ ${delta.toFixed(2)} €)`;
-  return {anniv,trim,ref,neu,base,indexe,delta};
-}
-irl_detect?.addEventListener("click",irlCompute);
-function scheduleIrlAnnivCheck(){
-  const key="mbz.irl.nextCheck"; const today=new Date(); today.setHours(0,0,0,0);
-  const last=store.get(key,null); if(last && new Date(last).getTime()===today.getTime()) return;
-  store.set(key,today.toISOString());
-  const anniv=irl_anniv.value; if(!anniv) return;
-  const a=new Date(anniv); a.setFullYear(today.getFullYear());
-  if(a.getMonth()===today.getMonth() && a.getDate()===today.getDate()){
-    const res=irlCompute(); if(res){ setTimeout(()=>openIrlLetter(res),100); alert("Rappel IRL : anniversaire aujourd’hui. Courrier prêt."); }
-  }
-}
-setTimeout(scheduleIrlAnnivCheck,600);
-function openIrlLetter(res){
-  if(!res) res=irlCompute(); const d=bailData();
-  const body=`Objet : Révision de loyer selon l’IRL (${res.trim})
-Madame, Monsieur,
+/* Init */
+pRenderTable(); pBindActions(); pRenderCharts();
+</script>
 
-Conformément au bail du ${d.debut} et à l’Indice de Référence des Loyers (${res.trim}), le loyer est révisé à compter de ce jour.
+</body>
+</html>
 
-Ancien loyer HC : ${res.base.toFixed(2)} €
-IRL nouveau / ancien : ${res.neu} / ${res.ref}
-Nouveau loyer HC : ${res.indexe.toFixed(2)} € (variation : ${res.delta.toFixed(2)} €)
-
-Cordialement,
-${d.bailleur}`;
-  irl_letter_text.value=body; irlModal.style.display="flex"; irlModal.setAttribute("aria-hidden","false");
-}
-irl_letter?.addEventListener("click",()=>openIrlLetter(irlCompute()));
-closeIrlModal?.addEventListener("click",()=>{ irlModal.style.display="none"; irlModal.setAttribute("aria-hidden","true"); });
-irl_letter_doc?.addEventListener("click",()=>{ const s=irl_letter_text.value||""; const blob=new Blob([s],{type:"application/msword"}); const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="courrier_revision_loyer_irl.doc"; a.click(); URL.revokeObjectURL(a.href); });
-
-/* ========= Assurance — rappel + courrier ========= */
-["assu_date","assu_rappel_j"].forEach(id=>{ const el=document.getElementById(id); if(!el) return; const v=store.get("mbz."+id,""); if(v!==""&&v!=null) el.value=v; el.addEventListener("input",()=>store.set("mbz."+id,el.value)); });
-function scheduleAssuCheck(){
-  const key="mbz.assu.nextCheck"; const today=new Date(); today.setHours(0,0,0,0);
-  const last=store.get(key,null); if(last && new Date(last).getTime()===today.getTime()) return;
-  store.set(key,today.toISOString());
-  const dStr=assu_date.value; const delai=parseInt(assu_rappel_j.value||15,10); if(!dStr||!delai) return;
-  const d=new Date(dStr); const target=new Date(d); target.setFullYear(today.getFullYear());
-  const diffDays=Math.ceil((target - today)/(1000*60*60*24));
-  if(diffDays===delai){ openAssuLetter(); alert(`Rappel assurance : ${delai} jours avant l’échéance. Courrier prêt.`); }
-}
-setTimeout(scheduleAssuCheck,800);
-function openAssuLetter(){
-  const d=bailData(); const dStr=assu_date.value||"—";
-  const text=`Objet : Demande d’attestation d’assurance habitation
-
-Madame, Monsieur,
-
-Conformément à la loi, merci de nous transmettre votre attestation d’assurance habitation
-
-  </section>
+</section>
